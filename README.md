@@ -15,3 +15,42 @@ The platform emphasizes accessibility, ease of use, and interactive learning thr
 
 ---
 
+## ✨ Key Features
+
+### 🔹 Structured Data Input
+- Clean, guided forms for entering model parameters  
+- Built-in validation and tooltips  
+- Error prevention to reduce user mistakes  
+
+### 🔹 Automatic Graph Generation
+- High-quality charts using modern visualization libraries  
+- Zooming, panning, and axis switching (linear/log)  
+- Real-time updates as parameters change  
+
+### 🔹 Interactive Controls
+- Sliders for parameter adjustment  
+- Animation playback for time-dependent models
+
+### 🔹 Multiple Model Types
+- Exponential growth  
+- Logistic growth  
+- Differential equation models  
+- Carrying capacity  
+- Lotka–Volterra predator–prey  
+- Additional population models as needed  
+
+### 🔹 Instructor Mode
+- Create example models  
+- Share model links with students  
+- Embed graphs in course materials  
+
+### 🔹 User Accounts & Persistence
+- Create accounts to save models  
+- View calculation history  
+- Re-run or re-graph previous models  
+- Store graph images or parameters  
+
+### 🔹 Dataset Upload & Curve Fitting
+- Upload CSV datasets  
+- Automatic exponential/logistic curve fitting  
+- Error metrics for model accuracy
