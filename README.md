@@ -62,7 +62,7 @@ The platform emphasizes accessibility, ease of use, and interactive learning thr
 To setup yours, you need to clone the repository first if you don't have it on your laptop already. If you already do just git pull. 
 The next thing is to install npm and dev dependencies: 
 
-# This is because we have a gitignore so not everything was git added to our repository 
+This is because we have a gitignore so not everything was git added to our repository 
 
 cd into the backend folder first 
 First: npm init -y 
