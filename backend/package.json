@@ -1,0 +1,18 @@
+{
+  "name": "cs495-software-project-proposal-population-model-calculator",
+  "version": "1.0.0",
+  "description": "A web-based interactive tool for performing key calculations related to population models.  \r Developed as a CS495 Software Engineering Capstone Project.",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest -- coverage"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "math.js": "^1.1.46"
+  },
+  "devDependencies": {
+    "jest": "^30.2.0"
+  }
+}

@@ -1,0 +1,40 @@
+# Node.js dependencies
+node_modules/
+/.pnp
+.pnp.js
+
+# Build outputs
+build/
+dist/
+
+# Runtime files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Logs
+logs
+*.log
+
+# Environment files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Testing
+/coverage
+
+# IDE / Editor files
+.idea/
+.vscode/
+
+# Visual Studio temporary files
+*.suo
+*.ntvs*
+
+# OS files
+.DS_Store
+Thumbs.db
