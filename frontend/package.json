@@ -7,7 +7,13 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
+<<<<<<< HEAD
     "preview": "vite preview"
+=======
+    "preview": "vite preview",
+    "test": "vitest",
+    "coverage": "vitest run --coverage"
+>>>>>>> 64414ccf79a2d1051e0d0340196a1a3016492187
   },
   "dependencies": {
     "react": "^19.2.0",
