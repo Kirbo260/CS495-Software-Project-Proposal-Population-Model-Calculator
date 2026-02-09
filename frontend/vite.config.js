@@ -10,8 +10,6 @@ export default defineConfig({
       },
     }),
   ],
-<<<<<<< HEAD
-=======
   test: {
     environment: "jsdom",
     globals: true,
@@ -20,5 +18,4 @@ export default defineConfig({
       reporter: ["text", "html"]
     }
   }
->>>>>>> 64414ccf79a2d1051e0d0340196a1a3016492187
 })
