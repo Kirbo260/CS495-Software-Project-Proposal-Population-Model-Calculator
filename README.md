@@ -54,3 +54,49 @@ The platform emphasizes accessibility, ease of use, and interactive learning thr
 - Upload CSV datasets  
 - Automatic exponential/logistic curve fitting  
 - Error metrics for model accuracy
+
+---
+
+## 🛠️ Setup Guide
+
+To setup yours, you need to clone the repository first if you don't have it on your laptop already. If you already do just git pull. 
+The next thing is to install npm and dev dependencies: 
+This is because we have a gitignore so not everything was git added to our repository 
+
+cd into the backend folder first 
+First: npm init -y 
+2nd: npm install math.js 
+3rd: npm install --save-dev jest [I think this can be done outside, but do it inside jaut to be safe ] 
+
+In your package.json file 
+Check the part on scripts and change it to 
+"scripts": {
+  "test": "jest --coverage"
+}
+
+### 🔹NEXT FRONTEND
+cd to the frontend 
+First: npx create-react-app. [Make sure to add the .]
+Back to the backend: 
+NODEMON : 
+Do npm install -g nodemon
+This is so that when there is a change to the backend, it updates automatically 
+Check the scripts part of the package.json file in the backend 
+Add  
+  "start": "node index.js",
+  "dev": "nodemon index.js"
+If it is not there for the gitattributes file, run 
+git add --renormalize.
+git commit -m "Normalize line endings."
+This ensures that git applies line ending rules to our files in case we are running on a different OS
+The you can git push -u 
+
+### 🔹To run the frontend 
+npm start 
+
+### 🔹To run the backend 
+node index.js (this is because the index file in the backend is where our port is ) 
+npm run dev (nodemon) 
+
+### 🔹To run our test
+npm test [this will fail for now since we don't have test ]
