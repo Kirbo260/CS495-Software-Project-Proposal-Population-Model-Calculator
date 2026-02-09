@@ -1,0 +1,3 @@
+{--watchAll=true (default in CRA) → Jest keeps watching files, good for development.
+--watchAll=false → Jest runs once and exits, good for coverage or automation. 
+to be put in the json file next to scripts-> test}

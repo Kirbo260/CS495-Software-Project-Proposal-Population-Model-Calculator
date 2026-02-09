@@ -4,15 +4,19 @@
   "description": "A web-based interactive tool for performing key calculations related to population models.  \r Developed as a CS495 Software Engineering Capstone Project.",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
     "test": "jest -- coverage"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "express": "^5.2.1",
     "math.js": "^1.1.46"
   },
   "devDependencies": {
-    "jest": "^30.2.0"
+    "jest": "^30.2.0",
+    "nodemon": "^3.1.11"
   }
 }
