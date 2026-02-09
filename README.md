@@ -77,19 +77,31 @@ Check the part on scripts and change it to
 
 ### 🔹NEXT FRONTEND
 cd to the frontend 
+
 First: npx create-react-app. [Make sure to add the .]
-Back to the backend: 
-NODEMON : 
+
+Back to the backend:
+
+NODEMON :
+
 Do npm install -g nodemon
+
 This is so that when there is a change to the backend, it updates automatically 
-Check the scripts part of the package.json file in the backend 
+
+Check the scripts part of the package.json file in the backend
+
 Add  
   "start": "node index.js",
   "dev": "nodemon index.js"
-If it is not there for the gitattributes file, run 
+  
+If it is not there for the gitattributes file, run
+
 git add --renormalize.
+
 git commit -m "Normalize line endings."
+
 This ensures that git applies line ending rules to our files in case we are running on a different OS
+
 The you can git push -u 
 
 ### 🔹To run the frontend 
