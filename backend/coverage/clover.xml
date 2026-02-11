@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1770788412762" clover="3.2.0">
+  <project timestamp="1770788412762" name="All files">
+    <metrics statements="34" coveredstatements="31" conditionals="10" coveredconditionals="7" methods="8" coveredmethods="8" elements="52" coveredelements="46" complexity="0" loc="34" ncloc="34" packages="1" files="2" classes="2"/>
+    <file name="ExponentialGrowthModel.js" path="C:\Users\oseje\CS496\CS495-Software-Project-Proposal-Population-Model-Calculator\backend\src\services\ExponentialGrowthModel.js">
+      <metrics statements="24" coveredstatements="22" conditionals="6" coveredconditionals="4" methods="5" coveredmethods="5"/>
+      <line num="5" count="2" type="stmt"/>
+      <line num="6" count="2" type="stmt"/>
+      <line num="7" count="2" type="stmt"/>
+      <line num="8" count="2" type="stmt"/>
+      <line num="9" count="2" type="stmt"/>
+      <line num="13" count="1" type="stmt"/>
+      <line num="14" count="1" type="stmt"/>
+      <line num="15" count="1" type="stmt"/>
+      <line num="19" count="1" type="stmt"/>
+      <line num="20" count="1" type="stmt"/>
+      <line num="21" count="1" type="stmt"/>
+      <line num="26" count="8" type="stmt"/>
+      <line num="30" count="2" type="stmt"/>
+      <line num="32" count="2" type="cond" truecount="1" falsecount="1"/>
+      <line num="33" count="0" type="stmt"/>
+      <line num="36" count="2" type="cond" truecount="2" falsecount="0"/>
+      <line num="37" count="1" type="stmt"/>
+      <line num="38" count="1" type="stmt"/>
+      <line num="39" count="3" type="stmt"/>
+      <line num="41" count="1" type="cond" truecount="1" falsecount="1"/>
+      <line num="42" count="1" type="stmt"/>
+      <line num="43" count="3" type="stmt"/>
+      <line num="46" count="0" type="stmt"/>
+      <line num="48" count="2" type="stmt"/>
+    </file>
+    <file name="PopulationGrowthRate.js" path="C:\Users\oseje\CS496\CS495-Software-Project-Proposal-Population-Model-Calculator\backend\src\services\PopulationGrowthRate.js">
+      <metrics statements="10" coveredstatements="9" conditionals="4" coveredconditionals="3" methods="3" coveredmethods="3"/>
+      <line num="6" count="3" type="stmt"/>
+      <line num="7" count="3" type="stmt"/>
+      <line num="11" count="1" type="cond" truecount="1" falsecount="1"/>
+      <line num="12" count="0" type="stmt"/>
+      <line num="14" count="1" type="stmt"/>
+      <line num="15" count="1" type="stmt"/>
+      <line num="19" count="2" type="cond" truecount="2" falsecount="0"/>
+      <line num="20" count="1" type="stmt"/>
+      <line num="22" count="1" type="stmt"/>
+      <line num="23" count="1" type="stmt"/>
+    </file>
+  </project>
+</coverage>

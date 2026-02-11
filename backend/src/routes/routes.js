@@ -89,7 +89,7 @@ app.get("/exponentialgrowth/missingrate", (req, res) => {
   }
 
   const timeArray = time.split(",").map(Number);
-  const initial1 = Number(req.query.initial);
+  const initial = Number(req.query.initial);
   const bRate = Number(birthRate);
   const dRate = Number(deathRate);
 
@@ -101,7 +101,7 @@ app.get("/exponentialgrowth/missingrate", (req, res) => {
 
   try {
     const model = ExponentialGrowthModel.fromMissingRate(
-      initial1,
+      initial,
       timeArray,
       bRate,
       dRate
