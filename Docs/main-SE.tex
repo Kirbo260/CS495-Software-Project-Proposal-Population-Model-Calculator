@@ -4,13 +4,17 @@
 \usepackage{graphicx} % Required for inserting images
 \usepackage[useregional]{datetime2}
 \usepackage[margin=1in]{geometry}
+\usepackage{float}
+\usepackage{longtable}
+\usepackage{graphicx}
 
 %%%%% title information %%%%%%
-\title{CS482/495/496 Software Project Proposal: \\ 
-add your tentative project title here}
-\author{your name(s) here }
+\title{CS496 Software Project: \\ 
+Population Model Calculator}
+\author{Justin Dorsey and Oselunosen Ehi-Douglas}
 \date{\today}
 
+\usepackage{hyperref}
 \begin{document}
 \maketitle % make title information appear here
 
@@ -18,11 +22,11 @@ add your tentative project title here}
 By sharing this client information and the rest of this document, you are stating that this client has provided this project as something they want (not something you created and asked if they wanted), and that they are interested in having you complete this project for your capstone.
 % Complete the list items about your client
 \begin{itemize}
-    \item Client name:
-    \item Client title:
-    \item Client email address:
-    \item Client employer:
-    \item How you know the client:
+    \item Client name: Dr. Suzanne Keilson
+    \item Client title: Associate Professor
+    \item Client email address: skeilson@loyola.edu
+    \item Client employer: Loyola University Maryland
+    \item How you know the client: Student under her Probability and Statistics (EG-381) course
 \end{itemize}
 
 \section{Project Description}
@@ -30,19 +34,35 @@ By sharing this client information and the rest of this document, you are statin
 
 % Comment out the bracketed instructions as you finish subsections
 \subsection{Overview}
-[Add a few paragraphs describing your project succinctly. What problem are you trying to solve, what is the purpose of your project? Why does your client want this project?]
+The purpose of my project is to create a web-based tool that performs key calculations related to population models. The website will enable users to calculate values for exponential growth, carrying capacity, and differential equation–based models. In addition to this, the website will support interactive graphs, simulation playback, model comparison, and data fitting, giving students and instructors a more powerful and flexible tool than a simple calculator. The Project will have database features, this is so that users can create accounts, save models with parameters, view history of calculations, Re-run or re-graph previous models. The project will also have an instructor mode and student mode. The instructor will be able to create class example models, share model links with students, and see embedded graphs, while students will be able to run and save models. My client requested this project to support college students and faculty who work
+with these mathematical models in their coursework or research. Although other population-modeling tools exist, many of them can be difficult to access, difficult to use, or require complex software installations. This project aims to solve these problems by providing a convenient, easy-to-use, and interactive platform. The website simplifies input, minimizes user error, and displays results in a clear and readable format. Upload/download data sets. By focusing on accessibility and user-friendly design, the tool helps students and instructors perform population model calculations quickly and efficiently, reducing the learning curve associated with more advanced computational tools.
 
 \subsection{Key Features}
-[At this point you should have a basic understanding of your client's needs. List out the key features of the software system the client wants you to build.]
+\begin{itemize}
+    \item \textbf{Simple and Structured Data Input:} Easy and Organized Data Input User-friendly forms with error prevention, tool tips, and validation to reduce user errors.
+    \item \textbf{Automatic Graph Generation:} Excellent charts with the ability to zoom, pan, and switch between linear and logarithmic axes were produced utilizing contemporary visualization libraries.
+    \item Interactive controls Sliders and adjustable parameters that update graphs instantly, along with animation playback for time-dependent models.
+    \item Multiple Model Options and Comparison Users can compare various parameter values, overlay graphs, and create several models side by side. Includes exponential and logistic growth, differential equations, carrying capacity, Lotka–Volterra predator–prey, and so on.
+    \item Instructor Mode Professors can create example models and share them with students through special links or an instructor dashboard.
+    \item User Accounts Users can create accounts to save their models, load previous calculations, and store graph images or parameters.
+    \item Dataset Upload and Curve Fitting Users can upload CSV data (e.g., real population numbers) and the system will fit exponential or logistic curves automatically and provide error metrics.
+\end{itemize}
 
 \subsection{Why this Project is Interesting}
-[Why did you decide this project was interesting enough to you to be a capstone project? What about this project is enticing? Why should anyone care?]
+Initially, my client gave me three projects: A population model, a 4-year planner for engineering and computer science students, and A software tool that can take in MP3 or other audio formats, extract the audio envelope, transcribe the spoken content, and demodulate the signal. I chose the population model because, given that my client did not have all the details for the audio project, the population model seemed like the next best option in terms of low difficulty and the opportunity to apply my mathematical knowledge. I think this project might interest students in  STEM. This is because there is a high possibility that in our academic journey, we could come in contact with topics that require population model calculations, and the project I chose could make it easier to solve those problems.
 
 \subsection{Areas of CS required}
-[What subfields of computer science seem most likely to be relevant to your project? A capstone must involve multiple.]
+\begin{enumerate}
+    \item Web Development
+    \item CyberSecurity
+    \item Human Computer Interaction
+    \item Database Management
+    \item Software Engineering
+    \item Algorithm Analysis
+\end{enumerate}
 
 \subsection{Potential Concerns and Questions}
-[Is there any aspect of this project that makes you unsure if it will work, either due to your own interests/background, or that you aren't sure if it fits the requirements? Are there questions you have about this project that you want instructor feedback about?]
+I guess the things I am worried about in this project would be if I could complete the project in time and if the project would at the end meet the client’s satisfaction. Feedback that I would love from my instructor would be the best programming languages to use for projects like this, and tips on how to break down the workload that comes with projects like this.
 
 \subsection{Summary of Efforts to Find a Project}
 (Not necessary for 482) [Briefly list out when/how you've discussed with this client, and if you've discussed with other clients who either didn't work out or didn't respond. If you considered a different project and it didn't work out, why didn't it work out?] 
@@ -50,12 +70,11 @@ By sharing this client information and the rest of this document, you are statin
 [Most CS495 projects end here. The sections below are for CS482 and CS496 software projects].
 
 \subsection{Comparison to Draft}
-[For CS496 only, focus on highlighting the major differences between the draft proposal in CS495 and this one here. If there are no major differences, you can remove this subsection.]
+I at first contacted my client via email on 10/30/2025, and then I met with her face-to-face that same day. This is when she proposed three projects for me to work on. After that, I met with her on a Zoom call on 11/14/2025, when we finalized the population model as the project she wanted. I at first considered working on the Audio project, but it did not work out because she said that it was more in a way research-based and that she did not really have all the information for the project yet. I did not contact other clients mainly because I was positive that my current client would have something that I could work on for her. However, I would say that doing that is not really the best option because if there were the possibility that my client did not have any projects, I would have been stranded and possibly would not have been able to meet the deadline for having a software engineering project.
 
 \section{Requirements}
 
 \subsection{Non-Functional Requirements}
-[Non-functional requirements are just as important as functional requirements. Dont forget to specify them.]
 
 \begin{table}[h!]
 \centering
@@ -63,49 +82,243 @@ By sharing this client information and the rest of this document, you are statin
 \hline
 \textbf{ID} & \textbf{NFR Title} & \textbf{Category} & \textbf{Description} \\
 \hline
-NFR1 & NFR Example 1 & Usability & Description of the NFR (it does not follow a user story template) \\ \hline
-NFR2 & NFR Example 2 & Security & Description of the NFR (it does not follow a user story template) \\ \hline
+NFR1 & Website design & Visual / Design & This system uses a clean, consistent, and accessible visual design, including a clear color scheme, readable fonts, and well-structured layouts to improve usability and reduce user confusion (Maroon \& White). \\ \hline
+NFR2 & Permission & Access & This function uses verification for the login on user accounts to ensure that it is secure. \\ \hline
+NFR3 & Security & Protection/Control & This system protects the user's account using features like sessions for automatic logouts. \\ \hline
+NFR4 & Viewing & Learning & This system makes use of slides, as well as graphs for the models. It also uses error correction, Tool-tips or explanations on how to use the models. \\ \hline
+NFR5 & Maintainability & Archive & This system saves user models, maintains history of previous saved models, and allows for backups so no data is lost. \\ \hline
 \end{tabular}
 \caption{Non-Functional requirements}
 \end{table}
 
+\subsection{Functional Requirements}
 
-\subsection{Functional Requirements (User Stories)}
-[In CS482, all functional requirements are written as User Stories. In CS496, some projects may use a different template to write the requirements. The table below is an example of writing the Stories. Adapt accordingly to different templates or if you want to display more info.]
+\small
+\begin{longtable}{c l c p{7.5cm}}
+\textbf{ID} & \textbf{Story Title} & \textbf{Points} & \textbf{Description} \\
+\hline
+\endfirsthead
 
-\begin{table}[h!]
-\centering
-\begin{tabular}{c l c p{10cm}}
 \hline
 \textbf{ID} & \textbf{Story Title} & \textbf{Points} & \textbf{Description} \\
 \hline
-S1 & Story Example 1 & 5 & As a user, I want to write a user story example, so that people will understand them. \\ \hline
-S2 & Story Example 2 & 2 & As a user, I want to write a user story example, so that people will understand them. \\ \hline
+\endhead
 
-\end{tabular}
-\caption{Functional requirements as User Stories.}
-\end{table}
+\hline
+\endfoot
+
+\endlastfoot
+
+U1 & Login-in  & 2 &  For all users, I want to be able to log in. so I can access my models \\ \hline
+U2 & Sign Up & 2 & For all users, I want to be able to create an account, so I can store my data \\ \hline
+U3 & Forget password & 2 & For all users, I want to be able to reset my password,so I can gain back access to my account \\ \hline
+U4 & Settings screen & 2 & For all users, I want to be able to change anything in my profile, so that I can either delete, switch, and change anything for my account \\ \hline
+SYS5 & Comparing models & 5 & System, I want to be able to compare multiple population Models side-by-side, so that I can understand how different assumptions lead to different long-term results. \\ \hline
+U6 & Saving models & 3 & For all users, I want to be able to save my population models, so that I can come back to them later. \\ \hline
+U7 & Model History & 3 & For all Users, I want to be able to view past models and calculations that I saved, so that I can revisit or rerun previous analyses.\\ \hline
+I8 & Example models & 2 & As an instructor, I want to be able to create predefined population models with my students, so that I can demonstrate concepts during lectures. \\ \hline
+I9 & Shareable models & 2 & As an instructor, I want to be able to generate shareable links for models, so that the students can interact with the same parameters outside of class. \\ \hline
+U10 & Graphs & 3 & For all users, I want to be able to view generated graphs, so that I can see a visual representation of my models. \\ \hline
+U11 & Graph Controls & 2 & For all users, I want to zoom, pan, and switch graph scales, so that I can better analyze population trends. \\ \hline
+U12 & Export Graphs as Images & 2 & User, I want to export graphs as images or PDFs, so that I can include them in reports or assignments. \\ \hline
+U13 & Uploading CSV data & 3 & For all users, I want to be able to upload real enrollment or population data, so that I can compare simulated results with real-world trends. \\ \hline
+SYS14 & Viewing models & 5 & As a system, I want to validate shared models, so that only valid models are displayed. \\ \hline
+SYS15 & Restoring models & 2 & System, I want to be able to restore user data, so that users can retrieve their previous models . \\ \hline
+SYS16 & Manage roles & 2 & System, I want to be able to assign and modify user roles, so that access to system features is properly controlled. \\ \hline
+I17 & Assign Assignments & 3 & As an instructor, I want to be able to export model parameters and graphs, so that I can include them in homework or exams. \\ \hline
+SYS18 & Backing up models & 5 & System, I want to be able to use a backup system for users, so that models can be protected from any data loss. \\ \hline
+U19 & Choosing models & 2 & For all users, I want to be able to select different types of run models from the website, so that I run the calculations I want. \\ \hline
+U20 & Running models & 2 & For all users I want to be able to run models, so that I can generate results and visuals of my input. \\ \hline
+SYS21 & Mathematical calculation & 5 & System, I want to accurately compute population models, so that results are mathematically correct. \\ \hline
+U22 & Input Validation \& Error Feedback & 2 & For all Users, I want the system to validate model inputs and display clear error messages, so that I can correct mistakes before running a model.\\ \hline
+U23 & Tooltips / Help Content & 2 & For all Users, I want tooltips \& explanation page for model parameters, so that I understand what each value represents. \\ \hline
+I24 & Instructor Model control & 2 & As an instructor, I want to control whether students can modify shared models, so that assignments remain consistent. \\ \hline
+U25 & Deleting Models & 2 & For all Users, I want to be able to delete models, so I can free up space or removed unwanted model. \\ \hline
+U26 & Session Timeout/Auto Logout & 2 & For all Users, I want to be automatically logged out after a period of inactivity so that my account is kept safe\\ \hline
+U27 & LogOut & 1 & For all users, I want to be able to log out manually, so I can safely exit the system \\ \hline
+U28 & Error Metrics & 2 & For all users, I want to see error metrics (RMSE), so that I can evaluate model accuracy.\\ \hline
+U29 & Curve Fitting Results & 5 & For all users, I want the system to automatically fit exponential or logistic curves to uploaded data, so that I can compare models with real data. \\ \hline
+U30 & Simulation Playback Controls & 5 & For all users, I want to play, pause, and scrub through model simulations over time, so that I can observe population dynamics. \\ \hline  
+
+
+\caption{Functional requirements as User Stories}
+\end{longtable}
 
 \section{System Design}
 
 \subsection{Architecture}
-[Which type of software architecture are you team following? Layered architecture, MVC, other? What are the main modules for your software?]
+MVC + Layered Architecture: \par
+This option was chosen because we plan to implement Nodejs with a restful API that handle HTTP requests, authentication and validate user input. Nodejs handles the backend, React handles the frontend. The service layer is where we handle calculations, model simulations and curve fitting. The data preservation is handled in the data access layer using an ORM connected to PostgreSQL  \newline
+\textbf{MODULES:}
+\begin{itemize}
+    \item User Management (UI)
+    \item Controller
+    \item Service Layer
+    \item Data Access Layer
+    \item Database Layer
+\end{itemize}
 
 \subsection{Diagrams}
-[CS482, on sprints/iterations 2-3, you need to create and update a diagram (check the assignment for which type of diagram). On CS496, since before sprint/iteration 1 you should have a class diagram and keep it up-to-date.]
+This link takes you to a pdf of our Class Diagram based off the structure of what users have and don't have using the user stories: \href{https://studentsloyola-my.sharepoint.com/:b:/g/personal/jadorsey_loyola_edu/IQD54Op1BQsdRoAOCy9k82EHAfHLTc6Lyh4_iPUjTg1bUNk}{Project Assignment 2 PDF}
+
 
 \subsection{Technology}
-[ Which technologies are you going to use to implement your project? This should include the chosen programming language, main frameworks/libraries, and database or data storage. Testing framework is essential here as well.]
+\begin{table}[h!]
+\centering
+\begin{tabular}{|c |l| c p{9cm}}
+\hline
+\textbf{Topic} & \textbf{Name} \\
+\hline
+Backend & NodeJs \\ \hline
+Calculations & MathJs \\ \hline
+CSV Upload & PapaParse \\ \hline
+DataBase & PostgreSQL (ORM) \\ \hline
+Frontend & React + Vite \\ \hline
+Graphs & Plotty.js\\ \hline
+Testing & Jest \\ \hline
+
+\end{tabular}
+\caption{Technology/Frameworks}
+\end{table}
+
 
 \subsection{Coding Standards}
-[Are your team going to follow any coding standards? For example, using a naming convention for Database tables (like only singular lowercase names). Another example, only allowing code with unit tests and above 60\% coverage to be committed (good convention since testing is going to be evaluated). If you need inspiration to define your coding standards, the Extreme Programming approach has a set of coding, design, and test rules.]
+\subsubsection{Naming}
+
+\begin{itemize}
+    \item \textbf{Global Variables:} All caps and underscores for spaces.  
+    Examples: \texttt{VARIABLE}, \texttt{TEST}, \texttt{MIN\_NUM}
+    
+    \item \textbf{Classes:} Capitalized and CamelCase.  
+    Examples: \texttt{Class}, \texttt{ClassGuide}, \texttt{ExTwo}
+    
+    \item \textbf{Functions:} Lowercase with underscores for spaces. Avoid using numbers.  
+    Examples: \texttt{function}, \texttt{function\_two}, \texttt{print\_all\_one}
+    
+    \item \textbf{Variables:} Same as functions, but numbers do not require underscores.  
+    Examples: \texttt{n}, \texttt{x}, \texttt{x2}, \texttt{print\_status}
+    
+    \item \textbf{Files:} File names should be descriptive and follow variable naming rules unless another convention is necessary.  
+    Examples: \texttt{test\_file.txt}, \texttt{grid\_layout.py}, \texttt{App.jsx}
+    
+    \item \textbf{Folders:} Same as files. Keep names general and simple.  
+    Examples: \texttt{folder}, \texttt{folder\_two}, \texttt{src}
+\end{itemize}
+
+\subsubsection{Code Formatting}
+
+\begin{itemize}
+    \item Include a blank line between each function.
+    \item Use consistent and readable loop structures.
+    \item Place comments above functions and significant code blocks.
+    \item Inline comments should be aligned to the right of the code line they describe.
+    \item Maintain consistency throughout the codebase.
+\end{itemize}
+
+\subsubsection{Commenting Rules}
+
+\begin{itemize}
+    \item Comments must be placed above each function explaining its purpose.
+    \item Comments must be placed above each class.
+    \item Comments should be easy to understand.
+    \item Create and follow standard templates for class and function comments.
+\end{itemize}
+
+\subsubsection{Coding Principles}
+
+\begin{itemize}
+    \item Follow the \textbf{DRY (Don't Repeat Yourself)} principle when designing code.
+\end{itemize}
+\subsubsection{Testing}
+    \begin{itemize}
+    \item Only allow code with unit tests and with at least 65\% coverage to be committed.
+\end{itemize}
 
 \subsection{Data}
-[What is the main structure of your data? In SQL-like databases, this would be the planning of the main tables, their attributes, and interactions with other tables (basically an ER diagram). In NoSQL databases, this would be the main collections and general attributes of the JSON you will store in each collection.]
+\begin{table}[h!]
+\centering
+\begin{tabular}{| p{3cm} |}
+\hline
+\textbf{ENTITY: User(Student)} \\
+\hline
+UserId \\
+Firstname \\
+Lastname \\ 
+Email \\
+Password \\
+role (student or instructor)\\
+created at \\
+ \\ 
+\hline
+\end{tabular}
+\end{table}
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{| p{6cm} |}
+\hline
+\textbf{ENTITY: Population Model} \\
+\hline
+modelId \\
+userId \\
+modelType (e.g., exponential, logistic, predator–prey) \\
+created at \\
+updated at \\
+ \\ 
+\hline
+\end{tabular}
+\end{table}
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{| p{4cm} |}
+\hline
+\textbf{ENTITY: Model Parameters} \\
+\hline
+parameter id \\
+model id \\
+parameter name \\
+parameter value \\
+ \\ 
+\hline
+\end{tabular}
+\end{table}
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{| p{4cm} |}
+\hline
+\textbf{ENTITY: Dataset } \\
+\hline
+dataset id \\
+user id \\
+dataset name \\
+upload date \\
+ \\ 
+\hline
+\end{tabular}
+\end{table}
+
 
 \subsection{UI Mocks}
-[Define and draw/sketch/code the main UIs your user will interact with in your software. Add your UI mocks here and a short caption about it. Do not forget about the main forms and CRUD UIs.]
+Figure 1, 2, and 3 are the ui examples, going from Figure 1 showing off the login, which in this example, ill login as a student. Figure 2 will show a working progress home page for a student, then in Figure 3 I picked the design model option which takes me to what figure 3 is.
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.7\textwidth]{images/PMC login.png}
+    \caption{login screen with the ability to sign up and change passwords \textit{(still working progress)}}
+\end{figure}
 
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.7\textwidth]{images/PMC homepage.png}
+    \caption{Homepage of the website for students \textit{(working progress)}}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.7\textwidth]{images/PMC design.png}
+    \caption{The creation page for your model with some of the features to it \textit{(working progress)}}
+\end{figure}
 
 \section{Iterations}
 
@@ -118,28 +331,41 @@ S2 & Story Example 2 & 2 & As a user, I want to write a user story example, so t
 \hline
 \textbf{Iteration} & \textbf{Dates} & \textbf{Stories} & \textbf{Points} \\
 \hline
-1 & 01/01 - 02/01 & S1 Story Example, S2 Story Example 2 & 07 \\ \hline
-2 & 02/01 - 03/01 & S3 Story Title, S4 Story Title, S5 Story Title, S6 Story Title & 17 \\ \hline
-3 & 03/01 - 04/01 & S7 Story Title, S8 Story Title, S9 Story Title, S10 Story Title, S11 Story Title & 21 \\ \hline
-4 & 04/01 - 05/01 & S12 Story Title, S13 Story Title, S14 Story Title, S15 Story Title & 19 \\ \hline
-5 & 05/01 - 06/01 & S16 Story Title, S17 Story Title & 06 \\ \hline
-\multicolumn{3}{r}{\bf Total: } & 70 \\ \hline
+1 & 02/5 - 02/12 & SYS21, U22, U23, U19, U28 & 13 \\ \hline
+2 & 02/13 - 02/24 & SYS5, U10, U11, U12, SYS14, U20 & 19 \\ \hline
+3 & 02/25 - 03/17 & U1, U2, U3, U6, U7, U13, SYS16, SYS18, U25, U26, U27  & 24 \\ \hline
+4 & 03/18 - 04/07 & U4, I8, I9, I24, U30, SYS15  & 15  \\ \hline
+5 & 04/9 - 04/22 & I17, U13, U29  & 11  \\ \hline
+\multicolumn{3}{r}{\bf Total: } & 82 \\ \hline
 \end{tabular}
 \caption{Iteration Planning for Incremental Deliveries}
 \end{table}
 
 \subsection{Iteration/Sprint 1}
 \subsubsection{Planning}
-[Which stories did you plan for this iteration/sprint. Add the total points for this plan. You can also explain the reason behind your planning, and what major feature(s) your team is focusing on delivering by completing these stories. You may use a table for a summary display of the planning, but elaborate in text more detail in your focus and feature plan.]
+Goal:
+\begin{itemize}
+    \item [$\star$] Justin: U23 Tooltips / Help Content 2pts
+    \item [$\star$] Ose: U28 Error Metrics 2pts
+    \item [$\star$] Ose: U19 Choosing models 2pts
+    \item [$\star$] Ose: SYS21 Mathematical calculation 5pts
+    \item [$\star$] Justin: U22 Input Validation / Error Feedback 2pts
+\end{itemize}
 
 \subsubsection{Work Done}
-[Which stories did you complete in this iteration/sprint. Which ones did you partially complete? Who worked on which story? You may elaborate in paragraph(s) to add more detail about the work done.]
+For this iteration we could not complete any of the stories due to the snow storm that derailed are school and meeting schedule. All we did for it was fully setup are frontend and backend, Justin cleaned up the frontend a bit and Ose got started on his user story "SYS21" which is mainly backend development. 
 
 \subsubsection{Testing Coverage}
-[Testing is very important. Show your coverage here. Is this coverage good enough? Explain why you think so. Is it not good enough? Explain a plan to increase the coverage. You may also elaborate on why some artifacts do not undergo much testing. If the testing changed from the last iteration, explain the reasons.]
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.9\textwidth]{images/Screenshot (298).png}
+    \caption{Test coverage from Ose's end}
+\end{figure}
+
+Figure 4: Testing was created for the functionality when the growth rate is missing and the functionality when the growth rate is not missing.
 
 \subsubsection{Retroespective \& Reflection}
-[What were the pitfalls, challenges, and issues you had in this iteration? How can you address them to improve the process in the next iteration? Did anything not go according to plan? Why so and how to avoid the same mistake? Write a personal reflection on what you learned in this iteration (even if a small technical thing like Database storage).]
+What we learned from this is having a backup plan encase something like this happens again that pushes back our progress from an iteration because all we got done was updating our GitHub with instructions on how to install the program and Kanban Board for our iteration 1. Justin has some base designs for our project but not any for iteration 1 due to needing to buy the subscription for figma, while Ose got everything ready to go when it came to the files and folders we need to begin the project and even trying to get started on the backend's mathematics requires for JavaScript. 
 
 
 \subsection{Iteration/Sprint 2}
@@ -203,6 +429,60 @@ S2 & Story Example 2 & 2 & As a user, I want to write a user story example, so t
 
 \subsection{Project Reflection}
 [Your personal reflection on the project. What lessons did you learned. What would you have done differently. How can you do better work in future projects? You may write this as a team or per person (or both)]
+
+\section{AI Usage}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.75\linewidth]{Screenshot 2026-01-29 133552}
+    \caption{A descriptive caption for the image.}
+    \label{fig:my_label}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.75\linewidth]{Screenshot 2026-01-29 133611}
+    \caption{A descriptive caption for the image.}
+    \label{fig:my_label}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.75\linewidth]{Screenshot 2026-01-29 133626}
+    \caption{A descriptive caption for the image.}
+    \label{fig:my_label}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.75\linewidth]{Screenshot 2026-01-29 133643}
+    \caption{A descriptive caption for the image.}
+    \label{fig:my_label}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.75\linewidth]{Screenshot 2026-01-29 133705}
+    \caption{A descriptive caption for the image.}
+    \label{fig:my_label}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.75\linewidth]{Screenshot 2026-01-29 133723}
+    \caption{A descriptive caption for the image.}
+    \label{fig:my_label}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.75\linewidth]{Screenshot 2026-01-29 133807}
+    \caption{A descriptive caption for the image.}
+    \label{fig:my_label}
+\end{figure}
+
+
+\subsection{Reflection}
+I believe that the user stories given by the AI some where very helpful. ChatGpt helped me in the fact that some features that I did specify in my overview I did not add to my user stories and those where pointed out to me by ChatGpt when I used it. One of those examples would be U29 (Curve Fitting Results) and U30 (Simulation Playback Controls) which are important to the UI design of the project. It also helped in pointing out redundant stories and stories that had too many points which I in turn had to correct. 
 
 \section*{Appendix}
 [Appendix section if needed]
