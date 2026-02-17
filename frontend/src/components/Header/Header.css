@@ -1,0 +1,25 @@
+header {
+    background-color: var(--color-burgundy);
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 30px 0;
+}
+
+.header img {
+    width: 100px;
+}
+
+nav ul {
+    display: flex;
+    gap: 40px;
+}
+
+.header-buttons {
+    display: flex; 
+    align-items: center;
+    gap: 20px;
+}
