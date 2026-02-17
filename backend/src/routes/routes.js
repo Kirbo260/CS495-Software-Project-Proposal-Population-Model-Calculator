@@ -8,7 +8,7 @@ export function setupRoutes(app) {
   res.send("Hello World");
 });
 
-  app.get('/add', (req, res) => {
+  app.get('/api/add', (req, res) => {
     const a = Number(req.query.a);
     const b = Number(req.query.b);
     if (Number.isNaN(a) || Number.isNaN(b)) {
@@ -18,7 +18,7 @@ export function setupRoutes(app) {
     res.json({ result });
   });
 
-  app.get('/subtract', (req, res) => {
+  app.get('/api/subtract', (req, res) => {
     const a = Number(req.query.a);
     const b = Number(req.query.b);
     if (Number.isNaN(a) || Number.isNaN(b)) {
@@ -28,7 +28,7 @@ export function setupRoutes(app) {
     res.json({ result });
   });   
 
-  app.get('/populationgrowthrate', (req, res) => {
+  app.get('/api/populationgrowthrate', (req, res) => {
     const initialPopulation = Number(req.query.initialPopulation);
     const finalPopulation = Number(req.query.finalPopulation);
     const populationGrowthRate = new PopulationGrowthRate(initialPopulation, finalPopulation);
@@ -41,7 +41,7 @@ export function setupRoutes(app) {
     }
   });   
 
-app.get("/exponentialgrowth", (req, res) => {
+app.get('/api/exponentialgrowth', (req, res) => {
   if (!req.query.time) {
     return res.status(400).json({
       error: "Query parameter 'time' is required (e.g. ?time=0,1,2,3)"
@@ -79,7 +79,7 @@ app.get("/exponentialgrowth", (req, res) => {
   }
 });
 
-app.get("/exponentialgrowth/missingrate", (req, res) => {
+app.get('/api/exponentialgrowth/missingrate', (req, res) => {
   const { time, birthRate, deathRate } = req.query;
 
   if (!time || birthRate === undefined || deathRate === undefined) {
