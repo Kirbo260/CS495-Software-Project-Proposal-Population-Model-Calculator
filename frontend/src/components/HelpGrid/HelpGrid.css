@@ -1,0 +1,32 @@
+.help-grid {
+    padding: 50px 0;
+}
+
+.help-grid-boxes {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 60px;
+    color: var(--color-white);
+}
+
+.help-box {
+    background-color: var(--color-burgundy);
+    border-radius: 40px;
+    padding: 50px;
+    text-align: left;
+}
+
+.help-box svg {
+    font-size: 40px;
+}
+
+.help-box h3 {
+    font-size: 26px;
+    margin: 20px 0;
+    font-weight: 400;
+}
+
+.help-box svg:last-child {
+    display: block;
+    margin-left: auto;
+}
