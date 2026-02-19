@@ -1,4 +1,5 @@
 import { IoIosSearch } from "react-icons/io";
+import "./Banner.css"
 
 const Banner = () => {
     return (

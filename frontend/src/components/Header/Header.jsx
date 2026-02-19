@@ -9,7 +9,7 @@ const Header = () => {
                     <Link to="/"><img src="LOGO.png" alt="PMC logo" /></Link>
                     <nav>
                         <ul>
-                            <li><Link to="#">Help</Link></li>
+                            <li><Link to="/help">Help</Link></li>
                             <li><Link to="#">About us</Link></li>
                             <li><Link to="#">My models</Link></li>
                             <li><Link to="#">Help</Link></li>

@@ -5,6 +5,7 @@ import { FiBook } from "react-icons/fi";
 import { CiPen } from "react-icons/ci";
 import { TbNumber123 } from "react-icons/tb";
 import { FaArrowRight } from "react-icons/fa6";
+import "./HelpGrid.css"
 
 
 const HelpGrid = () => {

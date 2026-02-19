@@ -1,0 +1,40 @@
+.banner {
+    background-color: var(--color-gold);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 350px;
+}
+
+h1 {
+    font-size: 60px;
+    margin-bottom: 40px;
+}
+
+.banner-content {
+    text-align: center;
+}
+
+form {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+form svg {
+    position: relative;
+    left: 40px;
+    color: var(--color-medium-gray);
+    font-size: 26px;
+}
+
+input {
+    background-color: var(--color-light-pink);
+    border: none;
+    padding: 15px 15px 15px 50px;
+    border-radius: 40px;
+    width: 450px;
+    font-size: 40px;
+    font-size: 22px;
+}
