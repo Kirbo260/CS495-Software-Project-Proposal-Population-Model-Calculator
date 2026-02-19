@@ -11,8 +11,8 @@ function App() {
 
   return (
     <BrowserRouter>
-      <Header />
-      <Base />
+      <Header /> 
+      <Base /> {/* To be removed */ }
       <AppRoutes />
     </BrowserRouter>
   )

@@ -21,7 +21,9 @@ function ExponentialGrowth() {
     <div>
       <h2>Exponential Growth Calculator</h2>
 
-      <button><a href="/">HomePage</a></button>
+      <button>
+        <a href="/">HomePage</a>
+      </button>
 
       <form onSubmit={handleSubmit}>
         <input
@@ -51,7 +53,22 @@ function ExponentialGrowth() {
       {data && (
         <div>
           <h3>Results:</h3>
-          <pre>{JSON.stringify(data, null, 2)}</pre>
+          <table border="1" cellPadding="5" style={{ borderCollapse: "collapse" }}>
+            <thead>
+              <tr>
+                <th>Time</th>
+                <th>Population</th>
+              </tr>
+            </thead>
+            <tbody>
+              {Object.entries(data).map(([t, pop]) => (
+                <tr key={t}>
+                  <td>{t}</td>
+                  <td>{pop}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       )}
     </div>
