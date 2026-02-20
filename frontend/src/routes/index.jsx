@@ -2,7 +2,7 @@ import { Routes, Route } from 'react-router-dom'
 import HomePage from '../pages/HomePage'
 import ExponentialGrowth from '../pages/ExponentialGrowthModel'
 import PopulationGrowth from '../pages/PopulationGrowthModel'
-import Help from './Help'
+import Help from '../pages/Help'
 
 // Page routing paths for site
 export default function AppRoutes() {

@@ -1,0 +1,41 @@
+.menu-grid-boxes {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    color: var(--color-white);
+}
+
+.menu-box {
+    background-color: var(--color-white);
+    padding: 50px;
+    text-align: center;
+    color: var(--color-black);
+}
+
+.menu-box:nth-child(1) {
+    border-right: 5px solid var(--color-gold);
+    border-bottom: 5px solid var(--color-gold);
+}
+
+.menu-box:nth-child(2) {
+    border-bottom: 5px solid var(--color-gold);
+}
+
+.menu-box:nth-child(3) {
+    border-right: 5px solid var(--color-gold);
+}
+
+.menu-box h3 {
+    font-size: 40px;
+    font-weight: 400;
+    color: var(--color-burgundy);
+    font-family: "Paytone One", serif;
+    margin-bottom: 30px;
+}
+
+.menu-box .btn-primary {
+    display: inline-block;
+    width: 130px;
+    color: var(--color-dark-gray);
+    font-family: "Paytone One", serif;
+    font-size: 18px;
+}

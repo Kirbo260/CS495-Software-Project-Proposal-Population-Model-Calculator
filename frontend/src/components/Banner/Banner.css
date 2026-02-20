@@ -1,9 +1,21 @@
 .banner {
     background-color: var(--color-gold);
+    position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 350px;
+    height: 500px;
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.banner.has-bg::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
 }
 
 h1 {
@@ -13,6 +25,18 @@ h1 {
 
 .banner-content {
     text-align: center;
+    position: relative;
+    z-index: 1;
+    color: #fff;
+}
+
+.banner.no-bg .banner-content {
+    color: #000;
+}
+
+.subtitle {
+    font-family: "Orbitron", sans-serif;
+    font-size: 30px;
 }
 
 form {
