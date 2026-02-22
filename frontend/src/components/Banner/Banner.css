@@ -39,21 +39,21 @@ h1 {
     font-size: 30px;
 }
 
-form {
+.banner form {
     position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-form svg {
+.banner form svg {
     position: relative;
     left: 40px;
     color: var(--color-medium-gray);
     font-size: 26px;
 }
 
-input {
+.banner input {
     background-color: var(--color-light-pink);
     border: none;
     padding: 15px 15px 15px 50px;

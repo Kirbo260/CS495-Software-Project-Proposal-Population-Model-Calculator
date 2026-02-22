@@ -15,7 +15,7 @@ const Header = () => {
                         </ul>
                     </nav>
                     <div className="header-buttons">
-                        <Link to="#">Login</Link>
+                        <Link to="/login">Login</Link>
                         <Link to="#" className="btn-primary">Sign-up</Link>
                     </div>
                 </div>

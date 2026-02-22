@@ -3,12 +3,14 @@ import HomePage from '../pages/HomePage'
 import ExponentialGrowth from '../pages/ExponentialGrowthModel'
 import PopulationGrowth from '../pages/PopulationGrowthModel'
 import Help from '../pages/Help'
+import Login from '../pages/Login/Login'
 
 // Page routing paths for site
 export default function AppRoutes() {
   return (
     <Routes>
       <Route path="/" element={<HomePage />} />
+      <Route path="/login" element={<Login />} />
       <Route path="/help" element={<Help />} />
       <Route path="/exponentialgrowth" element={<ExponentialGrowth />} />
       <Route path="/populationgrowth" element={<PopulationGrowth />} />
