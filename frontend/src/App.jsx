@@ -6,10 +6,11 @@ import './App.css'
 
 function App() {
   const location = useLocation();
+  const hideHeaderRoutes = ["/login", "/signup"]
 
   return (
     <>
-      {location.pathname !== "/login" && <Header />}
+      {!hideHeaderRoutes.includes(location.pathname) && <Header />}
       <AppRoutes />
     </>
   )

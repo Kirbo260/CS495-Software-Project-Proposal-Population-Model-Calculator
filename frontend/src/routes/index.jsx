@@ -4,6 +4,7 @@ import ExponentialGrowth from '../pages/ExponentialGrowthModel'
 import PopulationGrowth from '../pages/PopulationGrowthModel'
 import Help from '../pages/Help'
 import Login from '../pages/Login/Login'
+import Signup from '../pages/Signup/Signup'
 
 // Page routing paths for site
 export default function AppRoutes() {
@@ -11,6 +12,7 @@ export default function AppRoutes() {
     <Routes>
       <Route path="/" element={<HomePage />} />
       <Route path="/login" element={<Login />} />
+      <Route path="/signup" element={<Signup />} />
       <Route path="/help" element={<Help />} />
       <Route path="/exponentialgrowth" element={<ExponentialGrowth />} />
       <Route path="/populationgrowth" element={<PopulationGrowth />} />

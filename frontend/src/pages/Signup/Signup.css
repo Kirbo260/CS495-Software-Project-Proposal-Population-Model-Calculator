@@ -1,0 +1,87 @@
+.signup {
+    background-color: var(--color-burgundy);
+    width: 100%;
+    height: 100%;
+    padding: 0 0 100px;
+}
+
+.signup h1 {
+    line-height: 40px;
+    font-weight: 500;
+    font-size: 50px;
+}
+
+.signup-content {
+    background-color: var(--color-white);
+    border-radius: 25px;
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 30px;
+    position: relative;
+}
+
+.signup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+}
+
+.signup-header button {
+    background-color: transparent;
+    border: none;
+    outline: none;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    cursor: pointer;
+}
+
+.signup-header button svg {
+    font-size: 30px;
+}
+
+.signup-content form .form-group {
+    margin-bottom: 20px;
+}
+
+.signup-content form label {
+    display: block;
+    margin-left: 5px;
+    color: var(--color-dark-gray);
+    font-family: "Roboto", sans-serif;
+}
+
+.signup-content form input {
+    display: block;
+    width: 100%;
+    background-color: var(--color-light-pink);
+    border-radius: 20px;
+    padding: 12px;
+    border: none;
+}
+
+.radio-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.signup-content form .radio-buttons label {
+    display: flex;
+    gap: 5px;
+    background-color: var(--color-gold);
+    padding: 8px;
+    border-radius: 10px;
+    font-family: "Roboto", sans-serif;
+}
+
+.signup-content form button.btn-secondary {
+   width: 100%;
+   border: none;
+   text-align: center;
+   padding: 10px;
+   display: block;
+   border-radius: 10px;
+   font-size: 17px;
+}
