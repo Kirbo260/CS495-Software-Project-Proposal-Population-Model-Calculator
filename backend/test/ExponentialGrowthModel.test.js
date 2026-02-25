@@ -7,8 +7,8 @@ describe('ExponentialGrowthModel', () => {
         const result = model.calculatePopulation();
         expect(result).toEqual([
             [0, 1000],
-            [1, 1003.0045045033771],
-            [2, 1006.018036054065]
+            [1, 1003],
+            [2, 1006.02]
         ]);
     });
 
@@ -17,8 +17,8 @@ describe('ExponentialGrowthModel', () => {
         const result = model.calculatePopulation();
         expect(result).toEqual([
             [0, 1000],
-            [1, 1051.2710963760241],
-            [2, 1105.1709180756477]
+            [1, 1051.27],
+            [2, 1105.17]
         ]);
     });
 });

@@ -25,7 +25,6 @@ class ExponentialGrowthModel {
     countFunction(time) {
         return time.length;
     }
-
     calculatePopulation() {
         const results = [];
 
@@ -34,17 +33,34 @@ class ExponentialGrowthModel {
         }
 
         if (this.mode === "missingRate") {
-             const r = (this.birthRate - this.deathRate)/this.initialPopulation;
+            const r = (this.birthRate - this.deathRate) / this.initialPopulation; // to be corrected based on the actual formula for growth rate when birth and death rates are given
+
             for (let i = 0; i < this.countFunction(this.time); i++) {
-                results.push([this.time[i], this.initialPopulation * Math.exp(r * this.time[i])]);
+                const population =
+                    this.initialPopulation * Math.exp(r * this.time[i]);
+
+                results.push([
+                    this.time[i],
+                    Number(population.toFixed(2))  // rounded to 2 d.p
+                ]);
             }
+
         } else if (this.mode === "notMissingRate") {
+
             for (let i = 0; i < this.countFunction(this.time); i++) {
-                results.push([this.time[i], this.initialPopulation * Math.exp(this.growthRate * this.time[i])]);
+                const population =
+                    this.initialPopulation * Math.exp(this.growthRate * this.time[i]);
+
+                results.push([
+                    this.time[i],
+                    Number(population.toFixed(2))  // rounded to 2 d.p
+                ]);
             }
+
         } else {
             throw new Error("Invalid mode for ExponentialGrowthModel");
         }
+
         return results;
     }
 }
