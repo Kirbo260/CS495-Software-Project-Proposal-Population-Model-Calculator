@@ -6,7 +6,7 @@ import './App.css'
 
 function App() {
   const location = useLocation();
-  const hideHeaderRoutes = ["/login", "/signup"]
+  const hideHeaderRoutes = ["/login", "/signup", "/signup/student", "/signup/instructor"]
 
   return (
     <>

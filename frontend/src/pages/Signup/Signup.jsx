@@ -21,6 +21,13 @@ export default function Signup() {
 
     const onSubmit = (event) => {
         event.preventDefault();
+
+        if(form.role === "student"){
+            navigate("/signup/student");
+        } else if (form.role === "instructor"){ 
+            navigate("/signup/instructor");
+        }
+
     }
 
     return (
@@ -36,15 +43,15 @@ export default function Signup() {
                 <form onSubmit={onSubmit}>
                     <div className="form-group">
                         <label htmlFor="name">Name</label>
-                        <input type="text" value={form.name} onChange={onChange} />
+                        <input type="text" name="name" onChange={onChange} />
                     </div>
                     <div className="form-group">
                         <label htmlFor="email">Email</label>
-                        <input type="email" value={form.email} onChange={onChange} />
+                        <input type="email" name="email" onChange={onChange} />
                     </div>
                     <div className="form-group">
                         <label htmlFor="password">Password</label>
-                        <input type="password" value={form.password} onChange={onChange} />
+                        <input type="password" name="password" onChange={onChange} />
                     </div>
                     <div className="form-group radio-buttons">
                         <label htmlFor="student" className={`su-pill ${form.role == "student" ? "isActive" : ""}`}>
