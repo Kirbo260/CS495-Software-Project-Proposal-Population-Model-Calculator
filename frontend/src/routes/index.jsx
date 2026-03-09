@@ -7,6 +7,8 @@ import Login from '../pages/Login/Login'
 import Signup from '../pages/Signup/Signup'
 import StudentSignup from '../pages/Signup/StudentSignup'
 import InstructorSignup from '../pages/Signup/InstructorSignup'
+import LogisticGrowthModel from '../pages/LogisticGrowthModel'
+import ModelSelectionPage from '../pages/ModelSelectionPage'
 
 // Page routing paths for site
 export default function AppRoutes() {
@@ -20,6 +22,8 @@ export default function AppRoutes() {
       <Route path="/help" element={<Help />} />
       <Route path="/exponentialgrowth" element={<ExponentialGrowth />} />
       <Route path="/populationgrowth" element={<PopulationGrowth />} />
+      <Route path="/logisticgrowth" element={<LogisticGrowthModel />} />
+      <Route path="/modelselection" element={<ModelSelectionPage />} />
       {/* Future routes can be added here */}
       </Routes>
   )

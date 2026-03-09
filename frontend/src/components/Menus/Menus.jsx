@@ -18,7 +18,7 @@ export default function Menus() {
                 </div>
                 <div className="menu-box">
                     <h3>Quick Calc</h3>
-                    <a href="#" className="btn btn-primary">Calculate</a>
+                    <a href="/modelselection" className="btn btn-primary">Calculate</a>
                 </div>
             </div>
         </div>

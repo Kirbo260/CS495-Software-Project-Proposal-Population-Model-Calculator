@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Plot from "react-plotly.js";
 
 function ExponentialGrowth() {
   const [time, setTime] = useState("");
@@ -61,14 +62,32 @@ function ExponentialGrowth() {
               </tr>
             </thead>
             <tbody>
-              {Object.entries(data).map(([t, pop]) => (
+              {data.rows.map(([t, pop]) => (
                 <tr key={t}>
                   <td>{t}</td>
-                  <td>{pop}</td>
+                  <td>{Number(pop).toFixed(2)}</td>
                 </tr>
               ))}
             </tbody>
           </table>
+        </div>
+      )}
+
+      {/* Use Plotly or any other charting library to visualize the data */}
+      {data && (
+        <div>
+          <h3>Visualization:</h3>
+          <Plot
+            data={[
+              {
+                x: data.rows.map(row => row[0]),
+                y: data.rows.map(row => row[1]),
+                type: "scatter",
+                mode: "lines+markers",
+              },
+            ]}
+            layout={{ title: "Exponential Growth" }}
+          />
         </div>
       )}
     </div>
