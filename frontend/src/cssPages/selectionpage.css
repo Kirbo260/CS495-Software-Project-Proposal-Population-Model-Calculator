@@ -1,0 +1,88 @@
+/* Container */
+.model-selection-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: #1a1a1a;
+    color: var(--color-white);
+    font-family: 'Paytone One', serif;
+    padding: 20px;
+}
+
+.model-selection-page h1 {
+    font-size: 48px;
+    color: var(--color-gold);
+    margin-bottom: 50px;
+    text-align: center;
+}
+
+/* Buttons Grid */
+.model-buttons {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 40px;
+    width: 100%;
+    max-width: 1000px;
+}
+
+/* Button Styling */
+.model-btn {
+    padding: 50px 25px;
+    font-size: 24px;
+    font-weight: 600;
+    border-radius: 20px;
+    border: 4px solid var(--color-gold);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    background-color: var(--color-burgundy);
+    color: var(--color-white);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+}
+
+.model-btn a {
+    color: inherit;
+    text-decoration: none;
+    display: block;
+    position: relative;
+    z-index: 1;
+}
+
+/* Hover Effect */
+.model-btn:hover {
+    background-color: var(--color-gold);
+    color: var(--color-dark-gray);
+    transform: scale(1.05);
+    box-shadow: 0 12px 25px rgba(0,0,0,0.5);
+}
+
+.model-btn::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 200%;
+    height: 100%;
+    background: linear-gradient(120deg, rgba(255,215,0,0.3), rgba(178,34,34,0.3));
+    transition: all 0.5s ease;
+    z-index: 0;
+}
+
+.model-btn:hover::before {
+    left: 0;
+}
+
+@media (max-width: 600px) {
+    .model-selection-page h1 {
+        font-size: 36px;
+        margin-bottom: 30px;
+    }
+    .model-btn {
+        padding: 40px 20px;
+        font-size: 20px;
+    }
+}

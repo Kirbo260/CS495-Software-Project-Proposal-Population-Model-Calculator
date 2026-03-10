@@ -1,0 +1,112 @@
+/* Exponential Growth Page Styling */
+.model-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 30px;
+    background-color: #1a1a1a;
+    color: var(--color-white);
+    font-family: 'Paytone One', serif;
+    min-height: 100vh;
+}
+
+.model-page h2 {
+    font-size: 42px;
+    color: var(--color-gold);
+    margin-bottom: 30px;
+}
+
+.home-btn {
+    background-color: var(--color-burgundy);
+    border: 3px solid var(--color-gold);
+    border-radius: 15px;
+    padding: 12px 25px;
+    margin-bottom: 30px;
+    cursor: pointer;
+    font-size: 18px;
+    transition: all 0.3s ease;
+}
+
+.home-btn a {
+    color: var(--color-white);
+    text-decoration: none;
+}
+
+.home-btn:hover {
+    background-color: var(--color-gold);
+    color: var(--color-dark-gray);
+    transform: scale(1.05);
+}
+
+.model-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+    max-width: 500px;
+    margin-bottom: 40px;
+}
+
+.model-form input {
+    padding: 15px 20px;
+    font-size: 18px;
+    border-radius: 12px;
+    border: 3px solid var(--color-gold);
+    outline: none;
+    background-color: var(--color-white);
+    color: var(--color-black);
+}
+
+.model-select {
+    padding: 15px 20px;
+    font-size: 18px;
+    border-radius: 12px;
+    border: 3px solid var(--color-gold);
+    outline: none;
+    background-color: var(--color-white);
+    color: var(--color-black);
+}
+
+.calculate-btn {
+    padding: 18px;
+    font-size: 20px;
+    border-radius: 15px;
+    border: 3px solid var(--color-gold);
+    background-color: var(--color-burgundy);
+    color: var(--color-white);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.calculate-btn:hover {
+    background-color: var(--color-gold);
+    color: var(--color-dark-gray);
+    transform: scale(1.05);
+}
+
+.results-section {
+    width: 100%;
+    max-width: 900px;
+}
+
+.results-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 30px;
+}
+
+.results-table th, .results-table td {
+    border: 2px solid var(--color-gold);
+    padding: 10px;
+    text-align: center;
+}
+
+.results-table th {
+    background-color: var(--color-burgundy);
+    color: var(--color-white);
+}
+
+.results-table td {
+    background-color: var(--color-white);
+    color: var(--color-black);
+}
