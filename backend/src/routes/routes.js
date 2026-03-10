@@ -129,6 +129,31 @@ export function setupRoutes(app) {
     }
   });
 
+app.get('/api/discretegrowth', (req, res) => {
+  const initialPopulation = Number(req.query.initialPopulation);
+  const finalPopulation = req.query.finalPopulation ? Number(req.query.finalPopulation) : null;
+  const growthRate = req.query.growthRate ? Number(req.query.growthRate) : null;
+  const time = req.query.time ? req.query.time.split(",").map(Number) : null;
+  const modelType = req.query.modelType; // "growth" or "decay"
+
+  if (!modelType || (modelType !== "growth" && modelType !== "decay")) {
+    return res.status(400).json({ error: "modelType must be 'growth' or 'decay'" });
+  }
+
+  try {
+    const model = new DiscreteGrowthModel(initialPopulation, finalPopulation, growthRate, time, modelType);
+    const result = model.DiscreteSolver(modelType);
+
+    res.json({
+      headers: ["Time", "Population"],
+      rows: result
+    });
+
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
 }
 
 export default setupRoutes;
