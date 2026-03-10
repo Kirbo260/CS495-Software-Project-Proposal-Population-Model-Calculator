@@ -1,6 +1,7 @@
 import PopulationGrowthRate from "../services/PopulationGrowthRate.js";
 import ExponentialGrowthModel from "../services/ExponentialGrowthModel.js";
 import LogisticGrowthModel from "../services/LogisticGrowthModel.js";
+import DiscreteGrowthModel from "../services/DiscreteGrowthModel.js";
 
 export function setupRoutes(app) {
   app.get("/", (req, res) => {
@@ -129,30 +130,36 @@ export function setupRoutes(app) {
     }
   });
 
-app.get('/api/discretegrowth', (req, res) => {
-  const initialPopulation = Number(req.query.initialPopulation);
-  const finalPopulation = req.query.finalPopulation ? Number(req.query.finalPopulation) : null;
-  const growthRate = req.query.growthRate ? Number(req.query.growthRate) : null;
-  const time = req.query.time ? req.query.time.split(",").map(Number) : null;
-  const modelType = req.query.modelType; // "growth" or "decay"
+  app.get('/api/discretegrowth', (req, res) => {
+    const initialPopulation = req.query.initialPopulation
+  ? Number(req.query.initialPopulation)
+  : null; // initial population can be null if we are solving for it
+    const finalPopulation = req.query.finalPopulation ? Number(req.query.finalPopulation) : null;
+    const growthRate = req.query.growthRate ? Number(req.query.growthRate) : null;
+    const time = req.query.time
+      ? req.query.time.includes(",")
+        ? req.query.time.split(",").map(Number)
+        : Number(req.query.time)
+      : null; // time can be a single number or a comma-separated list of numbers
+    const modelType = req.query.modelType; // "growth" or "decay"
 
-  if (!modelType || (modelType !== "growth" && modelType !== "decay")) {
-    return res.status(400).json({ error: "modelType must be 'growth' or 'decay'" });
-  }
+    if (!modelType || (modelType !== "growth" && modelType !== "decay")) {
+      return res.status(400).json({ error: "modelType must be 'growth' or 'decay'" });
+    }
 
-  try {
-    const model = new DiscreteGrowthModel(initialPopulation, finalPopulation, growthRate, time, modelType);
-    const result = model.DiscreteSolver(modelType);
+    try {
+      const model = new DiscreteGrowthModel(initialPopulation, finalPopulation, growthRate, time, modelType);
+      const result = model.DiscreteSolver(modelType);
 
-    res.json({
-      headers: ["Time", "Population"],
-      rows: result
-    });
+      res.json({
+        headers: ["Time", "Population"],
+        rows: result
+      });
 
-  } catch (err) {
-    res.status(400).json({ error: err.message });
-  }
-});
+    } catch (err) {
+      res.status(400).json({ error: err.message });
+    }
+  });
 
 }
 

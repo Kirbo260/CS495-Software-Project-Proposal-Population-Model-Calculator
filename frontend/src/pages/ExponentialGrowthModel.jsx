@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Plot from "react-plotly.js";
+import "../cssPages/modeldesigns.css";
 
 function ExponentialGrowth() {
   const [time, setTime] = useState("");
@@ -19,42 +20,39 @@ function ExponentialGrowth() {
   };
 
   return (
-    <div>
+    <div className="model-page">
       <h2>Exponential Growth Calculator</h2>
 
-      <button>
+      <button className="home-btn">
         <a href="/">HomePage</a>
       </button>
 
-      <form onSubmit={handleSubmit}>
+      <form className="model-form" onSubmit={handleSubmit}>
         <input
           type="text"
-          placeholder="Time values (0,1,2,3)"
+          placeholder="Time values (e.g., 0,1,2,3)"
           value={time}
           onChange={(e) => setTime(e.target.value)}
         />
-
         <input
           type="number"
           placeholder="Initial population"
           value={initial}
           onChange={(e) => setInitial(e.target.value)}
         />
-
         <input
           type="number"
           placeholder="Growth rate"
           value={rate}
           onChange={(e) => setRate(e.target.value)}
         />
-
-        <button type="submit">Calculate</button>
+        <button type="submit" className="calculate-btn">Calculate</button>
       </form>
 
       {data && (
-        <div>
+        <div className="results-section">
           <h3>Results:</h3>
-          <table border="1" cellPadding="5" style={{ borderCollapse: "collapse" }}>
+          <table className="results-table">
             <thead>
               <tr>
                 <th>Time</th>
@@ -70,12 +68,7 @@ function ExponentialGrowth() {
               ))}
             </tbody>
           </table>
-        </div>
-      )}
 
-      {/* Use Plotly or any other charting library to visualize the data */}
-      {data && (
-        <div>
           <h3>Visualization:</h3>
           <Plot
             data={[
@@ -84,9 +77,18 @@ function ExponentialGrowth() {
                 y: data.rows.map(row => row[1]),
                 type: "scatter",
                 mode: "lines+markers",
+                marker: { color: "#FFD700" }, // gold
+                line: { color: "#8B0000", width: 3 } // dark red/burgundy
               },
             ]}
-            layout={{ title: "Exponential Growth" }}
+            layout={{
+              title: "Exponential Growth",
+              plot_bgcolor: "#1a1a1a",
+              paper_bgcolor: "#1a1a1a",
+              font: { color: "white" },
+              xaxis: { title: "Time" },
+              yaxis: { title: "Population" },
+            }}
           />
         </div>
       )}

@@ -12,7 +12,7 @@ function LogisticGrowth() {
         e.preventDefault();
 
         const response = await fetch(
-            `/api/logisticgrowth?time=${time}&initial=${initial}&rate=${rate}&carryingCapacity=${carryingCapacity}`
+            `/api/logisticgrowth?time=${time}&initial=${initial}&rate=${rate}&capacity=${carryingCapacity}`
         );
 
         const result = await response.json();
@@ -20,13 +20,14 @@ function LogisticGrowth() {
     };
 
     return (
-        <div>
+        <div className="model-page">
             <h2>Logistic Growth Calculator</h2>
-            <button>
+
+            <button className="home-btn">
                 <a href="/">HomePage</a>
             </button>
 
-            <form onSubmit={handleSubmit}>
+            <form className="model-form" onSubmit={handleSubmit}>
                 <input
                     type="text"
                     placeholder="Time values (0,1,2,3)"
@@ -51,12 +52,13 @@ function LogisticGrowth() {
                     value={carryingCapacity}
                     onChange={(e) => setCarryingCapacity(e.target.value)}
                 />
-                <button type="submit">Calculate</button>
+                <button type="submit" className="calculate-btn">Calculate</button>
             </form>
+
             {data && (
-                <div>
+                <div className="results-section">
                     <h3>Results:</h3>
-                    <table border="1" cellPadding="5" style={{ borderCollapse: "collapse" }}>
+                    <table className="results-table">
                         <thead>
                             <tr>
                                 <th>Time</th>
@@ -72,23 +74,30 @@ function LogisticGrowth() {
                             ))}
                         </tbody>
                     </table>
-                </div>
-            )}
 
-            {/* Visualization using Plotly */}
-            {data && (
-                <Plot
-                    data={[
-                        {
-                            x: data.rows.map(row => row[0]),
-                            y: data.rows.map(row => row[1]),
-                            type: "scatter",
-                            mode: "lines+markers",
-                            name: "Logistic Growth"
-                        }
-                    ]}
-                    layout={{ title: "Logistic Growth" }}
-                />
+                    <h3>Visualization:</h3>
+                    <Plot
+                        data={[
+                            {
+                                x: data.rows.map(row => row[0]),
+                                y: data.rows.map(row => row[1]),
+                                type: "scatter",
+                                mode: "lines+markers",
+                                name: "Logistic Growth",
+                                marker: { color: "#FFD700" }, // gold markers
+                                line: { color: "#8B0000", width: 3 } // burgundy line
+                            },
+                        ]}
+                        layout={{
+                            title: "Logistic Growth",
+                            plot_bgcolor: "#1a1a1a",
+                            paper_bgcolor: "#1a1a1a",
+                            font: { color: "white" },
+                            xaxis: { title: "Time" },
+                            yaxis: { title: "Population" },
+                        }}
+                    />
+                </div>
             )}
         </div>
     );

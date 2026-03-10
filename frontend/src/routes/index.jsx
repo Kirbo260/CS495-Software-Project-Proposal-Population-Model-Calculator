@@ -8,6 +8,7 @@ import Signup from '../pages/Signup/Signup'
 import StudentSignup from '../pages/Signup/StudentSignup'
 import InstructorSignup from '../pages/Signup/InstructorSignup'
 import LogisticGrowthModel from '../pages/LogisticGrowthModel'
+import DiscreteGrowth from '../pages/DiscreteGrowthModelPage'
 import ModelSelectionPage from '../pages/ModelSelectionPage'
 import ForgetPassword from '../pages/ForgetPassword/ForgetPassword'
 
@@ -26,6 +27,7 @@ export default function AppRoutes() {
       <Route path="/populationgrowth" element={<PopulationGrowth />} />
       <Route path="/logisticgrowth" element={<LogisticGrowthModel />} />
       <Route path="/modelselection" element={<ModelSelectionPage />} />
+      <Route path="/discretegrowth" element={<DiscreteGrowth />} />
       {/* Future routes can be added here */}
       </Routes>
   )
