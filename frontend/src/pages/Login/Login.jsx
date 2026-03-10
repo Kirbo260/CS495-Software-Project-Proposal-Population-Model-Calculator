@@ -29,7 +29,7 @@ export default function Login() {
                         </div>
                         <div className="form-group">
                             <input type="password" placeholder="Password" onChange={onChange} />
-                            <Link to="#">Forgot password?</Link>
+                            <Link to="/forget-password">Forgot password?</Link>
                         </div>
                         <div className="form-group">
                             <button type="submit" className="btn btn-secondary">Sign-in</button>

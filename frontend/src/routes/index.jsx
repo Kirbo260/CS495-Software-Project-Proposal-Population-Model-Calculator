@@ -9,12 +9,14 @@ import StudentSignup from '../pages/Signup/StudentSignup'
 import InstructorSignup from '../pages/Signup/InstructorSignup'
 import LogisticGrowthModel from '../pages/LogisticGrowthModel'
 import ModelSelectionPage from '../pages/ModelSelectionPage'
+import ForgetPassword from '../pages/ForgetPassword/ForgetPassword'
 
 // Page routing paths for site
 export default function AppRoutes() {
   return (
     <Routes>
       <Route path="/" element={<HomePage />} />
+      <Route path="/forget-password" element={<ForgetPassword />} />
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
       <Route path="/signup/student" element={<StudentSignup />} />
