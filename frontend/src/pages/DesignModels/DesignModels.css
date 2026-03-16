@@ -1,0 +1,129 @@
+.design-models {
+    background-color: var(--color-light-pink);
+    min-height: calc(100vh - 95px);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.design-models-header {
+    padding: 10px 0;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--color-gold);
+    margin-bottom: 50px;
+}
+
+.design-models h1 {
+    font-size: 52px;
+    margin-bottom: 0;
+}
+
+.design-models button {
+    background: transparent;
+    border: none;
+    outline: none;
+}
+
+.design-models .back-btn {
+    display: flex;
+    align-items: center;
+}
+
+
+.design-models .back-btn span {
+    font-size: 18px;
+    position: relative;
+    left: -7px;
+}
+
+.design-models-main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    color: #C47384;
+    margin-bottom: 50px;
+}
+
+.design-models-main p {
+    font-family: "Roboto", sans-serif;
+    font-size: 32px;
+}
+
+.design-models-footer {
+    text-align: right;
+}
+
+.design-models-footer a {
+    color: var(--color-burgundy);
+    display: inline-block;
+    border-top: 1px solid var(--color-gold);
+    border-left: 1px solid var(--color-gold);
+    padding: 10px;
+    font-size: 26px;
+}
+
+
+.design-modal-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+}
+
+.design-modal-wrapper {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.design-model-modal {
+    background-color: var(--color-light-pink);
+    width: 100%;
+    max-width: fit-content;
+    border-radius: 25px;
+    overflow: hidden;
+}
+
+.design-modal-header {
+    background-color: var(--color-burgundy);
+    color: var(--color-white);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 10px;
+    border-radius: 25px;
+}
+
+.design-modal-header h2 {
+    font-size: 28px;
+    letter-spacing: 2px;
+}
+
+.design-modal-header svg {
+    cursor: pointer;
+}
+
+.design-modal-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    max-width: 70%;
+    margin: 0 auto 20px;
+}
+
+.design-modal-content .btn-label {
+    background-color: var(--color-burgundy);
+    color: var(--color-white);
+    padding: 10px;
+    border: none;
+    border-radius: 25px;
+    font-size: 20px;
+    word-break: break-word;
+    font-family: "Paytone One", sans-serif;
+    max-width: 250px;
+    padding: 20px 5px;
+}
