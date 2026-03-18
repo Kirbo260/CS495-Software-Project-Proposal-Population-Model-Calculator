@@ -3,23 +3,25 @@
   "version": "1.0.0",
   "description": "A web-based interactive tool for performing key calculations related to population models.  \r Developed as a CS495 Software Engineering Capstone Project.",
   "main": "index.js",
-"scripts": {
-  "start": "node index.js",
-  "dev": "nodemon index.js",
-  "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
-  "test:coverage": "node --experimental-vm-modules node_modules/jest/bin/jest.js --coverage"
-},
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
+    "test:coverage": "node --experimental-vm-modules node_modules/jest/bin/jest.js --coverage"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^6.0.0",
     "express": "^5.2.1",
-    "math.js": "^1.1.46"
+    "math.js": "^1.1.46",
+    "pg": "^8.20.0"
   },
   "devDependencies": {
-    "jest": "^30.2.0",
-    "nodemon": "^3.1.11"
+    "jest": "^30.3.0",
+    "nodemon": "^3.1.11",
+    "supertest": "^7.2.2"
   },
   "type": "module"
 }
-
