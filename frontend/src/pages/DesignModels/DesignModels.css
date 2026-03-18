@@ -118,12 +118,13 @@
 .design-modal-content .btn-label {
     background-color: var(--color-burgundy);
     color: var(--color-white);
-    padding: 10px;
     border: none;
     border-radius: 25px;
-    font-size: 20px;
+    font-size: 21px;
     word-break: break-word;
     font-family: "Paytone One", sans-serif;
     max-width: 250px;
     padding: 20px 5px;
+    display: block;
+    text-align: center;
 }
