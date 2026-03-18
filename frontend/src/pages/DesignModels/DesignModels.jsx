@@ -11,10 +11,22 @@ export default function DesignModels() {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const modelOptions = [
-        "Population Growth Rate",
-        "Logistic Growth",
-        "Exponential Growth",
-        "Discrete Growth"
+        {
+            label: "Population Growth Rate",
+            link: "#"
+        },
+        {
+            label: "Logistic Growth",
+            link: "#"
+        },
+        {
+            label: "Exponential Growth",
+            link: "/design-models/exponential-growth-model"
+        },
+        {
+            label: "Discrete Growth",
+            link: "#"
+        },
     ]
 
     return (
@@ -52,10 +64,10 @@ export default function DesignModels() {
                                 <span></span>
                             </div>
                             <div className="design-modal-content">
-                                {modelOptions.map((label) => (
-                                    <button key={label} className="btn btn-label">
-                                        {label}
-                                    </button>
+                                {modelOptions.map((modelOption, index) => (
+                                    <Link to={modelOption.link} key={index} className="btn btn-label">
+                                        {modelOption.label}
+                                    </Link>
                                 ))}
                             </div>
                         </div>

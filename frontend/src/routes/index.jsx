@@ -12,6 +12,7 @@ import DiscreteGrowth from '../pages/DiscreteGrowthModelPage'
 import ModelSelectionPage from '../pages/ModelSelectionPage'
 import ForgetPassword from '../pages/ForgetPassword/ForgetPassword'
 import DesignModels from '../pages/DesignModels/DesignModels'
+import ExponentialGrowthModel from '../pages/ExponentialGrowthModel/ExponentialGrowthModel'
 
 // Page routing paths for site
 export default function AppRoutes() {
@@ -30,6 +31,7 @@ export default function AppRoutes() {
       <Route path="/modelselection" element={<ModelSelectionPage />} />
       <Route path="/discretegrowth" element={<DiscreteGrowth />} />
       <Route path="/design-models" element={<DesignModels />} />
+      <Route path="/design-models/exponential-growth-model" element={<ExponentialGrowthModel/>} />
       {/* Future routes can be added here */}
       </Routes>
   )

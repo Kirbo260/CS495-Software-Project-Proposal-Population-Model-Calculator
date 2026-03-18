@@ -20,6 +20,10 @@ body {
     font-family: "Paytone One", sans-serif;
 }
 
+img {
+    max-width: 100%;
+}
+
 ul {
     list-style: none;
 }
