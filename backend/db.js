@@ -7,7 +7,7 @@ const client = new Client({
     user: 'postgres',                // your PostgreSQL username
     host: 'localhost',               // local database
     database: 'populationmodels',               // the database you created
-    password: 'Arsenal@Inter18', // your password
+    password: 'GongYoo*1972', // your password
     port: 5432,                      // default PostgreSQL port
 });
 
