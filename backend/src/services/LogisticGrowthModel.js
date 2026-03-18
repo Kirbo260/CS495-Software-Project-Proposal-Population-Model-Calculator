@@ -14,6 +14,11 @@ export default class LogisticGrowthModel {
         if (!Array.isArray(t)) {
             throw new Error("Time must be an array"); // Ensure that time is an array to allow for multiple time points 
         }
+        
+        if (K === null) {
+            K = P0 / (1 - Math.exp(-r * t));
+            return K;
+        }
 
         for (let i = 0; i < t.length; i++) {
           const population = K / (1 + ((K - P0) / P0) * Math.exp(-r * t[i]));

@@ -2,6 +2,7 @@ import PopulationGrowthRate from "../services/PopulationGrowthRate.js";
 import ExponentialGrowthModel from "../services/ExponentialGrowthModel.js";
 import LogisticGrowthModel from "../services/LogisticGrowthModel.js";
 import DiscreteGrowthModel from "../services/DiscreteGrowthModel.js";
+import { client } from '../../db.js';
 
 export function setupRoutes(app) {
   app.get("/", (req, res) => {
@@ -161,6 +162,16 @@ export function setupRoutes(app) {
     }
   });
 
+  app.get("/users", async (req, res) => {
+        try {
+            const result = await client.query("SELECT * FROM users");
+            res.json(result.rows);
+        } catch (err) {
+            console.error(err);
+            res.status(500).send("Error fetching users");
+        }
+    });
 }
+
 
 export default setupRoutes;
