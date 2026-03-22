@@ -1,12 +1,15 @@
-import { IoClose, IoAdd, IoRemove, IoChevronDown } from "react-icons/io5";
+import { IoClose, IoAdd, IoRemove, IoChevronDown, IoChevronBack } from "react-icons/io5";
 import { BiCollapseHorizontal } from "react-icons/bi";
+import { FaPlus } from "react-icons/fa6";
 import graphBg from "../../assets/graph.png";
 import "./ExponentialGrowthModel.css";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 export default function ExponentialGrowthModel() {
 
     const [isPanelOpen, setIsPanelOpen] = useState(true);
+    const [isCompareOpen, setIsCompareOpen] = useState(true);
 
     return (
         <div className="exponential-growth-model">
@@ -27,7 +30,7 @@ export default function ExponentialGrowthModel() {
                         </button>
                     </div>
 
-                    <button className="btn btn-circle btn-collapse">
+                    <button className="btn btn-circle btn-collapse" onClick={() => setIsCompareOpen(true)}>
                         <BiCollapseHorizontal />
                     </button>
                 </div>
@@ -65,10 +68,37 @@ export default function ExponentialGrowthModel() {
                         </div>
                     ) : (
                         <button className="btn btn-reopen" onClick={() => setIsPanelOpen(true)}>
-                            <IoAdd />                            
+                            <IoAdd />
                         </button>
                     )
                 }
+
+                <div className={`compare-side-panel ${isCompareOpen ? "open" : ""}`}>
+                    <div className="compare-panel-header">
+                        <button onClick={() => setIsCompareOpen(false)} className="compare-back-btn">
+                            <IoChevronBack size={30}/>
+                        </button>
+                        <h2>Comparing/Adding Models</h2>
+                    </div>
+
+                    <div className="compare-panel-body">
+                        <Link to="#" className="compare-model-box">
+                            <span><FaPlus size={100}/></span>
+                            <p>Create a new model</p>
+                        </Link>
+
+                        {/* <Link to="#" className="compare-model-box compare-model-box-graph">
+                            <span></span>
+                            <p>Graph test 1 (exponential)</p>
+                        </Link>
+
+                        <Link to="#" className="compare-model-box">
+                            <span></span>
+                            <p>Graph test 2 (Logistic)</p>
+                        </Link> */}
+                    </div>
+
+                </div>
 
             </div>
         </div>

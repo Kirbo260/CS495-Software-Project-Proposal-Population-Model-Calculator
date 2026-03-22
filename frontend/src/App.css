@@ -2,11 +2,14 @@
     --color-white: #fff;
     --color-burgundy: #7A0019;
     --color-gold: #C9A227 ;
+    --color-light-gray: #D9D9D9;
     --color-dark-gray: #1E1E1E;
     --color-medium-gray: #B5B5B5;
     --color-black: #000;
     --color-light-gray: #F5F5F5;
     --color-light-pink: #FFDBE2;
+    --color-medium-pink: #FFBFCD;
+    --color-dark-pink: #C47384;
     --color-blue: #6C49F5;
 }
 
