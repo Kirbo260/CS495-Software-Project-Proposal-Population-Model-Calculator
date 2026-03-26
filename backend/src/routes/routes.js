@@ -1,5 +1,5 @@
 import PopulationGrowthRate from "../services/PopulationGrowthRate.js";
-import ExponentialGrowthModel from "../services/ExponentialGrowthModel.js";
+import ContinuousGrowthModel from "../services/ContinuousGrowthModel.js";
 import LogisticGrowthModel from "../services/LogisticGrowthModel.js";
 import DiscreteGrowthModel from "../services/DiscreteGrowthModel.js";
 import { client } from '../../db.js';
@@ -23,16 +23,17 @@ export function setupRoutes(app) {
     }
   });
 
-  app.get('/api/exponentialgrowth', (req, res) => {
-    if (!req.query.time) {
-      return res.status(400).json({
-        error: "Query parameter 'time' is required (e.g. ?time=0,1,2,3)"
-      });
-    }
-
-    const time = req.query.time.split(",").map(Number);
-    const initial = Number(req.query.initial);
-    const rate = Number(req.query.rate);
+  app.get('/api/continuousgrowth', (req, res) => {
+       const initialPopulation = req.query.initialPopulation
+  ? Number(req.query.initialPopulation)
+  : null; // initial population can be null if we are solving for it
+    const finalPopulation = req.query.finalPopulation ? Number(req.query.finalPopulation) : null;
+    const growthRate = req.query.growthRate ? Number(req.query.growthRate) : null;
+    const time = req.query.time
+      ? req.query.time.includes(",")
+        ? req.query.time.split(",").map(Number)
+        : Number(req.query.time)
+      : null; // time can be a single number or a comma-separated list of numbers
 
     if (time.some(isNaN)) {
       return res.status(400).json({
@@ -41,59 +42,18 @@ export function setupRoutes(app) {
     }
 
     try {
-      const model = ExponentialGrowthModel.NotMissingRate(
-        initial,
-        rate,
+      const model = new ContinuousGrowthModel(
+        initialPopulation,
+        growthRate,
         time,
-        null,
-        null
+        finalPopulation,
       );
 
-      const data = model.calculatePopulation();
+      const result = model.ContinuousSolver();
 
       res.json({
         headers: ["Time", "Population"],
-        rows: data
-      });
-
-    } catch (err) {
-      res.status(400).json({ error: err.message });
-    }
-  });
-
-  app.get('/api/exponentialgrowth/missingrate', (req, res) => {
-    const { time, birthRate, deathRate } = req.query;
-
-    if (!time || birthRate === undefined || deathRate === undefined) {
-      return res.status(400).json({
-        error: "time, birthRate, and deathRate are required"
-      });
-    }
-
-    const timeArray = time.split(",").map(Number);
-    const initial = Number(req.query.initial);
-    const bRate = Number(birthRate);
-    const dRate = Number(deathRate);
-
-    if (timeArray.some(isNaN) || isNaN(bRate) || isNaN(dRate)) {
-      return res.status(400).json({
-        error: "All parameters must be valid numbers"
-      });
-    }
-
-    try {
-      const model = ExponentialGrowthModel.fromMissingRate(
-        initial,
-        timeArray,
-        bRate,
-        dRate
-      );
-
-      const data = model.calculatePopulation();
-
-      res.json({
-        headers: ["Time", "Population"],
-        rows: data
+        rows: result
       });
 
     } catch (err) {
@@ -102,24 +62,30 @@ export function setupRoutes(app) {
   });
 
   app.get('/api/logisticgrowth', (req, res) => {
-    const initial = Number(req.query.initial);
-    const rate = Number(req.query.rate);
-    const capacity = Number(req.query.capacity);
-    const time = req.query.time.split(",").map(Number);
+    const initialPopulation = req.query.initialPopulation
+      ? Number(req.query.initialPopulation): null; // initial population can be null if we are solving for it
+    const finalPopulation = req.query.finalPopulation ? Number(req.query.finalPopulation) : null;
+    const growthRate = req.query.growthRate ? Number(req.query.growthRate) : null;
+    const carryingCapacity = req.query.carryingCapacity ? Number(req.query.carryingCapacity) : null;
+    const time = req.query.time
+      ? req.query.time.includes(",")
+      ? req.query.time.split(",").map(Number)
+      : Number(req.query.time)
+      : null; // time can be a single number or a comma-separated list of numbers
 
     if (!req.query.time) {
       return res.status(400).json({ error: "Time is required" }); // so that time is required and we can split it into an array later
     }
 
-    if (isNaN(initial) || isNaN(rate) || isNaN(capacity) || time.some(isNaN)) {
+    if (isNaN(initialPopulation) || isNaN(growthRate) || isNaN(carryingCapacity) || time.some(isNaN)) {
       return res.status(400).json({
         error: "initial, rate, capacity, and time must be valid numbers"
       });
     }
 
     try {
-      const model = new LogisticGrowthModel(initial, rate, capacity);
-      const population = model.populationAtTime(time);
+      const model = new LogisticGrowthModel(initialPopulation, growthRate, carryingCapacity, time, finalPopulation);
+      const population = model.LogisticSolver();
 
       res.json({
         headers: ["Time", "Population"], // prints the headers for the table
@@ -133,14 +99,13 @@ export function setupRoutes(app) {
 
   app.get('/api/discretegrowth', (req, res) => {
     const initialPopulation = req.query.initialPopulation
-  ? Number(req.query.initialPopulation)
-  : null; // initial population can be null if we are solving for it
+      ? Number(req.query.initialPopulation): null; // initial population can be null if we are solving for it
     const finalPopulation = req.query.finalPopulation ? Number(req.query.finalPopulation) : null;
     const growthRate = req.query.growthRate ? Number(req.query.growthRate) : null;
     const time = req.query.time
       ? req.query.time.includes(",")
-        ? req.query.time.split(",").map(Number)
-        : Number(req.query.time)
+      ? req.query.time.split(",").map(Number)
+      : Number(req.query.time)
       : null; // time can be a single number or a comma-separated list of numbers
     const modelType = req.query.modelType; // "growth" or "decay"
 
@@ -150,7 +115,7 @@ export function setupRoutes(app) {
 
     try {
       const model = new DiscreteGrowthModel(initialPopulation, finalPopulation, growthRate, time, modelType);
-      const result = model.DiscreteSolver(modelType);
+      const result = model.DiscreteSolver();
 
       res.json({
         headers: ["Time", "Population"],

@@ -4,7 +4,7 @@ export default class DiscreteGrowthModel {
         this.initialPopulation = initialPopulation;
         this.finalPopulation = finalPopulation;
         this.growthRate = growthRate;
-        this.time = Array.isArray(time) ? time : [time];;
+        this.time = Array.isArray(time) ? time : [time];
         this.model = model;
     }
 
@@ -32,6 +32,7 @@ export default class DiscreteGrowthModel {
                 });
                 return results;
             }
+
         } else if (this.growthRate === null) {
             if (this.model === "growth") {
             let r = (Math.pow((this.finalPopulation / this.initialPopulation), (1 / tim)) - 1);
@@ -42,6 +43,7 @@ export default class DiscreteGrowthModel {
                 results.push([tim, Number(r.toFixed(4))]);
                 return results;
             }
+            
         } else if (this.initialPopulation === null) {
             if (this.model === "growth") {
                 let initial = this.finalPopulation / Math.pow((1 + this.growthRate), tim);
