@@ -18,7 +18,7 @@ logs
 *.log
 
 # Environment files
-.env
+/backend/.env
 .env.local
 .env.development.local
 .env.test.local
