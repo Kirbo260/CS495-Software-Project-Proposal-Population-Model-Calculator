@@ -6,3 +6,10 @@ export function calculateContinuousGrowthModel(initialPopulation, growthRate, ti
     return finalPopulation;
 }
 
+export default class ContinuousGrowthModel {
+    constructor(initialPopulation, growthRate, time) {
+        this.initialPopulation = initialPopulation;
+        this.growthRate = growthRate;
+        this.time = Array.isArray(time) ? time : [time];
+    }
+}
