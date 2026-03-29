@@ -1,16 +1,18 @@
 // Calculation for discrete growth model
+import TimeChecker from "../utils.js/TimeChecker.js";
+import GrowthRate from "../utils.js/GrowthRate.js";
+
 export default class DiscreteGrowthModel {
     constructor(initialPopulation, finalPopulation, growthRate, time, model) {
         this.initialPopulation = initialPopulation;
         this.finalPopulation = finalPopulation;
         this.growthRate = growthRate;
-        this.time = Array.isArray(time) ? time : [time];
+        this.time = new TimeChecker(time).TimeCheck(); // time can be an array for multiple time points or a single value, use timeChecker to validate and convert it
         this.model = model;
     }
 
     DiscreteFunctions() {
         const results = [];
-        const tim = Array.isArray(this.time) ? this.time[0] : this.time;
 
         const nullCount = [this.initialPopulation, this.finalPopulation, this.growthRate, this.time].filter(v => v === null).length;
         if (nullCount > 1) {
@@ -35,23 +37,23 @@ export default class DiscreteGrowthModel {
 
         } else if (this.growthRate === null) {
             if (this.model === "growth") {
-            let r = (Math.pow((this.finalPopulation / this.initialPopulation), (1 / tim)) - 1);
-                  results.push([tim, Number(r.toFixed(4))]); // rounded to 4 d.p for growth rate
+            let r = (Math.pow((this.finalPopulation / this.initialPopulation), (1 / this.time[0])) - 1);
+                  results.push([this.time[0], Number(r.toFixed(4))]); // rounded to 4 d.p for growth rate
                 return results;
             } else if (this.model === "decay") {
-            let r = (1 - Math.pow((this.finalPopulation / this.initialPopulation), (1 / tim)));
-                results.push([tim, Number(r.toFixed(4))]);
+            let r = (1 - Math.pow((this.finalPopulation / this.initialPopulation), (1 / this.time[0])));
+                results.push([this.time[0], Number(r.toFixed(4))]);
                 return results;
             }
             
         } else if (this.initialPopulation === null) {
             if (this.model === "growth") {
-                let initial = this.finalPopulation / Math.pow((1 + this.growthRate), tim);
-                results.push([tim, Number(initial.toFixed(2))]); // rounded to 2 d.p for initial population
+                let initial = this.finalPopulation / Math.pow((1 + this.growthRate), this.time[0]);
+                results.push([this.time[0], Number(initial.toFixed(2))]); // rounded to 2 d.p for initial population
                 return results;
             } else if (this.model === "decay") {
-                let initial = this.finalPopulation / Math.pow((1 - this.growthRate), tim);
-                results.push([tim, Number(initial.toFixed(2))]); // rounded to 2 d.p for initial population
+                let initial = this.finalPopulation / Math.pow((1 - this.growthRate), this.time[0]);
+                results.push([this.time[0], Number(initial.toFixed(2))]); // rounded to 2 d.p for initial population
                 return results;
             }
         } else if (this.time === null) {
