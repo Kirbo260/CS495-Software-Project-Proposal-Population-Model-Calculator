@@ -12,7 +12,7 @@ function ModelSelectionPage() {
                     <a href="/logisticgrowth">Logistic Growth</a>
                 </button>
                 <button className="model-btn">
-                    <a href="/exponentialgrowth">Exponential Growth</a>
+                    <a href="/continuousgrowth">Continuous Growth</a>
                 </button>
                 <button className="model-btn">
                     <a href="/discretegrowth">Discrete Growth</a>

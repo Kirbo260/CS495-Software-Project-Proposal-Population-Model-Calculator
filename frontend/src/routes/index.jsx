@@ -1,6 +1,5 @@
 import { Routes, Route } from 'react-router-dom'
 import HomePage from '../pages/HomePage'
-import ExponentialGrowth from '../pages/ExponentialGrowthModel'
 import PopulationGrowth from '../pages/PopulationGrowthModel'
 import Help from '../pages/Help'
 import Login from '../pages/Login/Login'
@@ -13,6 +12,7 @@ import ModelSelectionPage from '../pages/ModelSelectionPage'
 import ForgetPassword from '../pages/ForgetPassword/ForgetPassword'
 import DesignModels from '../pages/DesignModels/DesignModels'
 import ExponentialGrowthModel from '../pages/ExponentialGrowthModel/ExponentialGrowthModel'
+import ContinuousGrowthModel from '../pages/ContinuousGrowthModel'
 
 // Page routing paths for site
 export default function AppRoutes() {
@@ -25,13 +25,13 @@ export default function AppRoutes() {
       <Route path="/signup/student" element={<StudentSignup />} />
       <Route path="/signup/instructor" element={<InstructorSignup />} />
       <Route path="/help" element={<Help />} />
-      <Route path="/exponentialgrowth" element={<ExponentialGrowth />} />
       <Route path="/populationgrowth" element={<PopulationGrowth />} />
       <Route path="/logisticgrowth" element={<LogisticGrowthModel />} />
       <Route path="/modelselection" element={<ModelSelectionPage />} />
       <Route path="/discretegrowth" element={<DiscreteGrowth />} />
       <Route path="/design-models" element={<DesignModels />} />
       <Route path="/design-models/exponential-growth-model" element={<ExponentialGrowthModel/>} />
+      <Route path="/continuousgrowth" element={<ContinuousGrowthModel />} />
       {/* Future routes can be added here */}
       </Routes>
   )

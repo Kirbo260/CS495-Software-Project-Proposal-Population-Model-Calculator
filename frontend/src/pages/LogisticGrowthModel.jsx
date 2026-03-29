@@ -7,12 +7,13 @@ function LogisticGrowth() {
     const [rate, setRate] = useState("");
     const [carryingCapacity, setCarryingCapacity] = useState("");
     const [data, setData] = useState(null);
+    const [final, setFinal]= useState("")
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         const response = await fetch(
-            `/api/logisticgrowth?time=${time}&initial=${initial}&rate=${rate}&capacity=${carryingCapacity}`
+            `/api/logisticgrowth?time=${time || ""}&initialPopulation=${initial || ""}&growthRate=${rate || ""}&carryingCapacity=${carryingCapacity || ""}&finalPopulation=${final || ""}`
         );
 
         const result = await response.json();
@@ -51,6 +52,12 @@ function LogisticGrowth() {
                     placeholder="Carrying capacity"
                     value={carryingCapacity}
                     onChange={(e) => setCarryingCapacity(e.target.value)}
+                />
+                <input
+                    type="number"
+                    placeholder="Final population"
+                    value={final}
+                    onChange={(e) => setFinal(e.target.value)}
                 />
                 <button type="submit" className="calculate-btn">Calculate</button>
             </form>
