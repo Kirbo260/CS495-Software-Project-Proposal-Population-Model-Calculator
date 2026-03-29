@@ -35,12 +35,6 @@ export function setupRoutes(app) {
         : Number(req.query.time)
       : null; // time can be a single number or a comma-separated list of numbers
 
-    if (time.some(isNaN)) {
-      return res.status(400).json({
-        error: "Time must be a comma-separated list of numbers"
-      });
-    }
-
     try {
       const model = new ContinuousGrowthModel(
         initialPopulation,
@@ -73,15 +67,11 @@ export function setupRoutes(app) {
       : Number(req.query.time)
       : null; // time can be a single number or a comma-separated list of numbers
 
-    if (!req.query.time) {
-      return res.status(400).json({ error: "Time is required" }); // so that time is required and we can split it into an array later
-    }
-
-    if (isNaN(initialPopulation) || isNaN(growthRate) || isNaN(carryingCapacity) || time.some(isNaN)) {
+    /* if (isNaN(initialPopulation) || isNaN(growthRate) || isNaN(carryingCapacity) || time.some(isNaN)) {
       return res.status(400).json({
         error: "initial, rate, capacity, and time must be valid numbers"
       });
-    }
+    }*/
 
     try {
       const model = new LogisticGrowthModel(initialPopulation, growthRate, carryingCapacity, time, finalPopulation);
