@@ -5,10 +5,10 @@
 // time format can be seconds, minutes, hours, days, weeks, months, or years (e.g. 5s, 10m, 2h, 1d, 3w, 6mo, 1y)
 // convert each to years for calculations (e.g. 5s = 5/31536000 years, 10m = 10/525600 years, 2h = 2/8760 years, 1d = 1/365 years, 3w = 3/52 years, 6mo = 0.5 years, 1y = 1 year)
 
-export default class TimeChecker{
-    constructor (time) {
+export default class TimeChecker {
+    constructor(time, timeFormat) {
         this.time = time;
-       // this.timeFormat = timeFormat;
+        this.timeFormat = timeFormat;
     }
 
     TimeDivider(time, timeNumber) {
@@ -17,19 +17,29 @@ export default class TimeChecker{
         }
     }
 
+    MaxTime() {
+        let maxTime = 0;
+        for (let i = 0; i < this.time.length; i++) {
+            if (this.time[i] > maxTime) {
+                maxTime = this.time[i];
+            }
+        }
+        return maxTime;
+    }
+
     TimeCheck() {
-        if (this.time == null) {
+        if (this.time == null || this.time == "none") {
             return null;
         }
 
         let t = Array.isArray(this.time) ? this.time : [this.time]; // time can be an array for multiple time points or a single value
-        
+
         if (t.some(isNaN)) { // Check if any value in the time array is not a number
             throw new Error("Time must be a number or an array of numbers.");
         }
 
-      /*  if (this.timeFormat === "s") {
-           return this.TimeDivider(t, 31536000); // convert seconds to years
+        if (this.timeFormat === "s") {
+            return this.TimeDivider(t, 31536000); // convert seconds to years
         }
         else if (this.timeFormat === "m") {
             return this.TimeDivider(t, 525600); // convert minutes to years
@@ -48,17 +58,7 @@ export default class TimeChecker{
         }
         else if (this.timeFormat === "y") {
             return t; // time is already in years
-        } */
-        return t; // return the time array as is if it's already in the correct format (e.g. years)
-    }
-
-    MaxTime() {
-        let maxTime = 0;
-        for (let i = 0; i < this.time.length; i++) {
-            if (this.time[i] > maxTime) {
-                maxTime = this.time[i];
-            }
         }
-        return maxTime;
+        return t; // return the time array as is if it's already in the correct format (e.g. years)
     }
 }
