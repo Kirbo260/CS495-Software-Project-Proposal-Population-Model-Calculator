@@ -7,11 +7,14 @@ export default class ContinuousGrowthModel {
         this.initialPopulation = initialPopulation; // P0
         this.growthRate = growthRate; // r
         this.time = new TimeChecker(time).TimeCheck(); // t, can be an array for multiple time points or a single value
+        this.MaxTime = new TimeChecker(time).MaxTime(); // Get the maximum time value for plotting the graph
         this.finalPopulation = finalPopulation; // P(t)
     }
 
     ContinuousFunctions() {
         const results = []; // To store results for each time point
+        let denseTime = []; // To store dense time points for plotting a smooth curve if time is an array
+        const graphResults = []; // To store results for dense time points for plotting
 
         const nullCount = [this.initialPopulation, this.finalPopulation, this.growthRate, this.time].filter(v => v === null).length;
         if (nullCount > 1) { // Check if more than one parameter is null, which would make it impossible to solve
@@ -31,12 +34,19 @@ export default class ContinuousGrowthModel {
             results.push([Number(calculatedtime.toFixed(2)), this.finalPopulation]);
         } 
         else if (this.finalPopulation == null){ // If all parameters are provided, calculate the final population using the original formula
+            for (let i = 0; i <= this.MaxTime; i++){
+            denseTime.push(i);
+            }
             this.time.forEach(t => {
             let population = this.initialPopulation * Math.pow(Math.exp(1), (this.growthRate * t));
             results.push([t, Number(population.toFixed(2))]);
              });
+            denseTime.forEach(t => {
+            let graphPopulation = this.initialPopulation * Math.pow(Math.exp(1), (this.growthRate * t));
+            graphResults.push([t, Number(graphPopulation.toFixed(2))]);
+             });
         }
-        return results; // Return the results array containing the calculated values for each time point
+        return {results, graphResults}; // Return both the results array and graphResults array
     }
 
     ContinuousSolver() {
