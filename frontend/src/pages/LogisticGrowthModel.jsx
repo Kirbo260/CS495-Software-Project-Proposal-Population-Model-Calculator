@@ -7,13 +7,19 @@ function LogisticGrowth() {
     const [rate, setRate] = useState("");
     const [carryingCapacity, setCarryingCapacity] = useState("");
     const [data, setData] = useState(null);
-    const [final, setFinal]= useState("")
+    const [final, setFinal] = useState("")
+    const [timeFormat, setTimeFormat] = useState("none");
+    const [birthRate, setBirthRate] = useState("");
+    const [deathRate, setDeathRate] = useState("");
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         const response = await fetch(
-            `/api/logisticgrowth?time=${time || ""}&initialPopulation=${initial || ""}&growthRate=${rate || ""}&carryingCapacity=${carryingCapacity || ""}&finalPopulation=${final || ""}`
+            `/api/logisticgrowth?time=${time || ""}&timeFormat=${timeFormat || "none"}
+            &initialPopulation=${initial || ""}&growthRate=${rate || ""}
+            &carryingCapacity=${carryingCapacity || ""}&finalPopulation=${final || ""}
+            &birthRate=${birthRate || ""}&deathRate=${deathRate || ""}`
         );
 
         const result = await response.json();
@@ -35,6 +41,20 @@ function LogisticGrowth() {
                     value={time}
                     onChange={(e) => setTime(e.target.value)}
                 />
+                <select
+                    className="model-select"
+                    value={timeFormat}
+                    onChange={(e) => setTimeFormat(e.target.value)}
+                >
+                    <option value="none">Select time format</option>
+                    <option value="s">Seconds</option>
+                    <option value="m">Minutes</option>
+                    <option value="h">Hours</option>
+                    <option value="d">Days</option>
+                    <option value="w">Weeks</option>
+                    <option value="mo">Months</option>
+                    <option value="y">Years</option>
+                </select>
                 <input
                     type="number"
                     placeholder="Initial population"
@@ -46,6 +66,17 @@ function LogisticGrowth() {
                     placeholder="Growth rate"
                     value={rate}
                     onChange={(e) => setRate(e.target.value)}
+                />  <input
+                    type="number"
+                    placeholder="Birth rate"
+                    value={birthRate}
+                    onChange={(e) => setBirthRate(e.target.value)}
+                />
+                <input
+                    type="number"
+                    placeholder="Death rate"
+                    value={deathRate}
+                    onChange={(e) => setDeathRate(e.target.value)}
                 />
                 <input
                     type="number"
