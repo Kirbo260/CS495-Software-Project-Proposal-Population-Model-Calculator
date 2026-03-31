@@ -16,11 +16,17 @@ export default class GrowthRate {
         if (this.birthRate == null && this.deathRate !== null && this.growthRate !== null) {
             return this.growthRate; // User provided a value for growth rate, return it directly
         }
+        else if (this.growthRate !== null && this.birthRate == null && this.deathRate == null) {
+            return this.growthRate; // User provided a value for growth rate, return it directly
+        }
         else if (this.deathRate == null && this.birthRate !== null && this.growthRate !== null) {
             return this.growthRate; // User provided a value for growth rate, return it directly
         }
         else if (this.growthRate !== null && this.birthRate !== null && this.deathRate !== null) {
             return this.growthRate; // User provided a value for growth rate, return it directly
+        }
+        else if (this.growthRate == null && this.birthRate == null && this.deathRate == null) {
+            return null; // User did not provide any values, cannot calculate growth rate
         }
         else if (this.birthRate !== null && this.deathRate !== null && this.growthRate == null) { 
             // If growth rate is missing but birth and death rates are provided, calculate it

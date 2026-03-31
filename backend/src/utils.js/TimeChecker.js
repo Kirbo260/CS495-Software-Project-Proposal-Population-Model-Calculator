@@ -14,7 +14,9 @@ export default class TimeChecker {
     TimeDivider(time, timeNumber) {
         for (let i = 0; i < time.length; i++) {
             time[i] = time[i] / timeNumber;
+            console.log(`Converted time: ${time[i]} years`);
         }
+        return time;
     }
 
     MaxTime() {
@@ -28,7 +30,7 @@ export default class TimeChecker {
     }
 
     TimeCheck() {
-        if (this.time == null || this.time == "none") {
+        if (this.time == null) {
             return null;
         }
 
@@ -38,26 +40,30 @@ export default class TimeChecker {
             throw new Error("Time must be a number or an array of numbers.");
         }
 
-        if (this.timeFormat === "s") {
-            return this.TimeDivider(t, 31536000); // convert seconds to years
+        if (this.timeFormat === "none") {
+            return t; // If no time format is provided, return the time array as is
         }
-        else if (this.timeFormat === "m") {
-            return this.TimeDivider(t, 525600); // convert minutes to years
-        }
-        else if (this.timeFormat === "h") {
-            return this.TimeDivider(t, 8760); // convert hours to years
-        }
-        else if (this.timeFormat === "d") {
-            return this.TimeDivider(t, 365); // convert days to years
-        }
-        else if (this.timeFormat === "w") {
-            return this.TimeDivider(t, 52); // convert weeks to years
-        }
-        else if (this.timeFormat === "mo") {
-            return this.TimeDivider(t, 2); // convert months to years
-        }
-        else if (this.timeFormat === "y") {
-            return t; // time is already in years
+
+        // Convert time to years based on the time format provided
+        if (this.timeFormat =! "y"){
+            if (this.timeFormat === "s") {
+                return this.TimeDivider(t, 31536000); // convert seconds to years
+            }
+            else if (this.timeFormat === "m") {
+                return this.TimeDivider(t, 525600); // convert minutes to years
+            }
+            else if (this.timeFormat === "h") {
+                return this.TimeDivider(t, 8760); // convert hours to years
+            }
+            else if (this.timeFormat === "d") {
+                return this.TimeDivider(t, 365); // convert days to years
+            }
+            else if (this.timeFormat === "w") {
+                return this.TimeDivider(t, 52); // convert weeks to years
+            }
+            else if (this.timeFormat === "mo") {
+                return this.TimeDivider(t, 2); // convert months to years
+            }
         }
         return t; // return the time array as is if it's already in the correct format (e.g. years)
     }

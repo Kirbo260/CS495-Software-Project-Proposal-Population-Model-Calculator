@@ -2,6 +2,7 @@ import PopulationGrowthRate from "../services/PopulationGrowthRate.js";
 import ContinuousGrowthModel from "../services/ContinuousGrowthModel.js";
 import LogisticGrowthModel from "../services/LogisticGrowthModel.js";
 import DiscreteGrowthModel from "../services/DiscreteGrowthModel.js";
+import ApiHelper from "../utils.js/ApiHelper.js";
 import { client } from '../../db.js';
 
 export function setupRoutes(app) {
@@ -10,9 +11,9 @@ export function setupRoutes(app) {
   });
 
 
-  app.get('/api/populationgrowthrate', (req, res) => {
-    const initialPopulation = Number(req.query.initialPopulation);
-    const finalPopulation = Number(req.query.finalPopulation);
+  app.get('/api/populationgrowthrate', ApiHelper, (req, res) => {
+    const {initialPopulation, finalPopulation } = req.ApiHelper;
+  
     const populationGrowthRate = new PopulationGrowthRate(initialPopulation, finalPopulation);
     const capitalGrowthRate = populationGrowthRate.capitalGrowthRate();
     try {
@@ -23,31 +24,35 @@ export function setupRoutes(app) {
     }
   });
 
-  app.get('/api/continuousgrowth', (req, res) => {
-       const initialPopulation = req.query.initialPopulation
-  ? Number(req.query.initialPopulation)
-  : null; // initial population can be null if we are solving for it
-    const finalPopulation = req.query.finalPopulation ? Number(req.query.finalPopulation) : null;
-    const growthRate = req.query.growthRate ? Number(req.query.growthRate) : null;
-    const time = req.query.time
-      ? req.query.time.includes(",")
-        ? req.query.time.split(",").map(Number)
-        : Number(req.query.time)
-      : null; // time can be a single number or a comma-separated list of numbers
-
+  app.get('/api/continuousgrowth', ApiHelper, (req, res) => {
+    const { initialPopulation, growthRate, time, timeFormat,
+            finalPopulation, birthRate, deathRate } = req.ApiHelper;
     try {
       const model = new ContinuousGrowthModel(
         initialPopulation,
-        growthRate,
-        time,
         finalPopulation,
+        growthRate,
+        birthRate,
+        deathRate,
+        time,
+        timeFormat
       );
 
       const result = model.ContinuousSolver();
 
       res.json({
-        headers: ["Time", "Population"],
-        rows: result
+        table: { // result is the array of results for the time points provided in the query
+          headers: ["Time", "Population"],
+          rows: result.results.map(([time, population]) => ({
+            time, population
+          }))
+        },
+        graph: { // graphResults is the array of results for dense time points for plotting the graph
+          rows: result.graphResults.map(([time, population]) => ({ 
+            time,
+            population
+          }))
+        }
       });
 
     } catch (err) {
@@ -55,16 +60,16 @@ export function setupRoutes(app) {
     }
   });
 
-  app.get('/api/logisticgrowth', (req, res) => {
+  app.get('/api/logisticgrowth', ApiHelper ,(req, res) => {
     const initialPopulation = req.query.initialPopulation
-      ? Number(req.query.initialPopulation): null; // initial population can be null if we are solving for it
+      ? Number(req.query.initialPopulation) : null; // initial population can be null if we are solving for it
     const finalPopulation = req.query.finalPopulation ? Number(req.query.finalPopulation) : null;
     const growthRate = req.query.growthRate ? Number(req.query.growthRate) : null;
     const carryingCapacity = req.query.carryingCapacity ? Number(req.query.carryingCapacity) : null;
     const time = req.query.time
       ? req.query.time.includes(",")
-      ? req.query.time.split(",").map(Number)
-      : Number(req.query.time)
+        ? req.query.time.split(",").map(Number)
+        : Number(req.query.time)
       : null; // time can be a single number or a comma-separated list of numbers
 
     /* if (isNaN(initialPopulation) || isNaN(growthRate) || isNaN(carryingCapacity) || time.some(isNaN)) {
@@ -87,15 +92,16 @@ export function setupRoutes(app) {
     }
   });
 
-  app.get('/api/discretegrowth', (req, res) => {
+  app.get('/api/discretegrowth', ApiHelper, (req, res) => {
+
     const initialPopulation = req.query.initialPopulation
-      ? Number(req.query.initialPopulation): null; // initial population can be null if we are solving for it
+      ? Number(req.query.initialPopulation) : null; // initial population can be null if we are solving for it
     const finalPopulation = req.query.finalPopulation ? Number(req.query.finalPopulation) : null;
     const growthRate = req.query.growthRate ? Number(req.query.growthRate) : null;
     const time = req.query.time
       ? req.query.time.includes(",")
-      ? req.query.time.split(",").map(Number)
-      : Number(req.query.time)
+        ? req.query.time.split(",").map(Number)
+        : Number(req.query.time)
       : null; // time can be a single number or a comma-separated list of numbers
     const modelType = req.query.modelType; // "growth" or "decay"
 
@@ -118,14 +124,14 @@ export function setupRoutes(app) {
   });
 
   app.get("/users", async (req, res) => {
-        try {
-            const result = await client.query("SELECT * FROM users");
-            res.json(result.rows);
-        } catch (err) {
-            console.error(err);
-            res.status(500).send("Error fetching users");
-        }
-    });
+    try {
+      const result = await client.query("SELECT * FROM users");
+      res.json(result.rows);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send("Error fetching users");
+    }
+  });
 }
 
 

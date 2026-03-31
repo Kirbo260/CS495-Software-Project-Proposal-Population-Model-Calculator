@@ -15,10 +15,18 @@ function ContinuousGrowth() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    const params = new URLSearchParams({
+      time: time || "",
+      timeFormat: timeFormat || "none",
+      initialPopulation: initial || "",
+      finalPopulation: final || "",
+      growthRate: rate || "",
+      birthRate: birthRate || "",
+      deathRate: deathRate || ""
+    });
+
     const response = await fetch(
-      `/api/continuousgrowth?time=${time || ""}&timeFormat=${timeFormat || "none"}
-      &initialPopulation=${initial || ""}&finalPopulation=${final || ""}
-      &growthRate=${rate || ""}&birthRate=${birthRate || ""}&deathRate=${deathRate || ""}`
+      `/api/continuousgrowth?${params.toString()}`
     );
 
     const result = await response.json();
