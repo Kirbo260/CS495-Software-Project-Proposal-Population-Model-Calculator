@@ -20,6 +20,7 @@ export default class ErrorMetrics {
             sum += Math.pow(y[i] - yi[i], 2); // squared error for each data point
         }
         const rmse = Math.sqrt(sum / n); // mean squared error and then take the square root
+        // console.log("Calculated RMSE:", rmse);
         return rmse;
     }
 
@@ -33,6 +34,7 @@ export default class ErrorMetrics {
             sum += Math.abs(yi[i] - y[i]); // absolute error for each data point
         }
         const mae = sum / n; // mean absolute error
+        // console.log("Calculated MAE:", mae);
         return mae;
     }
 

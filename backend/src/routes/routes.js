@@ -2,6 +2,7 @@ import PopulationGrowthRate from "../services/PopulationGrowthRate.js";
 import ContinuousGrowthModel from "../services/ContinuousGrowthModel.js";
 import LogisticGrowthModel from "../services/LogisticGrowthModel.js";
 import DiscreteGrowthModel from "../services/DiscreteGrowthModel.js";
+import EMComparison from "../services/EMComparison.js";
 import ApiHelper from "../utils.js/ApiHelper.js";
 import { client } from '../../db.js';
 
@@ -136,6 +137,32 @@ export function setupRoutes(app) {
         }
       });
 
+    } catch (err) {
+      res.status(400).json({ error: err.message });
+    }
+  });
+
+  app.get('/api/emcomparison', ApiHelper, (req, res) => {
+    const { initialPopulation, finalPopulation, growthRate, time, timeFormat,
+            carryingCapacity, modelType, actualValues } = req.ApiHelper;
+
+    try {
+      const comparison = new EMComparison(
+        initialPopulation,
+        finalPopulation,
+        growthRate,
+        time,
+        timeFormat,
+        carryingCapacity,
+        modelType,
+        actualValues
+      );
+
+    //Array.isArray(actualValues) ? actualValues : [actualValues]; // Ensure it is an array for the EMComparison class  
+
+      const result = comparison.ModelGrowthComparison();
+      
+      res.json({ rows: result });
     } catch (err) {
       res.status(400).json({ error: err.message });
     }

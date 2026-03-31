@@ -34,7 +34,13 @@ export default function APIHelper(req, res, next) {
         birthRate: req.query.birthRate ? Number(req.query.birthRate) : null,
         deathRate: req.query.deathRate ? Number(req.query.deathRate) : null,
 
-        modelType: req.query.modelType // "growth" or "decay" for discrete growth model
+        modelType: req.query.modelType, // "growth" or "decay" for discrete growth model
+
+        actualValues: req.query.actualValues
+        ? req.query.actualValues.includes(",")
+        ? req.query.actualValues.split(",").map(Number)
+        : Number(req.query.actualValues)
+        : null // Array of actual population values
     }
     next();
 }
