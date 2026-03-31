@@ -32,6 +32,22 @@ function DiscreteGrowth() {
         setData(result);
     };
 
+    // Adding animation to the graph using Plotly's animation features
+    const frames = data
+        ? data.graph.rows.map((_, i) => ({
+            name: `frame-${i}`,
+            data: [
+                {
+                    x: data.graph.rows.slice(0, i + 1).map(r => r.time),
+                    y: data.graph.rows.slice(0, i + 1).map(r => r.population),
+                },
+                {
+                    x: data.table.rows.slice(0, i + 1).map(r => r.time),
+                    y: data.table.rows.slice(0, i + 1).map(r => r.population),
+                }
+            ]
+        })) : [];
+
     return (
         <div className="model-page">
             <h2>Discrete Growth/Decay Calculator</h2>
@@ -134,31 +150,60 @@ function DiscreteGrowth() {
                     <Plot
                         data={[
                             {
-                                x: data.graph.rows.map(row => row.time),
-                                y: data.graph.rows.map(row => row.population),
-                                type: 'scatter',
-                                mode: 'lines',
-                                name: model === "growth" ? "Growth" : "Decay",
-                               // marker: { color: "#00f2ff" }, // gold
-                                line: { color: "#8B0000", width: 3 }, // dark red/burgundy
-                                showlegend: false // hide legend for graph results
+                                x: data.graph.rows.map(r => r.time),
+                                y: data.graph.rows.map(r => r.population),
+                                type: "scatter",
+                                mode: "lines",
+                                line: { color: "#8B0000", width: 3 }
                             },
                             {
-                                x: data.table.rows.map(row => row.time),
-                                y: data.table.rows.map(row => row.population),
-                                type: 'scatter',
-                                mode: 'markers',
-                                name: 'Population over time',
-                                line: { color: "#FFD700", size: 10, dash: 'dash' } // gold dashed line for the graph results
+                                x: data.table.rows.map(r => r.time),
+                                y: data.table.rows.map(r => r.population),
+                                type: "scatter",
+                                mode: "markers",
+                                marker: { color: "#FFD700", size: 10 }
                             }
                         ]}
+                        frames={frames}
                         layout={{
-                            title: "Discrete Growth/Decay",
-                            plot_bgcolor: "#1a1a1a",
+                            title: "Continuous Growth",
+                            plot_bgcolor: "#ffffff",
                             paper_bgcolor: "#1a1a1a",
                             font: { color: "white" },
                             xaxis: { title: "Time" },
                             yaxis: { title: "Population" },
+
+                            updatemenus: [
+                                {
+                                    type: "buttons",
+                                    showactive: false,
+                                    buttons: [
+                                        {
+                                            label: "Play",
+                                            method: "animate",
+                                            args: [
+                                                null,
+                                                {
+                                                    frame: { duration: 200, redraw: true },
+                                                    fromcurrent: true,
+                                                    transition: { duration: 100 }
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            label: "Pause",
+                                            method: "animate",
+                                            args: [
+                                                [null],
+                                                {
+                                                    mode: "immediate",
+                                                    frame: { duration: 0 }
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
                         }}
                     />
                 </div>

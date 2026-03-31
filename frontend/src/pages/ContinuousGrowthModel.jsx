@@ -33,6 +33,22 @@ function ContinuousGrowth() {
     setData(result);
   };
 
+  // Adding animation to the graph using Plotly's animation features
+  const frames = data
+    ? data.graph.rows.map((_, i) => ({
+      name: `frame-${i}`,
+      data: [
+        {
+          x: data.graph.rows.slice(0, i + 1).map(r => r.time),
+          y: data.graph.rows.slice(0, i + 1).map(r => r.population),
+        },
+        {
+          x: data.table.rows.slice(0, i + 1).map(r => r.time),
+          y: data.table.rows.slice(0, i + 1).map(r => r.population),
+        }
+      ]
+    })) : [];
+
   return (
     <div className="model-page">
       <h2>Continuous Growth Calculator</h2>
@@ -116,34 +132,63 @@ function ContinuousGrowth() {
           </table>
 
           <h3>Visualization:</h3>
-           <Plot
+          <Plot
             data={[
               {
-                x: data.graph.rows.map(row => row.time),
-                y: data.graph.rows.map(row => row.population),
+                x: data.graph.rows.map(r => r.time),
+                y: data.graph.rows.map(r => r.population),
                 type: "scatter",
                 mode: "lines",
-                //marker: { color: "#FFD700" }, // gold
-                line: { color: "#8B0000", width: 3 }, // dark red/burgundy
-                showlegend: false // Hide the line by default, only show points
+                line: { color: "#8B0000", width: 3 }
               },
               {
-                x: data.table.rows.map(row => row.time),
-                y: data.table.rows.map(row => row.population),
+                x: data.table.rows.map(r => r.time),
+                y: data.table.rows.map(r => r.population),
                 type: "scatter",
                 mode: "markers",
-                marker: { color: "#FFD700", size: 10 } // cyan points for calculated values
+                marker: { color: "#FFD700", size: 10 }
               }
             ]}
+            frames={frames}
             layout={{
               title: "Continuous Growth",
               plot_bgcolor: "#ffffff",
               paper_bgcolor: "#1a1a1a",
-              //plot_linecolor: "#000000",
-              //plot_gridcolor: "#000000",
               font: { color: "white" },
               xaxis: { title: "Time" },
               yaxis: { title: "Population" },
+
+              updatemenus: [
+                {
+                  type: "buttons",
+                  showactive: false,
+                  buttons: [
+                    {
+                      label: "Play",
+                      method: "animate",
+                      args: [
+                        null,
+                        {
+                          frame: { duration: 200, redraw: true },
+                          fromcurrent: true,
+                          transition: { duration: 100 }
+                        }
+                      ]
+                    },
+                    {
+                      label: "Pause",
+                      method: "animate",
+                      args: [
+                        [null],
+                        {
+                          mode: "immediate",
+                          frame: { duration: 0 }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
             }}
           />
         </div>

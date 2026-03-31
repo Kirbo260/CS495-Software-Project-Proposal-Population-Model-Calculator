@@ -15,7 +15,7 @@ function LogisticGrowth() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-            const params = new URLSearchParams({
+        const params = new URLSearchParams({
             time: time || "",
             timeFormat: timeFormat || "none",
             initialPopulation: initial || "",
@@ -33,6 +33,18 @@ function LogisticGrowth() {
         const result = await response.json();
         setData(result); // Store the result for visualization
     };
+
+    // Adding animation to the graph using Plotly's animation features
+    const frames = data
+        ? data.graph.rows.map((_, i) => ({
+            name: `frame-${i}`,
+            data: [
+                {
+                    x: data.graph.rows.slice(0, i + 1).map(r => r.time),
+                    y: data.graph.rows.slice(0, i + 1).map(r => r.population),
+                }
+            ]
+        })) : [];
 
     return (
         <div className="model-page">
@@ -125,30 +137,60 @@ function LogisticGrowth() {
                     <Plot
                         data={[
                             {
-                                x: data.graph.rows.map(row => row.time),
-                                y: data.graph.rows.map(row => row.population),
+                                x: data.graph.rows.map(r => r.time),
+                                y: data.graph.rows.map(r => r.population),
                                 type: "scatter",
                                 mode: "lines",
-                                name: "Logistic Growth",
-                                line: { color: "#8B0000", width: 3 }, // burgundy line
-                                showlegend: false // hide legend for graph results
+                                line: { color: "#8B0000", width: 3 }
                             },
                             {
-                                x: data.table.rows.map(row => row.time),
-                                y: data.table.rows.map(row => row.population),
+                                x: data.table.rows.map(r => r.time),
+                                y: data.table.rows.map(r => r.population),
                                 type: "scatter",
                                 mode: "markers",
-                                name: "Table Results",
-                                marker: { color: "#FFD700" }, // gold markers
+                                marker: { color: "#FFD700", size: 10 }
                             }
                         ]}
+                        frames={frames}
                         layout={{
-                            title: "Logistic Growth",
-                            plot_bgcolor: "#1a1a1a",
+                            title: "Continuous Growth",
+                            plot_bgcolor: "#ffffff",
                             paper_bgcolor: "#1a1a1a",
                             font: { color: "white" },
                             xaxis: { title: "Time" },
                             yaxis: { title: "Population" },
+
+                            updatemenus: [
+                                {
+                                    type: "buttons",
+                                    showactive: false,
+                                    buttons: [
+                                        {
+                                            label: "Play",
+                                            method: "animate",
+                                            args: [
+                                                null,
+                                                {
+                                                    frame: { duration: 200, redraw: true },
+                                                    fromcurrent: true,
+                                                    transition: { duration: 100 }
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            label: "Pause",
+                                            method: "animate",
+                                            args: [
+                                                [null],
+                                                {
+                                                    mode: "immediate",
+                                                    frame: { duration: 0 }
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
                         }}
                     />
                 </div>

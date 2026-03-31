@@ -8,26 +8,41 @@ export default function Signup() {
     const navigate = useNavigate();
 
     const [form, setForm] = useState({
-        name: "",
+        firstName: "",
+        lastName: "",
+        age: "",
         email: "",
         password: "",
-        role: "student"
     });
+
+    const handlesubmit = async (e) => {
+        e.preventDefault();
+
+        try {
+            const response = await fetch("/api/signup", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(form),
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                console.log(data.message);
+                navigate("/login");
+            } else {
+                const errorData = await response.json();
+                console.error("Error:", errorData.error);
+            }
+        } catch (error) {
+            console.error("Error:", error);
+        }
+    };
 
     const onChange = (event) => {
         const { name, value } = event.target;
         setForm((p) => ({ ...p, [name]: value }));
-    }
-
-    const onSubmit = (event) => {
-        event.preventDefault();
-
-        if(form.role === "student"){
-            navigate("/signup/student");
-        } else if (form.role === "instructor"){ 
-            navigate("/signup/instructor");
-        }
-
     }
 
     return (
@@ -40,10 +55,18 @@ export default function Signup() {
                         <IoMdClose />
                     </button>
                 </div>
-                <form onSubmit={onSubmit}>
+                <form onSubmit={handlesubmit}>
                     <div className="form-group">
-                        <label htmlFor="name">Name</label>
-                        <input type="text" name="name" onChange={onChange} />
+                        <label htmlFor="firstName">Firstname</label>
+                        <input type="text" name="firstName" onChange={onChange} />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="lastName">Lastname</label>
+                        <input type="text" name="lastName" onChange={onChange} />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="age">Age</label>
+                        <input type="number" name="age" onChange={onChange} />
                     </div>
                     <div className="form-group">
                         <label htmlFor="email">Email</label>
