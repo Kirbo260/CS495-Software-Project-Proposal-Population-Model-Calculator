@@ -49,6 +49,47 @@ export function setupRoutes(app) {
         },
         graph: { // graphResults is the array of results for dense time points for plotting the graph
           rows: result.graphResults.map(([time, population]) => ({ 
+            time, population
+          }))
+        }
+      });
+
+    } catch (err) {
+      res.status(400).json({ error: err.message });
+    }
+  });
+
+  app.get('/api/logisticgrowth', ApiHelper ,(req, res) => {
+    const { initialPopulation, finalPopulation, carryingCapacity, growthRate, birthRate, deathRate, time, timeFormat } = req.ApiHelper;
+
+    /* if (isNaN(initialPopulation) || isNaN(growthRate) || isNaN(carryingCapacity) || time.some(isNaN)) {
+      return res.status(400).json({
+        error: "initial, rate, capacity, and time must be valid numbers"
+      });
+    }*/
+
+    try {
+      const model = new LogisticGrowthModel(
+        initialPopulation,
+        finalPopulation,
+        carryingCapacity,
+        growthRate,
+        birthRate,
+        deathRate,
+        time,
+        timeFormat);
+      const population = model.LogisticSolver();
+
+      res.json({
+        table: {
+          headers: ["Time", "Population"], // prints the headers for the table
+          rows: population.results.map(([time, population]) => ({ // maps the results to an array of objects with time and population properties
+            time,
+            population
+          }))
+        }, 
+        graph: {
+          rows: population.graphResults.map(([time, population]) => ({ // maps the graph results to an array of objects with time and population properties
             time,
             population
           }))
@@ -60,62 +101,39 @@ export function setupRoutes(app) {
     }
   });
 
-  app.get('/api/logisticgrowth', ApiHelper ,(req, res) => {
-    const initialPopulation = req.query.initialPopulation
-      ? Number(req.query.initialPopulation) : null; // initial population can be null if we are solving for it
-    const finalPopulation = req.query.finalPopulation ? Number(req.query.finalPopulation) : null;
-    const growthRate = req.query.growthRate ? Number(req.query.growthRate) : null;
-    const carryingCapacity = req.query.carryingCapacity ? Number(req.query.carryingCapacity) : null;
-    const time = req.query.time
-      ? req.query.time.includes(",")
-        ? req.query.time.split(",").map(Number)
-        : Number(req.query.time)
-      : null; // time can be a single number or a comma-separated list of numbers
-
-    /* if (isNaN(initialPopulation) || isNaN(growthRate) || isNaN(carryingCapacity) || time.some(isNaN)) {
-      return res.status(400).json({
-        error: "initial, rate, capacity, and time must be valid numbers"
-      });
-    }*/
-
-    try {
-      const model = new LogisticGrowthModel(initialPopulation, growthRate, carryingCapacity, time, finalPopulation);
-      const population = model.LogisticSolver();
-
-      res.json({
-        headers: ["Time", "Population"], // prints the headers for the table
-        rows: population
-      });
-
-    } catch (err) {
-      res.status(400).json({ error: err.message });
-    }
-  });
-
   app.get('/api/discretegrowth', ApiHelper, (req, res) => {
-
-    const initialPopulation = req.query.initialPopulation
-      ? Number(req.query.initialPopulation) : null; // initial population can be null if we are solving for it
-    const finalPopulation = req.query.finalPopulation ? Number(req.query.finalPopulation) : null;
-    const growthRate = req.query.growthRate ? Number(req.query.growthRate) : null;
-    const time = req.query.time
-      ? req.query.time.includes(",")
-        ? req.query.time.split(",").map(Number)
-        : Number(req.query.time)
-      : null; // time can be a single number or a comma-separated list of numbers
-    const modelType = req.query.modelType; // "growth" or "decay"
+    const { initialPopulation, finalPopulation, growthRate, time, timeFormat, modelType, birthRate, deathRate } = req.ApiHelper;
 
     if (!modelType || (modelType !== "growth" && modelType !== "decay")) {
       return res.status(400).json({ error: "modelType must be 'growth' or 'decay'" });
     }
 
     try {
-      const model = new DiscreteGrowthModel(initialPopulation, finalPopulation, growthRate, time, modelType);
+      const model = new DiscreteGrowthModel(
+        initialPopulation,
+        finalPopulation,
+        growthRate,
+        birthRate,
+        deathRate,
+        modelType,
+        time,
+        timeFormat);
       const result = model.DiscreteSolver();
 
-      res.json({
-        headers: ["Time", "Population"],
-        rows: result
+    res.json({
+        table: {
+          headers: ["Time", "Population"], // prints the headers for the table
+          rows: result.results.map(([time, population]) => ({ // maps the results to an array of objects with time and population properties
+            time,
+            population
+          }))
+        }, 
+        graph: {
+          rows: result.graphResults.map(([time, population]) => ({ // maps the graph results to an array of objects with time and population properties
+            time,
+            population
+          }))
+        }
       });
 
     } catch (err) {

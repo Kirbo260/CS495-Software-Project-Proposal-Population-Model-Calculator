@@ -15,11 +15,19 @@ function LogisticGrowth() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+            const params = new URLSearchParams({
+            time: time || "",
+            timeFormat: timeFormat || "none",
+            initialPopulation: initial || "",
+            finalPopulation: final || "",
+            carryingCapacity: carryingCapacity || "",
+            growthRate: rate || "",
+            birthRate: birthRate || "",
+            deathRate: deathRate || ""
+        });
+
         const response = await fetch(
-            `/api/logisticgrowth?time=${time || ""}&timeFormat=${timeFormat || "none"}
-            &initialPopulation=${initial || ""}&growthRate=${rate || ""}
-            &carryingCapacity=${carryingCapacity || ""}&finalPopulation=${final || ""}
-            &birthRate=${birthRate || ""}&deathRate=${deathRate || ""}`
+            `/api/logisticgrowth?${params.toString()}`
         );
 
         const result = await response.json();
@@ -104,10 +112,10 @@ function LogisticGrowth() {
                             </tr>
                         </thead>
                         <tbody>
-                            {data.rows.map(([t, pop]) => (
-                                <tr key={t}>
-                                    <td>{t}</td>
-                                    <td>{Number(pop).toFixed(2)}</td>
+                            {data.table.rows.map((row) => (
+                                <tr key={row.time}>
+                                    <td>{row.time}</td>
+                                    <td>{Number(row.population).toFixed(2)}</td>
                                 </tr>
                             ))}
                         </tbody>
@@ -117,14 +125,22 @@ function LogisticGrowth() {
                     <Plot
                         data={[
                             {
-                                x: data.rows.map(row => row[0]),
-                                y: data.rows.map(row => row[1]),
+                                x: data.graph.rows.map(row => row.time),
+                                y: data.graph.rows.map(row => row.population),
                                 type: "scatter",
-                                mode: "lines+markers",
+                                mode: "lines",
                                 name: "Logistic Growth",
-                                marker: { color: "#FFD700" }, // gold markers
-                                line: { color: "#8B0000", width: 3 } // burgundy line
+                                line: { color: "#8B0000", width: 3 }, // burgundy line
+                                showlegend: false // hide legend for graph results
                             },
+                            {
+                                x: data.table.rows.map(row => row.time),
+                                y: data.table.rows.map(row => row.population),
+                                type: "scatter",
+                                mode: "markers",
+                                name: "Table Results",
+                                marker: { color: "#FFD700" }, // gold markers
+                            }
                         ]}
                         layout={{
                             title: "Logistic Growth",

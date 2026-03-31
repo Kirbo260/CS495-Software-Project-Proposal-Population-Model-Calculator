@@ -15,11 +15,18 @@ function DiscreteGrowth() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        const params = new URLSearchParams({
+            time: time || "",
+            timeFormat: timeFormat || "none",
+            initialPopulation: initial || "",
+            finalPopulation: final || "",
+            growthRate: growthRate || "",
+            modelType: model || "growth",
+            birthRate: birthRate || "",
+            deathRate: deathRate || ""
+        });
         const response = await fetch(
-            `/api/discretegrowth?time=${time}&initialPopulation=${initial || ""}
-            &finalPopulation=${final || ""}&growthRate=${growthRate || ""}
-            &modelType=${model}&timeFormat=${timeFormat || "none"}
-            &birthRate=${birthRate || ""}&deathRate=${deathRate || ""}`
+            `/api/discretegrowth?${params.toString()}`
         );
         const result = await response.json();
         setData(result);
@@ -109,10 +116,10 @@ function DiscreteGrowth() {
                             </tr>
                         </thead>
                         <tbody>
-                            {data.rows.map(([t, pop]) => (
-                                <tr key={t}>
-                                    <td>{t}</td>
-                                    <td>{Number(pop).toFixed(2)}</td>
+                            {data.table.rows.map((row) => (
+                                <tr key={row.time}>
+                                    <td>{row.time}</td>
+                                    <td>{Number(row.population).toFixed(2)}</td>
                                 </tr>
                             ))}
                         </tbody>
@@ -127,14 +134,23 @@ function DiscreteGrowth() {
                     <Plot
                         data={[
                             {
-                                x: data.rows.map(row => row[0]),
-                                y: data.rows.map(row => row[1]),
+                                x: data.graph.rows.map(row => row.time),
+                                y: data.graph.rows.map(row => row.population),
                                 type: 'scatter',
-                                model: 'lines+markers',
+                                mode: 'lines',
                                 name: model === "growth" ? "Growth" : "Decay",
-                                marker: { color: "#FFD700" }, // gold
-                                line: { color: "#8B0000", width: 3 } // dark red/burgundy
+                               // marker: { color: "#00f2ff" }, // gold
+                                line: { color: "#8B0000", width: 3 }, // dark red/burgundy
+                                showlegend: false // hide legend for graph results
                             },
+                            {
+                                x: data.table.rows.map(row => row.time),
+                                y: data.table.rows.map(row => row.population),
+                                type: 'scatter',
+                                mode: 'markers',
+                                name: 'Population over time',
+                                line: { color: "#FFD700", size: 10, dash: 'dash' } // gold dashed line for the graph results
+                            }
                         ]}
                         layout={{
                             title: "Discrete Growth/Decay",

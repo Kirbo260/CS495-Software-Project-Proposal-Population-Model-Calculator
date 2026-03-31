@@ -1,6 +1,5 @@
 // Takes the common API call logic and centralizes it in one place. This helps to reduce code duplication and makes it easier to maintain the codebase.
 
-
 export default function APIHelper(req, res, next) {
     req.ApiHelper = {
         initialPopulation: req.query.initialPopulation

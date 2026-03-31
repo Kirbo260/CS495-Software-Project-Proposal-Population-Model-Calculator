@@ -122,7 +122,7 @@ function ContinuousGrowth() {
                 x: data.graph.rows.map(row => row.time),
                 y: data.graph.rows.map(row => row.population),
                 type: "scatter",
-                mode: "lines+markers",
+                mode: "lines",
                 //marker: { color: "#FFD700" }, // gold
                 line: { color: "#8B0000", width: 3 }, // dark red/burgundy
                 showlegend: false // Hide the line by default, only show points
@@ -139,8 +139,8 @@ function ContinuousGrowth() {
               title: "Continuous Growth",
               plot_bgcolor: "#ffffff",
               paper_bgcolor: "#1a1a1a",
-              plot_linecolor: "#000000",
-              plot_gridcolor: "#000000",
+              //plot_linecolor: "#000000",
+              //plot_gridcolor: "#000000",
               font: { color: "white" },
               xaxis: { title: "Time" },
               yaxis: { title: "Population" },
