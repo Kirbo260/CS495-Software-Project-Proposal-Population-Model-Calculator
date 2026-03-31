@@ -14,7 +14,6 @@ export default class TimeChecker {
     TimeDivider(time, timeNumber) {
         for (let i = 0; i < time.length; i++) {
             time[i] = time[i] / timeNumber;
-            console.log(`Converted time: ${time[i]} years`);
         }
         return time;
     }
@@ -45,7 +44,7 @@ export default class TimeChecker {
         }
 
         // Convert time to years based on the time format provided
-        if (this.timeFormat =! "y"){
+        if (this.timeFormat != "y"){
             if (this.timeFormat === "s") {
                 return this.TimeDivider(t, 31536000); // convert seconds to years
             }

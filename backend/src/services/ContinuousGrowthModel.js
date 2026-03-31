@@ -9,7 +9,7 @@ export default class ContinuousGrowthModel {
         this.growthRate = new GrowthRate(birthRate, deathRate, growthRate).GrowthRateSolver(); // r
         this.time = new TimeChecker(time, timeFormat).TimeCheck(); // t, can be an array for multiple time points or a single value
         this.MaxTime = new TimeChecker(time).MaxTime(); // Get the maximum time value for plotting the graph
-       // this.timeFormat = timeFormat; // time format for the different models
+        this.timeFormat = timeFormat; // time format for the different models
         this.finalPopulation = finalPopulation; // P(t)
     }
 
@@ -39,7 +39,6 @@ export default class ContinuousGrowthModel {
             for (let i = 0; i <= this.MaxTime; i++){
                 denseTime.push(i);
             }
-            console.log(`Dense time points for graph: ${denseTime}`);
             this.time.forEach(t => {
                 let population = this.initialPopulation * Math.pow(Math.exp(1), (this.growthRate * t));
                 results.push([t, Number(population.toFixed(2))]);
