@@ -1,0 +1,108 @@
+.student-settings {
+    background-color: var(--color-gold);
+    width: 100%;
+    min-height: calc(100vh - 96px);
+    padding: 20px 0;
+}
+
+.student-settings h1 {
+    line-height: 40px;
+    font-weight: 500;
+    font-size: 44px;
+}
+
+.student-settings-content {
+    max-width: 550px;
+    margin: 0 auto;
+}
+
+.student-settings-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+}
+
+.student-settings-header button {
+    background-color: transparent;
+    border: none;
+    outline: none;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    cursor: pointer;
+}
+
+.student-settings-header button svg {
+    font-size: 30px;
+}
+
+.user-icon {
+    background-color: var(--color-gold);
+    width: fit-content;
+    margin-left: auto;
+    border-radius: 50%;
+    padding: 10px;
+}
+
+.student-settings-content form .form-content {
+    position: relative;
+    background-color: var(--color-light-gray);
+    padding: 30px;
+    border-radius: 25px;
+    border: 2px solid var(--color-black);
+    margin-bottom: 20px;
+}
+
+.student-settings-content form .form-group {
+    margin-bottom: 20px;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.student-settings-content form label {
+    display: block;
+    margin-left: 5px;
+    margin-bottom: 5px;
+    color: var(--color-dark-gray);
+    font-family: "Roboto", sans-serif;
+}
+
+.student-settings-content form input, .student-settings-content form textarea {
+    display: block;
+    width: 100%;
+    background-color: var(--color-light-pink);
+    border-radius: 20px;
+    padding: 12px;
+    border: 1px solid var(--color-black);
+}
+
+.student-settings-content form textarea {
+    min-height: 120px;
+}
+
+.form-buttons {
+    display: flex;
+    justify-content: space-between;
+}
+
+.student-settings-content form button.btn-black, .student-settings-content form button.btn-secondary, 
+.student-settings-content form button.btn-white {
+   min-width: 145px;
+   border: none;
+   text-align: center;
+   padding: 10px;
+   display: block;
+   border-radius: 10px;
+   font-size: 17px;
+   font-family: "Paytone One", serif;
+   line-height: 1.2;
+}
+
+.student-settings-content form button.btn-black {
+    background-color: var(--color-black);
+    color: var(--color-white);
+}

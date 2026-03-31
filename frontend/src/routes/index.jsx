@@ -13,6 +13,7 @@ import ForgetPassword from '../pages/ForgetPassword/ForgetPassword'
 import DesignModels from '../pages/DesignModels/DesignModels'
 import ExponentialGrowthModel from '../pages/ExponentialGrowthModel/ExponentialGrowthModel'
 import ContinuousGrowthModel from '../pages/ContinuousGrowthModel'
+import StudentSettings from '../pages/StudentSettings/StudentSettings'
 
 // Page routing paths for site
 export default function AppRoutes() {
@@ -32,6 +33,7 @@ export default function AppRoutes() {
       <Route path="/design-models" element={<DesignModels />} />
       <Route path="/design-models/exponential-growth-model" element={<ExponentialGrowthModel/>} />
       <Route path="/continuousgrowth" element={<ContinuousGrowthModel />} />
+      <Route path="/studentsettings" element={<StudentSettings />} />
       {/* Future routes can be added here */}
       </Routes>
   )
