@@ -22,9 +22,6 @@ describe('Models Controllers', () => {
         jest.clearAllMocks();
     });
 
-    // =========================
-    // CREATE MODEL
-    // =========================
     test('createModel should create a new model', async () => {
         const req = {
             body: {
@@ -56,9 +53,6 @@ describe('Models Controllers', () => {
         console.log('createModel test passed');
     });
 
-    // =========================
-    // GET MODELS
-    // =========================
     test('getModels should return user models', async () => {
         const req = {
             user: { id: 1 }
@@ -87,9 +81,6 @@ describe('Models Controllers', () => {
         console.log('getModels test passed');
     });
 
-    // =========================
-    // GET MODEL BY ID
-    // =========================
     test('getModelById should return model', async () => {
         const req = {
             params: { id: 1 },
@@ -116,9 +107,6 @@ describe('Models Controllers', () => {
         console.log('getModelById test passed');
     });
 
-    // =========================
-    // UPDATE MODEL
-    // =========================
     test('updateModel should update and return model', async () => {
         const req = {
             params: { id: 1 },
@@ -151,9 +139,6 @@ describe('Models Controllers', () => {
         console.log('updateModel test passed');
     });
 
-    // =========================
-    // DELETE MODEL
-    // =========================
     test('deleteModel should delete model', async () => {
         const req = {
             params: { id: 1 },
@@ -182,9 +167,6 @@ describe('Models Controllers', () => {
         console.log('deleteModel test passed');
     });
 
-    // =========================
-    // DELETE ALL MODELS
-    // =========================
     test('deleteAllModelsForUser should delete all models', async () => {
         const req = {
             user: { id: 1 }

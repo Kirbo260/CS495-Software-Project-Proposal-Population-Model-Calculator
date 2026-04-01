@@ -1,5 +1,5 @@
 // Test for continuous growth model
-import { ContinuousGrowthModel } from '../src/models/ContinuousGrowthModel.js';
+import { ContinuousGrowthModel } from '../../src/services/ContinuousGrowthModel.js';
 
 describe('ContinuousGrowthModel', () => {
     test('calculates population correctly', () => {

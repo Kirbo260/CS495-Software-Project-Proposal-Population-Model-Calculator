@@ -1,5 +1,5 @@
 // DB for saving and retrieving model information
-import { client } from '../db.js';
+import { client } from '../../db.js';
 
 // Create a new model entry
 export const createModel = async (req, res) => {
