@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 export default function ExponentialGrowthModel() {
 
     const [isPanelOpen, setIsPanelOpen] = useState(true);
-    const [isCompareOpen, setIsCompareOpen] = useState(true);
+    const [isCompareOpen, setIsCompareOpen] = useState(false);
 
     return (
         <div className="exponential-growth-model">
