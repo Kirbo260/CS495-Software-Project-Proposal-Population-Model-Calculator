@@ -15,7 +15,7 @@ export default function Signup() {
         password: "",
     });
 
-    const handlesubmit = async (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         try {
@@ -30,7 +30,7 @@ export default function Signup() {
             if (response.ok) {
                 const data = await response.json();
                 console.log(data.message);
-                navigate("/login");
+                navigate("/");
             } else {
                 const errorData = await response.json();
                 console.error("Error:", errorData.error);
@@ -55,37 +55,26 @@ export default function Signup() {
                         <IoMdClose />
                     </button>
                 </div>
-                <form onSubmit={handlesubmit}>
+                <form onSubmit={handleSubmit}>
                     <div className="form-group">
                         <label htmlFor="firstName">Firstname</label>
-                        <input type="text" name="firstName" onChange={onChange} />
+                        <input type="text" name="firstName" value={form.firstName} onChange={onChange} />
                     </div>
                     <div className="form-group">
                         <label htmlFor="lastName">Lastname</label>
-                        <input type="text" name="lastName" onChange={onChange} />
+                        <input type="text" name="lastName" value={form.lastName} onChange={onChange} />
                     </div>
                     <div className="form-group">
                         <label htmlFor="age">Age</label>
-                        <input type="number" name="age" onChange={onChange} />
+                        <input type="number" name="age" value={form.age} onChange={onChange} />
                     </div>
                     <div className="form-group">
                         <label htmlFor="email">Email</label>
-                        <input type="email" name="email" onChange={onChange} />
+                        <input type="email" name="email" value={form.email} onChange={onChange} />
                     </div>
                     <div className="form-group">
                         <label htmlFor="password">Password</label>
-                        <input type="password" name="password" onChange={onChange} />
-                    </div>
-                    <div className="form-group radio-buttons">
-                        <label htmlFor="student" className={`su-pill ${form.role == "student" ? "isActive" : ""}`}>
-                            <input type="radio" name="role" value="student" checked={form.role === "student"} onChange={onChange} />
-                            <span className="form-pilldot">Student</span>
-                        </label>
-
-                        <label htmlFor="instructor" className={`su-pill ${form.role == "instructor" ? "isActive" : ""}`}>
-                            <input type="radio" name="role" value="instructor" checked={form.role === "instructor"} onChange={onChange} />
-                            <span className="form-pilldot">Instructor</span>
-                        </label>
+                        <input type="password" name="password" value={form.password} onChange={onChange} />
                     </div>
                     <div className="form-group">
                         <button type="submit" className="btn btn-secondary">Verify</button>
