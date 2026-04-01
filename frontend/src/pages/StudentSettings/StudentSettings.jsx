@@ -1,8 +1,12 @@
 import { useState } from "react";
 import { FiUser } from "react-icons/fi";
+import { IoClose } from "react-icons/io5";
 import "./StudentSettings.css"
+import { FaPlus } from "react-icons/fa6";
 
 export default function StudentSettings() {
+
+    const [showAccountModal, setShowAccountModal] = useState(false);
 
     const [form, setForm] = useState({
         username: "",
@@ -32,7 +36,7 @@ export default function StudentSettings() {
                     <div className="form-content">
                         <div className="form-group">
                             <div className="user-icon">
-                                <FiUser size={60}/>
+                                <FiUser size={60} />
                             </div>
                         </div>
                         <div className="form-group">
@@ -56,12 +60,36 @@ export default function StudentSettings() {
                     </div>
 
                     <div className="form-group form-buttons">
-                        <button type="submit" className="btn btn-black">Switch account</button>
+                        <button type="submit" className="btn btn-black" onClick={() => setShowAccountModal(true)}>Switch account</button>
                         <button type="submit" className="btn btn-secondary">Delete account</button>
                         <button type="submit" className="btn btn-white">Save</button>
                     </div>
                 </form>
             </div>
+
+
+            {showAccountModal && (
+                <div className="account-modal-overlay" onClick={() => setShowAccountModal(false)}>
+                    <div className="account-modal-wrapper">
+                        <div className="account-model-modal" onClick={(e) => e.stopPropagation()}>
+                            <div className="account-modal-header">
+                                <IoClose onClick={() => setShowAccountModal(false)} color="#000" size={20} />
+                                <h2>Accounts</h2>
+                                <span></span>
+                            </div>
+                            <div className="account-modal-content">
+                                <div className="account-modal-content-main">
+                                    <button className="add-model" onClick={() => setIsModalOpen(true)}>
+                                        <FaPlus size={250} color="#C47384" />
+                                    </button>
+                                    <p>Create a new account in-order to switch accounts</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
+
         </div>
     )
 }
