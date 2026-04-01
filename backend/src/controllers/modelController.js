@@ -3,11 +3,16 @@ import { client } from '../db.js';
 
 // Create a new model entry
 export const createModel = async (req, res) => {
-    const { name, description, version } = req.body;
+    // store the model information in the database
+    const { name, description, version, inputs } = req.body;
+
+    // user_id with jwt 
+    const user_id = req.user.id; // assuming auth middleware sets req.user
+
     try {
         const result = await client.query(
-            'INSERT INTO models (name, description, version) VALUES ($1, $2, $3) RETURNING *',
-            [name, description, version]
+            'INSERT INTO models (user_id, name, description, version, inputs) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+            [user_id, name, description, version, inputs]
         );
         res.status(201).json(result.rows[0]);
     } catch (error) {
