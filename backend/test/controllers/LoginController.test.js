@@ -63,7 +63,7 @@ describe("Auth Controller", () => {
     req.body = { email: "test@test.com", password: "wrongpass" };
 
     client.query.mockResolvedValue({
-      rows: [{ id: 1, email: "test@test.com", password: "hashed" }]
+      rows: [{ id: 1, email: "oehi-douglas@loyola.edu", password: "hashed_oehidouglas1" }]
     });
 
     bcrypt.compare.mockResolvedValue(false);
@@ -78,10 +78,10 @@ describe("Auth Controller", () => {
   });
 
   test("should login successfully and return token", async () => {
-    req.body = { email: "test@test.com", password: "correctpass" };
+    req.body = { email: "oehi-douglas@loyola.edu", password: "oehidouglas1" };
 
     client.query.mockResolvedValue({
-      rows: [{ id: 1, email: "test@test.com", password: "hashed" }]
+      rows: [{ id: 1, email: "oehi-douglas@loyola.edu", password: "hashed_oehidouglas1" }]
     });
 
     bcrypt.compare.mockResolvedValue(true);
@@ -95,7 +95,7 @@ describe("Auth Controller", () => {
     expect(jwt.sign).toHaveBeenCalledWith(
       {
         userId: 1,
-        email: "test@test.com"
+        email: "oehi-douglas@loyola.edu"
       },
       "testsecret",
       { expiresIn: "30m" }

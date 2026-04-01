@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">21.21% </span>
+                <span class="strong">45.45% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>7/33</span>
+                <span class='fraction'>15/33</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">4.16% </span>
+                <span class="strong">37.5% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>1/24</span>
+                <span class='fraction'>9/24</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">19.35% </span>
+                <span class="strong">45.16% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>6/31</span>
+                <span class='fraction'>14/31</span>
             </div>
         
             
@@ -140,8 +140,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">36x</span>
+<span class="cline-any cline-yes">36x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -152,38 +152,32 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">16x</span>
+<span class="cline-any cline-yes">16x</span>
+<span class="cline-any cline-yes">19x</span>
+<span class="cline-any cline-yes">16x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">16x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">20x</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">16x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">16x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">16x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -196,8 +190,14 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">// Checks the different time inputs and formats 
 // Time can be a single value (e.g. 5) or a comma-separated list of values (e.g. 0,1,2,3)
@@ -222,30 +222,30 @@ export default class TimeChecker {
     MaxTime() {
         let maxTime = 0;
         for (let i = 0; i &lt; this.time.length; i++) {
-<span class="cstat-no" title="statement not covered" >            if (this.time[i] &gt; maxTime) {</span>
-<span class="cstat-no" title="statement not covered" >                maxTime = this.time[i];</span>
+            if (this.time[i] &gt; maxTime) {
+                maxTime = this.time[i];
             }
         }
-<span class="cstat-no" title="statement not covered" >        return maxTime;</span>
+        return maxTime;
     }
 &nbsp;
     TimeCheck() {
-        <span class="missing-if-branch" title="else path not taken" >E</span>if (this.time == null) {
+        if (this.time == null) {
             return null;
         }
 &nbsp;
-        let t = <span class="cstat-no" title="statement not covered" >Array.isArray(this.time) ? this.time : [this.time];</span> // time can be an array for multiple time points or a single value
+        let t = Array.isArray(this.time) ? this.time : [this.time]; // time can be an array for multiple time points or a single value
 &nbsp;
-<span class="cstat-no" title="statement not covered" >        if (t.some(isNaN)) { // Check if any value in the time array is not a number</span>
+        <span class="missing-if-branch" title="if path not taken" >I</span>if (t.some(isNaN)) { // Check if any value in the time array is not a number
 <span class="cstat-no" title="statement not covered" >            throw new Error("Time must be a number or an array of numbers.");</span>
         }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >        if (this.timeFormat === "none") {</span>
+        <span class="missing-if-branch" title="if path not taken" >I</span>if (this.timeFormat === "none") {
 <span class="cstat-no" title="statement not covered" >            return t; </span>// If no time format is provided, return the time array as is
         }
 &nbsp;
         // Convert time to years based on the time format provided
-<span class="cstat-no" title="statement not covered" >        if (this.timeFormat != "y"){</span>
+        <span class="missing-if-branch" title="if path not taken" >I</span>if (this.timeFormat != "y"){
 <span class="cstat-no" title="statement not covered" >            if (this.timeFormat === "s") {</span>
 <span class="cstat-no" title="statement not covered" >                return this.TimeDivider(t, 31536000); </span>// convert seconds to years
             }
@@ -265,7 +265,7 @@ export default class TimeChecker {
 <span class="cstat-no" title="statement not covered" >                return this.TimeDivider(t, 2); </span>// convert months to years
             }
         }
-<span class="cstat-no" title="statement not covered" >        return t; </span>// return the time array as is if it's already in the correct format (e.g. years)
+        return t; // return the time array as is if it's already in the correct format (e.g. years)
     }
 }</pre></td></tr></table></pre>
 
@@ -274,7 +274,7 @@ export default class TimeChecker {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-04-01T04:28:59.613Z
+                at 2026-04-01T05:31:56.600Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

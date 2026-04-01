@@ -9,7 +9,9 @@ export default class DiscreteGrowthModel {
         this.finalPopulation = finalPopulation;
         this.growthRate = new GrowthRate(birthRate, deathRate, growthRate).GrowthRateSolver(); // Calculate growth rate using the GrowthRate utility
         this.time = new TimeChecker(time, timeFormat).TimeCheck(); // use timeChecker to validate and convert it
+        if (this.time != null) {
         this.maxTime = new TimeChecker(time).MaxTime(); // Get the maximum time value for plotting the graph
+        }
         this.model = model; // "growth" or "decay" to determine which formula to use in the calculations
     }
 

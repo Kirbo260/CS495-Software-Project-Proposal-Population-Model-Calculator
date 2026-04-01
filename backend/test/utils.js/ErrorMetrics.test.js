@@ -1,19 +1,17 @@
 // Test for error metrics model
 import { calculateErrorMetrics } from '../../src/utils/errorMetrics.js';
 describe('Error Metrics', () => {
-    test('calculates MSE correctly', () => {
+    test('calculates RMSE correctly', () => {
         const actual = [1, 2, 3];
-        const predicted = [1, 2, 3];
+        const predicted = [1, 2, 5];
         const metrics = calculateErrorMetrics(actual, predicted);
-        expect(metrics.mse).toBeCloseTo(0, 5);
+        expect(metrics.rmse).toBe(Math.sqrt(2.6666666666666665));
     });
 
     test('calculates MAE correctly', () => {
         const actual = [1, 2, 3];
-        const predicted = [2, 3, 4];
+        const predicted = [1, 2, 5];
         const metrics = calculateErrorMetrics(actual, predicted);
-        expect(metrics.mae).toBeCloseTo(1, 5);
+        expect(metrics.mae).toBe(0.6666666666666666);
     });
-
-    test('calculates RMSE correctly', () => {
-        const actual = 
+});

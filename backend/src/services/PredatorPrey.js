@@ -36,8 +36,8 @@ export default class PredatorPrey {
             const dPredator = (c * x[i] * y[i] - (h * y[i])) * dt;
 
             // Update the populations & time
-            x.push(Number(x[i] + dPrey).toFixed(2)); // Round to 2 decimal places for better readability
-            y.push(Number(y[i] + dPredator).toFixed(2));
+            x.push(Number((x[i] + dPrey).toFixed(2))); // Round to 2 decimal places for better readability
+            y.push(Number((y[i] + dPredator).toFixed(2)));
             tValues.push(t + dt);
         }
 

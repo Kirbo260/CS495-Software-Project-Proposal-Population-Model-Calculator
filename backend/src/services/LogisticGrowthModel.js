@@ -1,4 +1,3 @@
-import e from "express";
 import TimeChecker from "../utils.js/TimeChecker.js";
 import GrowthRate from "../utils.js/GrowthRate.js";
 
@@ -11,7 +10,9 @@ export default class LogisticGrowthModel {
         this.carryingCapacity = carryingCapacity;
         this.growthRate = new GrowthRate(birthRate, deathRate, growthRate).GrowthRateSolver(); // Calculate growth rate using the GrowthRate utility
         this.time = new TimeChecker(time, timeFormat).TimeCheck(); // time can be an array for multiple time points or a single value
+        if (time != null) {
         this.maxTime = new TimeChecker(time).MaxTime(); // Get the maximum time value for plotting the graph
+        } 
     }
 
     LogisticGrowthFunctions() {

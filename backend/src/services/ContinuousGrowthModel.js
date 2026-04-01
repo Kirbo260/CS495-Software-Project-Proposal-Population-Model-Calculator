@@ -8,7 +8,9 @@ export default class ContinuousGrowthModel {
         this.initialPopulation = initialPopulation; // P0
         this.growthRate = new GrowthRate(birthRate, deathRate, growthRate).GrowthRateSolver(); // r
         this.time = new TimeChecker(time, timeFormat).TimeCheck(); // t, can be an array for multiple time points or a single value
+        if (this.time != null) {
         this.maxTime = new TimeChecker(time).MaxTime(); // Get the maximum time value for plotting the graph
+        }
         this.finalPopulation = finalPopulation; // P(t)
     }
 
