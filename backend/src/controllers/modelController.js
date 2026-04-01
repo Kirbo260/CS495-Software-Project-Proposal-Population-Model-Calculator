@@ -9,9 +9,6 @@ export const createModel = async (req, res) => {
     // user_id with jwt 
     const user_id = req.user.id; // assuming auth middleware sets req.user
     // error handling for missing fields
-    if (!model_id) {
-        return res.status(400).json({ error: "Missing model id" });
-    }
 
     try {
         const result = await client.query(

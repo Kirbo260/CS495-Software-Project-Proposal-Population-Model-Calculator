@@ -9,7 +9,6 @@ describe('ContinuousGrowthModel', () => {
             0.05, // growthRate
             null, // birthRate (not needed for this test)
             null, // deathRate (not needed for this test)
-            "growth", // modelType
             10, // time
             "years" // timeFormat
         );  
@@ -26,7 +25,6 @@ describe('Calculates for initial population', () => {
             0.05, // growthRate
             null, // birthRate (not needed for this test)
             null, // deathRate (not needed for this test)
-            "growth", // modelType
             0, // time
             "years" // timeFormat
         );  
@@ -39,11 +37,10 @@ describe('Calculates for no growth rate', () => {
     test('calculates population correctly with no growth rate', () => {
         const model = new ContinuousGrowthModel(
             1000, // initialPopulation  
-            null, // finalPopulation (not needed for this test)
-            0, // growthRate
+            10000, // finalPopulation (not needed for this test)
+            null, // growthRate
             null, // birthRate (not needed for this test)
             null, // deathRate (not needed for this test)
-            "growth", // modelType
             10, // time
             "years" // timeFormat
         );  
@@ -60,7 +57,6 @@ describe('Calculates no time', () => {
             0.05, // growthRate
             null, // birthRate (not needed for this test)
             null, // deathRate (not needed for this test)
-            "growth", // modelType
             null, // time
             "years" // timeFormat
         );  

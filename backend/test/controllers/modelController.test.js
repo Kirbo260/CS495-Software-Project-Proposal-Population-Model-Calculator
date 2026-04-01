@@ -7,10 +7,10 @@ import {
     deleteAllModelsForUser
 } from '../../src/controllers/modelController.js';
 
-import { client } from '../db.js';
+import { client } from '../../db.js';
 
 // mock DB
-jest.mock('../db.js', () => ({
+jest.mock('../../db.js', () => ({
     client: {
         query: jest.fn()
     }

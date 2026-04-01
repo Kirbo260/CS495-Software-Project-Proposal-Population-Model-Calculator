@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1775014482068" clover="3.2.0">
-  <project timestamp="1775014482068" name="All files">
-    <metrics statements="174" coveredstatements="50" conditionals="111" coveredconditionals="33" methods="24" coveredmethods="13" elements="309" coveredelements="96" complexity="0" loc="174" ncloc="174" packages="4" files="7" classes="7"/>
+<coverage generated="1775017739654" clover="3.2.0">
+  <project timestamp="1775017739654" name="All files">
+    <metrics statements="255" coveredstatements="88" conditionals="125" coveredconditionals="36" methods="35" coveredmethods="19" elements="415" coveredelements="143" complexity="0" loc="255" ncloc="255" packages="4" files="9" classes="9"/>
     <package name="backend">
       <metrics statements="7" coveredstatements="6" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
       <file name="db.js" path="C:\Users\oseje\CS496\CS495-Software-Project-Proposal-Population-Model-Calculator\backend\db.js">
@@ -16,7 +16,63 @@
       </file>
     </package>
     <package name="backend.src.controllers">
-      <metrics statements="15" coveredstatements="4" conditionals="11" coveredconditionals="2" methods="1" coveredmethods="1"/>
+      <metrics statements="68" coveredstatements="42" conditionals="17" coveredconditionals="5" methods="7" coveredmethods="7"/>
+      <file name="modelController.js" path="C:\Users\oseje\CS496\CS495-Software-Project-Proposal-Population-Model-Calculator\backend\src\controllers\modelController.js">
+        <metrics statements="53" coveredstatements="38" conditionals="6" coveredconditionals="3" methods="6" coveredmethods="6"/>
+        <line num="5" count="1" type="stmt"/>
+        <line num="7" count="1" type="stmt"/>
+        <line num="10" count="1" type="stmt"/>
+        <line num="13" count="1" type="stmt"/>
+        <line num="14" count="1" type="stmt"/>
+        <line num="18" count="1" type="stmt"/>
+        <line num="20" count="0" type="stmt"/>
+        <line num="21" count="0" type="stmt"/>
+        <line num="26" count="1" type="stmt"/>
+        <line num="27" count="1" type="stmt"/>
+        <line num="28" count="1" type="stmt"/>
+        <line num="29" count="1" type="stmt"/>
+        <line num="33" count="1" type="stmt"/>
+        <line num="35" count="0" type="stmt"/>
+        <line num="36" count="0" type="stmt"/>
+        <line num="41" count="1" type="stmt"/>
+        <line num="42" count="1" type="stmt"/>
+        <line num="43" count="1" type="stmt"/>
+        <line num="44" count="1" type="stmt"/>
+        <line num="45" count="1" type="stmt"/>
+        <line num="49" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="50" count="0" type="stmt"/>
+        <line num="52" count="1" type="stmt"/>
+        <line num="54" count="0" type="stmt"/>
+        <line num="55" count="0" type="stmt"/>
+        <line num="60" count="1" type="stmt"/>
+        <line num="61" count="1" type="stmt"/>
+        <line num="62" count="1" type="stmt"/>
+        <line num="63" count="1" type="stmt"/>
+        <line num="64" count="1" type="stmt"/>
+        <line num="65" count="1" type="stmt"/>
+        <line num="69" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="70" count="0" type="stmt"/>
+        <line num="72" count="1" type="stmt"/>
+        <line num="74" count="0" type="stmt"/>
+        <line num="75" count="0" type="stmt"/>
+        <line num="80" count="1" type="stmt"/>
+        <line num="81" count="1" type="stmt"/>
+        <line num="82" count="1" type="stmt"/>
+        <line num="83" count="1" type="stmt"/>
+        <line num="84" count="1" type="stmt"/>
+        <line num="88" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="89" count="0" type="stmt"/>
+        <line num="91" count="1" type="stmt"/>
+        <line num="93" count="0" type="stmt"/>
+        <line num="94" count="0" type="stmt"/>
+        <line num="99" count="1" type="stmt"/>
+        <line num="100" count="1" type="stmt"/>
+        <line num="101" count="1" type="stmt"/>
+        <line num="102" count="1" type="stmt"/>
+        <line num="106" count="1" type="stmt"/>
+        <line num="108" count="0" type="stmt"/>
+        <line num="109" count="0" type="stmt"/>
+      </file>
       <file name="userControllers.js" path="C:\Users\oseje\CS496\CS495-Software-Project-Proposal-Population-Model-Calculator\backend\src\controllers\userControllers.js">
         <metrics statements="15" coveredstatements="4" conditionals="11" coveredconditionals="2" methods="1" coveredmethods="1"/>
         <line num="5" count="2" type="stmt"/>
@@ -37,7 +93,38 @@
       </file>
     </package>
     <package name="backend.src.services">
-      <metrics statements="99" coveredstatements="18" conditionals="38" coveredconditionals="3" methods="15" coveredmethods="5"/>
+      <metrics statements="127" coveredstatements="18" conditionals="46" coveredconditionals="3" methods="20" coveredmethods="5"/>
+      <file name="ContinuousGrowthModel.js" path="C:\Users\oseje\CS496\CS495-Software-Project-Proposal-Population-Model-Calculator\backend\src\services\ContinuousGrowthModel.js">
+        <metrics statements="28" coveredstatements="0" conditionals="8" coveredconditionals="0" methods="5" coveredmethods="0"/>
+        <line num="8" count="0" type="stmt"/>
+        <line num="9" count="0" type="stmt"/>
+        <line num="10" count="0" type="stmt"/>
+        <line num="11" count="0" type="stmt"/>
+        <line num="12" count="0" type="stmt"/>
+        <line num="16" count="0" type="stmt"/>
+        <line num="17" count="0" type="stmt"/>
+        <line num="18" count="0" type="stmt"/>
+        <line num="25" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="26" count="0" type="stmt"/>
+        <line num="27" count="0" type="stmt"/>
+        <line num="29" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="30" count="0" type="stmt"/>
+        <line num="31" count="0" type="stmt"/>
+        <line num="33" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="34" count="0" type="stmt"/>
+        <line num="35" count="0" type="stmt"/>
+        <line num="37" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="38" count="0" type="stmt"/>
+        <line num="39" count="0" type="stmt"/>
+        <line num="41" count="0" type="stmt"/>
+        <line num="42" count="0" type="stmt"/>
+        <line num="43" count="0" type="stmt"/>
+        <line num="45" count="0" type="stmt"/>
+        <line num="46" count="0" type="stmt"/>
+        <line num="47" count="0" type="stmt"/>
+        <line num="50" count="0" type="stmt"/>
+        <line num="54" count="0" type="stmt"/>
+      </file>
       <file name="DiscreteGrowthModel.js" path="C:\Users\oseje\CS496\CS495-Software-Project-Proposal-Population-Model-Calculator\backend\src\services\DiscreteGrowthModel.js">
         <metrics statements="51" coveredstatements="5" conditionals="24" coveredconditionals="0" methods="7" coveredmethods="1"/>
         <line num="8" count="3" type="stmt"/>
