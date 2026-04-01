@@ -1,5 +1,5 @@
 // Test for capital Population Growth Rate
-import PopulationGrowthRate from '../src/services/PopulationGrowthRate';
+import PopulationGrowthRate from '../../src/services/PopulationGrowthRate';
 
 describe('Population Growth Rate', () => {
     test('calculates capital growth rate', () => { 

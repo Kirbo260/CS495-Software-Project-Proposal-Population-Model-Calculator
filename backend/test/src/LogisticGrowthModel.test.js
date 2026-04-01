@@ -1,4 +1,4 @@
-import LogisticGrowthModel from "../src/services/LogisticGrowthModel";
+import LogisticGrowthModel from "../../src/services/LogisticGrowthModel";
 
 describe('LogisticGrowthModel', () => {
     test('calculates population with provided values', () => {

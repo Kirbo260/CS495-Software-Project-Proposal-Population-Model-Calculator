@@ -1,5 +1,5 @@
 // test for discrete growth model
-import DiscreteGrowthModel from "../src/services/DiscreteGrowthModel";
+import DiscreteGrowthModel from "../../src/services/DiscreteGrowthModel";
 
 describe('DiscreteGrowthModel', () => {
     test('calculates final population for growth model', () => {
