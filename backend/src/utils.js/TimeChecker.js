@@ -61,7 +61,7 @@ export default class TimeChecker {
                 return this.TimeDivider(t, 52); // convert weeks to years
             }
             else if (this.timeFormat === "mo") {
-                return this.TimeDivider(t, 2); // convert months to years
+                return this.TimeDivider(t, 12); // convert months to years
             }
         }
         return t; // return the time array as is if it's already in the correct format (e.g. years)

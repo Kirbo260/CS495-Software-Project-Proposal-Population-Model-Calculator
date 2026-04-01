@@ -1,0 +1,35 @@
+# git ignore for backend
+
+# Node.js dependencies
+node_modules/
+
+# Build outputs
+dist/
+
+# Runtime files
+npm-debug.log*
+
+# Logs
+logs
+
+# Environment files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+
+# Testing
+/coverage
+
+# IDE / Editor files
+.idea/
+.vscode/
+# Visual Studio temporary files
+*.suo
+
+# OS files
+.DS_Store
+Thumbs.db
+

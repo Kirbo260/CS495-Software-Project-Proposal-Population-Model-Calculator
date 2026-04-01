@@ -19,6 +19,7 @@ export default class DiscreteGrowthModel {
         const results = [];
         let denseTime = []; // To store dense time points for plotting a smooth curve if time is an array
         const graphResults = []; // To store results for dense time points for plotting
+        this.growthRate = Math.abs(this.growthRate);
 
         /*const nullCount = [this.initialPopulation, this.finalPopulation, this.growthRate, this.time].filter(v => v === null).length;
         if (nullCount > 1) {

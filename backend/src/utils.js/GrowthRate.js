@@ -37,8 +37,7 @@ export default class GrowthRate {
             if (this.birthRate > this.deathRate) {
                 return this.birthRate - this.deathRate; // Calculate growth rate using the formula: r = b - d
             }
-
-            return this.deathRate - this.birthRate; // Calculate growth rate using the formula: r = d - b
+            return this.birthRate - this.deathRate; // Calculate growth rate using the formula: r = b - d
         }
         else {
             throw new Error("Please provide either the growth rate or both birth and death rates to calculate the growth rate.");
