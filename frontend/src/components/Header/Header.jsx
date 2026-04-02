@@ -22,7 +22,8 @@ const Header = () => {
                         <ul>
                             <li><Link to="/help">Help</Link></li>
                             <li><Link to="#">About us</Link></li>
-                            <li><Link to="#">My models</Link></li>
+                            <li> {isLoggedIn ? <Link to="/models">My models</Link>
+                             : <Link to="/login">My models</Link>}</li>
                         </ul>
                     </nav>
                     {isLoggedIn ? (

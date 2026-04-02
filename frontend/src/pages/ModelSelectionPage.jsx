@@ -17,6 +17,15 @@ function ModelSelectionPage() {
                 <button className="model-btn">
                     <a href="/discretegrowth">Discrete Growth</a>
                 </button>
+                <button className="model-btn">
+                    <a href="/predatorprey">Predator-Prey</a>
+                </button>
+                <button className="model-btn">
+                    <a href="/emcomparison">Models Comparison</a>
+                </button>
+            </div>
+            <div className="model-selection-footer">
+                <p>Don't see the model you're looking for? Check back soon as we are continuously adding new models!</p>
             </div>
         </div>
     );

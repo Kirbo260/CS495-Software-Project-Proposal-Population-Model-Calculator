@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Plot from "react-plotly.js";
+import ModalInputs from "../components/ModalInputs";
 
 function LogisticGrowth() {
     const [time, setTime] = useState("");
@@ -11,11 +12,17 @@ function LogisticGrowth() {
     const [timeFormat, setTimeFormat] = useState("none");
     const [birthRate, setBirthRate] = useState("");
     const [deathRate, setDeathRate] = useState("");
+    const [count, setCount] = useState(0);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+      // check if user is logged in to conditionally render the save button
+      // Outside so handleSave can access it and conditionally render the save button
+    const isLoggedIn = !!localStorage.getItem("token");
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const params = new URLSearchParams({
+       const params = new URLSearchParams({
             time: time || "",
             timeFormat: timeFormat || "none",
             initialPopulation: initial || "",
@@ -31,8 +38,51 @@ function LogisticGrowth() {
         );
 
         const result = await response.json();
-        setData(result); // Store the result for visualization
+        setData(result); // Store the result for visualization*/
     };
+
+        const handleSave = (mdata) => {
+
+
+    // Open the modal to input model details
+       const modelData = ({
+            name: mdata.name,
+            description: mdata.description,
+            version: mdata.version,
+            inputs: {
+            time: time || "",
+            timeFormat: timeFormat || "none",
+            initialPopulation: initial || "",
+            finalPopulation: final || "",
+            carryingCapacity: carryingCapacity || "",
+            growthRate: rate || "",
+            birthRate: birthRate || "",
+            deathRate: deathRate || ""}
+        });
+
+        console.log("FINAL MODEL:", modelData);
+        console.log("TOKEN:", localStorage.getItem("token"));
+        
+        // Send the model data to the backend to save in the database
+       fetch("/api/models", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${localStorage.getItem("token")}`
+            },
+            body: JSON.stringify(modelData)
+        })
+        .then((res) => res.json())
+        .then((data) => {
+            console.log("Model saved:", data);
+            alert("Model saved successfully!");
+        })
+        .catch((error) => {
+            console.error("Error saving model:", error);
+            alert("Failed to save model.");
+        });
+    };
+
 
     // Adding animation to the graph using Plotly's animation features
     const frames = data
@@ -110,8 +160,16 @@ function LogisticGrowth() {
                     value={final}
                     onChange={(e) => setFinal(e.target.value)}
                 />
-                <button type="submit" className="calculate-btn">Calculate</button>
+                <button type="submit" className="calculate-btn" onClick={() => setCount(1)} >Calculate</button>
             </form>
+            {isLoggedIn && count==1 && (
+                
+                <button onClick={() => setIsModalOpen(true)} className="save-btn">
+                    Save Model
+                </button>
+            )}
+
+            <ModalInputs isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} onSubmit={handleSave} />
 
             {data && (
                 <div className="results-section">

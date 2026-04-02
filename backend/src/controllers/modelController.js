@@ -7,7 +7,7 @@ export const createModel = async (req, res) => {
     const { name, description, version, inputs } = req.body;
 
     // user_id with jwt 
-    const user_id = req.user.id; // assuming auth middleware sets req.user
+    const user_id = req.user.userId; // assuming auth middleware sets req.user
     // error handling for missing fields
 
     try {
@@ -24,7 +24,7 @@ export const createModel = async (req, res) => {
 
 // Get all models for the authenticated user
 export const getModels = async (req, res) => {
-    const user_id = req.user.id; // assuming auth middleware sets req.user
+    const user_id = req.user.userId; // assuming auth middleware sets req.user
     try {
         const result = await client.query(
             'SELECT * FROM models WHERE user_id = $1',
@@ -39,7 +39,7 @@ export const getModels = async (req, res) => {
 
 // Get a specific model by ID
 export const getModelById = async (req, res) => {
-    const user_id = req.user.id; // assuming auth middleware sets req.user
+    const user_id = req.user.userId; // assuming auth middleware sets req.user
     const model_id = req.params.id;
     try {
         const result = await client.query(
@@ -58,13 +58,13 @@ export const getModelById = async (req, res) => {
 
 // Update a model by ID
 export const updateModel = async (req, res) => {
-    const user_id = req.user.id; // assuming auth middleware sets req.user
+    const user_id = req.user.userId; // assuming auth middleware sets req.user
     const model_id = req.params.id;
     const { name, description, version, inputs } = req.body;
     try {
         const result = await client.query(
             'UPDATE models SET name = $1, description = $2, version = $3, inputs = $4 WHERE id = $5 AND user_id = $6 RETURNING *',
-            [name, description, version, inputs, model_id, user_id]
+            [name, description, version, JSON.stringify(inputs), model_id, user_id]
         );
         if (result.rows.length === 0) {
             return res.status(404).json({ error: 'Model not found or not authorized' });
@@ -78,7 +78,7 @@ export const updateModel = async (req, res) => {
 
 // Delete a model by ID
 export const deleteModel = async (req, res) => {
-    const user_id = req.user.id;
+    const user_id = req.user.userId;
     const model_id = req.params.id;
     try {
         const result = await client.query(
@@ -97,7 +97,7 @@ export const deleteModel = async (req, res) => {
 
 // delete all models for a user, if they want to delete their account or just want to clear all their models
 export const deleteAllModelsForUser = async (req, res) => {
-    const user_id = req.user.id;
+    const user_id = req.user.userId;
     try {
         await client.query(
             'DELETE FROM models WHERE user_id = $1',

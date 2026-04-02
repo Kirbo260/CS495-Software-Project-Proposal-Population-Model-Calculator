@@ -8,12 +8,16 @@ import StudentSignup from '../pages/Signup/StudentSignup'
 import InstructorSignup from '../pages/Signup/InstructorSignup'
 import LogisticGrowthModel from '../pages/LogisticGrowthModel'
 import DiscreteGrowth from '../pages/DiscreteGrowthModelPage'
+import PredatorPrey from '../pages/PredatorPrey'
+import EMComparison from '../pages/EMComparison'
+import ModelsPage from '../pages/ModelsPage'
 import ModelSelectionPage from '../pages/ModelSelectionPage'
 import ForgetPassword from '../pages/ForgetPassword/ForgetPassword'
 import DesignModels from '../pages/DesignModels/DesignModels'
 import ExponentialGrowthModel from '../pages/ExponentialGrowthModel/ExponentialGrowthModel'
 import ContinuousGrowthModel from '../pages/ContinuousGrowthModel'
 import StudentSettings from '../pages/StudentSettings/StudentSettings'
+
 
 // Page routing paths for site
 export default function AppRoutes() {
@@ -30,6 +34,9 @@ export default function AppRoutes() {
       <Route path="/logisticgrowth" element={<LogisticGrowthModel />} />
       <Route path="/modelselection" element={<ModelSelectionPage />} />
       <Route path="/discretegrowth" element={<DiscreteGrowth />} />
+      <Route path="/predatorprey" element={<PredatorPrey />} />
+      <Route path="/emcomparison" element={<EMComparison />} />
+      <Route path="/models" element={<ModelsPage />} />
       <Route path="/design-models" element={<DesignModels />} />
       <Route path="/design-models/exponential-growth-model" element={<ExponentialGrowthModel/>} />
       <Route path="/continuousgrowth" element={<ContinuousGrowthModel />} />
