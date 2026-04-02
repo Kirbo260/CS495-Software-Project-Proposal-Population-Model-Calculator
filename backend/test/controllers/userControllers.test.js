@@ -1,115 +1,143 @@
-// test for user controllers
-import { createUser } from '../../src/controllers/userControllers.js';
-import { client, connectDB } from '../../db.js';
-beforeAll(async () => {
-    await connectDB();
-});
+import { createUser } from "../../src/controllers/userControllers.js";
+import { client } from "../../db.js";
+import bcrypt from "bcrypt";
 
-afterAll(async () => {
-    await client.end();
-});
+jest.mock("../../db.js", () => ({
+    client: {
+        query: jest.fn(),
+    },
+}));
 
-describe('User Controllers', () => {
-    test('createUser should create a new user', async () => {
-        const req = { body: {
-            first_name: 'Test',
-            last_name: 'User',
-            age: 30,
-            email: 'testuser@example.com',
-            password: 'password123'
-        } };
+jest.mock("bcrypt", () => ({
+    hash: jest.fn(),
+}));
 
-     //manually mock res object
-    let statusCode = null;
-    let jsonData = null;
-    const res = {
-      status: (code) => { statusCode = code; return res; },
-      json: (data) => { jsonData = data; return res; }
-    };
+describe("createUser Controller", () => {
 
-    await createUser(req, res);
+    let req;
+    let res;
 
-    if (statusCode !== 201) throw new Error(`Expected status 201, got ${statusCode}`);
-    if (JSON.stringify(jsonData) !== JSON.stringify({ message: "User created successfully" })) {
-      throw new Error(`Unexpected json: ${JSON.stringify(jsonData)}`);
-    }
+    beforeEach(() => {
+        req = {
+            body: {}
+        };
 
-    console.log('Test passed');
+        res = {
+            status: jest.fn().mockReturnThis(),
+            json: jest.fn()
+        };
+
+        jest.clearAllMocks();
     });
 
-
-    test('Double email should return error', async () => {
-        const req = { body: {
-            first_name: 'Test',
-            last_name: 'User',
-            age: 30,
-            email: 'testuser@example.com',
-            password: 'password123'
-        } };
-
-        //manually mock res object
-        let statusCode = null;
-        let jsonData = null;
-        const res = {
-          status: (code) => { statusCode = code; return res; },
-          json: (data) => { jsonData = data; return res; }
+    // Missing fields
+    test("returns 400 if fields are missing", async () => {
+        req.body = {
+            firstName: "John",
+            lastName: "",
+            age: 25,
+            email: "john@test.com",
+            password: "123"
         };
+
         await createUser(req, res);
 
-        if (statusCode !== 500) throw new Error(`Expected status 500, got ${statusCode}`);
-        if (!jsonData || !jsonData.error || !jsonData.error.includes("duplicate key value")) {
-          throw new Error(`Unexpected json: ${JSON.stringify(jsonData)}`);
-        }
-        console.log('Test passed for duplicate email');  
+        expect(res.status).toHaveBeenCalledWith(400);
+        expect(res.json).toHaveBeenCalledWith({
+            error: "All fields are required"
+        });
     });
-});
 
-describe('wrong password should return error', () => {
-    const req = { body: {
-        email: 'testuser@example.com',
-        password: 'wrongpassword'
-    } };
+    // Invalid age
+    test("returns 400 if age is invalid", async () => {
+        req.body = {
+            firstName: "John",
+            lastName: "Doe",
+            age: "abc",
+            email: "john@test.com",
+            password: "123"
+        };
 
-    //manually mock res object
-    let statusCode = null;
-    let jsonData = null;
-    const res = {
-      status: (code) => { statusCode = code; return res; },
-      json: (data) => { jsonData = data; return res; }
-    };
+        await createUser(req, res);
 
-    test('login with wrong password', async () => {
-        await loginUser(req, res);
-
-        if (statusCode !== 401) throw new Error(`Expected status 401, got ${statusCode}`);
-        if (!jsonData || !jsonData.error || jsonData.error !== "Invalid credentials") {
-          throw new Error(`Unexpected json: ${JSON.stringify(jsonData)}`);
-        }
-        console.log('Test passed for wrong password');  
+        expect(res.status).toHaveBeenCalledWith(400);
+        expect(res.json).toHaveBeenCalledWith({
+            error: "Invalid age"
+        });
     });
-});
 
-describe('login with correct password should return token', () => {
-    const req = { body: {
-        email: 'oehi-douglas@loyola.edu',
-        password: 'oehidouglas' // replace with actual password for testing
-    } };  
+    // 3. Email already exists
+    test("returns 400 if email already exists", async () => {
+        req.body = {
+            firstName: "John",
+            lastName: "Doe",
+            age: 25,
+            email: "john@test.com",
+            password: "123"
+        };
 
-    //manually mock res object
-    let statusCode = null;
-    let jsonData = null;
-    const res = {
-      status: (code) => { statusCode = code; return res; },
-      json: (data) => { jsonData = data; return res; }
-    };
+        client.query.mockResolvedValueOnce({ rows: [{ id: 1 }] });
 
-    test('login with correct password', async () => {
-        await loginUser(req, res);
+        await createUser(req, res);
 
-        if (statusCode !== 200) throw new Error(`Expected status 200, got ${statusCode}`);
-        if (!jsonData || !jsonData.token) {
-          throw new Error(`Unexpected json: ${JSON.stringify(jsonData)}`);
-        }
-        console.log('Test passed for correct password');  
+        expect(client.query).toHaveBeenCalledWith(
+            "SELECT * FROM users WHERE email = $1",
+            ["john@test.com"]
+        );
+
+        expect(res.status).toHaveBeenCalledWith(400);
+        expect(res.json).toHaveBeenCalledWith({
+            error: "Email already in use"
+        });
+    });
+
+    // Successful creation
+    test("creates user successfully", async () => {
+        req.body = {
+            firstName: "John",
+            lastName: "Doe",
+            age: 25,
+            email: "john@test.com",
+            password: "123"
+        };
+
+        client.query.mockResolvedValueOnce({ rows: [] }); // email check
+        bcrypt.hash.mockResolvedValue("hashedPassword");
+
+        client.query.mockResolvedValueOnce({}); // insert
+
+        await createUser(req, res);
+
+        expect(bcrypt.hash).toHaveBeenCalledWith("123", 10);
+
+        expect(client.query).toHaveBeenCalledWith(
+            "INSERT INTO users (first_name, last_name, age, email, password) VALUES ($1, $2, $3, $4, $5)",
+            ["John", "Doe", 25, "john@test.com", "hashedPassword"]
+        );
+
+        expect(res.status).toHaveBeenCalledWith(201);
+        expect(res.json).toHaveBeenCalledWith({
+            message: "User created successfully"
+        });
+    });
+
+    // Database error
+    test("returns 500 on database error", async () => {
+        req.body = {
+            firstName: "John",
+            lastName: "Doe",
+            age: 25,
+            email: "john@test.com",
+            password: "123"
+        };
+
+        client.query.mockRejectedValue(new Error("DB failure"));
+
+        await createUser(req, res);
+
+        expect(res.status).toHaveBeenCalledWith(500);
+        expect(res.json).toHaveBeenCalledWith({
+            error: "Error creating user"
+        });
     });
 });

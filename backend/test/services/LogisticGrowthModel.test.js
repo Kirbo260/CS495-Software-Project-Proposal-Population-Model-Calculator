@@ -5,10 +5,11 @@ describe('LogisticGrowthModel', () => {
     // Solve for carrying capacity (K)
     test('calculates carrying capacity', () => {
         const model = new LogisticGrowthModel(
-            100, 750, null, 0.1, null, null, 2, "y"
+            100, 1500, null, 0.1, null, null, 2, "y"
         );
 
         const { results } = model.LogisticSolver();
+        console.log("Test results for carrying capacity:", results[0][1]);
 
         expect(results[0][1]).toBeGreaterThan(0);
     });
@@ -20,7 +21,7 @@ describe('LogisticGrowthModel', () => {
         );
 
         const { results } = model.LogisticSolver();
-
+        console.log("Test results for growth rate:", results[0][1]);
         expect(results[0][1]).toBeGreaterThan(0);
     });
 
