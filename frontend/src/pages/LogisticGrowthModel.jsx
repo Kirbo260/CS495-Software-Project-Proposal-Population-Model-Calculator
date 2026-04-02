@@ -153,7 +153,7 @@ function LogisticGrowth() {
                         ]}
                         frames={frames}
                         layout={{
-                            title: "Continuous Growth",
+                            title: "Logistic Growth",
                             plot_bgcolor: "#ffffff",
                             paper_bgcolor: "#1a1a1a",
                             font: { color: "white" },
@@ -191,6 +191,15 @@ function LogisticGrowth() {
                                     ]
                                 }
                             ]
+                        }}
+                        config={{
+                            toImageButtonOptions: {
+                                format: "png",
+                                filename: "logistic_growth_graph",
+                                height: 600,
+                                width: 800,
+                                scale: 2
+                            }
                         }}
                     />
                 </div>

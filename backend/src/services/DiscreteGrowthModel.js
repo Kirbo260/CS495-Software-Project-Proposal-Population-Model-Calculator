@@ -19,12 +19,16 @@ export default class DiscreteGrowthModel {
         const results = [];
         let denseTime = []; // To store dense time points for plotting a smooth curve if time is an array
         const graphResults = []; // To store results for dense time points for plotting
-        this.growthRate = Math.abs(this.growthRate);
+        
+        if (this.growthRate !== null) {
+            this.growthRate = Math.abs(this.growthRate); // Ensure growth rate is positive for calculations, as the model will determine if it's growth or decay
+        }
 
-        /*const nullCount = [this.initialPopulation, this.finalPopulation, this.growthRate, this.time].filter(v => v === null).length;
+        const nullCount = [this.initialPopulation, this.finalPopulation, this.growthRate, this.time].filter(v => v === null).length;
         if (nullCount > 1) {
             throw new Error("Please provide exactly 3 values to solve for the missing one.");
-        }*/
+        }
+        
         if (this.finalPopulation === null) {
             for (let i = 0; i <= this.maxTime; i++){
                 denseTime.push(i);
@@ -33,12 +37,10 @@ export default class DiscreteGrowthModel {
                 denseTime.forEach(t => {
                     let graphPopulation = this.initialPopulation * Math.pow((1 + this.growthRate), t);
                     graphResults.push([t, Number(graphPopulation.toFixed(2))]); // rounded to 2 d.p for graph results
-                    console.log(`Graph population at time ${t}: ${graphPopulation}`);
                 });
                 this.time.forEach(t => {
                     let population = this.initialPopulation * Math.pow((1 + this.growthRate), t);
                     results.push([t, Number(population.toFixed(2))]); // rounded to 2 d.p
-                    console.log(`Population at time ${t}: ${population}`);
                 });
             } 
             else if (this.model === "decay") {
@@ -51,7 +53,8 @@ export default class DiscreteGrowthModel {
                     results.push([t, Number(population.toFixed(2))]); // rounded to 2 d.p
                 });
             }
-        } else if (this.growthRate === null) {
+        } 
+        else if (this.growthRate === null) {
             if (this.model === "growth") {
             let r = (Math.pow((this.finalPopulation / this.initialPopulation), (1 / this.time[0])) - 1);
                   results.push([this.time[0], Number(r.toFixed(4))]); // rounded to 4 d.p for growth rate

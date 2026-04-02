@@ -166,7 +166,7 @@ function DiscreteGrowth() {
                         ]}
                         frames={frames}
                         layout={{
-                            title: "Continuous Growth",
+                            title: "Discrete Growth",
                             plot_bgcolor: "#ffffff",
                             paper_bgcolor: "#1a1a1a",
                             font: { color: "white" },
@@ -204,6 +204,15 @@ function DiscreteGrowth() {
                                     ]
                                 }
                             ]
+                        }}
+                        config={{
+                            toImageButtonOptions: {
+                                format: "png",
+                                filename: "discrete_growth_graph",
+                                height: 600,
+                                width: 800,
+                                scale: 2
+                            }
                         }}
                     />
                 </div>

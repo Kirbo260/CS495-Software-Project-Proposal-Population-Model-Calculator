@@ -190,6 +190,15 @@ function ContinuousGrowth() {
                 }
               ]
             }}
+            config ={{
+              toImageButtonOptions: {
+                format: "png",
+                filename: "continuous_growth_graph",
+                height: 600,
+                width: 800,
+                scale: 2
+              }
+            }}
           />
         </div>
       )}

@@ -19,10 +19,10 @@ export default class ContinuousGrowthModel {
         let denseTime = []; // To store dense time points for plotting a smooth curve if time is an array
         const graphResults = []; // To store results for dense time points for plotting
 
-       /* const nullCount = [this.initialPopulation, this.finalPopulation, this.growthRate, this.time].filter(v => v === null).length;
+        const nullCount = [this.initialPopulation, this.finalPopulation, this.growthRate, this.time].filter(v => v === null).length;
         if (nullCount > 1) { // Check if more than one parameter is null, which would make it impossible to solve
             throw new Error("Please provide exactly 2 values to solve for the missing one."); //  In continuous growth, we can only solve for one missing parameter at a time
-        }*/
+        }
 
         if (this.growthRate === null) { // If growth rate is missing, calculate it using the formula rearranged: r = (ln(P(t)/P0)) / t
             let r = (Math.log(this.finalPopulation / this.initialPopulation)) / this.time[0];
@@ -41,11 +41,11 @@ export default class ContinuousGrowthModel {
                 denseTime.push(i);
             }
             this.time.forEach(t => {
-                let population = this.initialPopulation * Math.pow(Math.exp(1), (this.growthRate * t));
+                let population = this.initialPopulation * Math.exp(this.growthRate * t);
                 results.push([t, Number(population.toFixed(2))]);
              });
             denseTime.forEach(t => {
-                let graphPopulation = this.initialPopulation * Math.pow(Math.exp(1), (this.growthRate * t));
+                let graphPopulation = this.initialPopulation * Math.exp(this.growthRate * t);
                 graphResults.push([t, Number(graphPopulation.toFixed(2))]);
              });
         }
