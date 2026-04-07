@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Plot from "react-plotly.js";
+import ModalInputs from "../components/ModalInputs";
 
 function DiscreteGrowth() {
     const [time, setTime] = useState("");
@@ -11,6 +12,12 @@ function DiscreteGrowth() {
     const [timeFormat, setTimeFormat] = useState("none");
     const [birthRate, setBirthRate] = useState("");
     const [deathRate, setDeathRate] = useState("");
+    const [count, setCount] = useState(0);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    // check if user is logged in to conditionally render the save button
+    // Outside so handleSave can access it and conditionally render the save button
+    const isLoggedIn = !!localStorage.getItem("token");
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -31,6 +38,45 @@ function DiscreteGrowth() {
         const result = await response.json();
         setData(result);
     };
+
+    const handleSave = (mdata) => {
+        // Open the modal to input model details
+        const modelData = ({
+            name: mdata.name,
+            description: mdata.description,
+            version: mdata.version,
+            inputs: {
+                time: time || "",
+                timeFormat: timeFormat || "none",
+                initialPopulation: initial || "",
+                finalPopulation: final || "",
+                growthRate: growthRate || "",
+                modelType: model || "growth",
+                birthRate: birthRate || "",
+                deathRate: deathRate || ""
+            }
+        });
+
+        // Send the model data to the backend to save in the database
+        fetch("/api/models", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${localStorage.getItem("token")}`
+            },
+            body: JSON.stringify(modelData)
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                alert("Model saved successfully!", data);
+                setIsModalOpen(false);
+            })
+            .catch((err) => {
+                console.error("Error saving model:", err);
+                alert("Failed to save model. Please try again.");
+            });
+    };
+
 
     // Adding animation to the graph using Plotly's animation features
     const frames = data
@@ -116,10 +162,16 @@ function DiscreteGrowth() {
                     onChange={(e) => setDeathRate(e.target.value)}
                 />
 
-                <button type="submit" className="calculate-btn">
-                    Calculate
-                </button>
+                <button type="submit" className="calculate-btn" onClick={() => setCount(1)} >Calculate</button>
             </form>
+            {isLoggedIn && count == 1 && (
+
+                <button onClick={() => setIsModalOpen(true)} className="save-btn">
+                    Save Model
+                </button>
+            )}
+
+            <ModalInputs isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} onSubmit={handleSave} />
 
             {data && (
                 <div>

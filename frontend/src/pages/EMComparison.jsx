@@ -1,3 +1,6 @@
+import { useState } from "react";
+import Plot from "react-plotly.js";
+import ModalInputs from "../components/ModalInputs";
 
 export default function EMComparison() {
     return (

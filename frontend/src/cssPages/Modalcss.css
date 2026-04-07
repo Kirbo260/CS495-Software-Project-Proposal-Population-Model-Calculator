@@ -1,0 +1,106 @@
+/* Modal Background */
+.modal {
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background-color: rgba(0, 0, 0, 0.6);
+
+  /* Fade in background */
+  animation: fadeIn 0.3s ease;
+}
+
+/* Modal Box */
+.modal-content {
+  background: linear-gradient(135deg, #ff4d4d, #ffcc00, black);
+  padding: 25px;
+  border-radius: 12px;
+  width: 400px;
+  max-width: 90%;
+
+  box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+  color: white;
+  text-align: center;
+
+  /* Slide + fade animation */
+  animation: slideIn 0.35s ease;
+}
+
+/* Close Button */
+.close {
+  color: white;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close:hover {
+  color: black;
+}
+
+/* Inputs */
+.modal-content input,
+.modal-content textarea {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+
+  border-radius: 6px;
+  border: none;
+
+  background-color: white;
+  color: black;
+  font-size: 14px;
+}
+
+/* Button */
+.theButton {
+  margin-top: 15px;
+  width: 100%;
+  padding: 12px;
+
+  background-color: #cc0000;
+  color: white;
+  border: none;
+  border-radius: 6px;
+
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.theButton:hover {
+  background-color: #990000;
+}
+
+/* 🔥 Animations */
+
+/* Background fade */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Modal slide + fade */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(40px); /* start slightly below */
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

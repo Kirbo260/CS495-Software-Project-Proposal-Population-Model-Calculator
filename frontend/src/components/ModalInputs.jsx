@@ -1,4 +1,5 @@
 import {useState} from "react";
+import "../cssPages/Modalcss.css";
 
 export default function ModalInputs({ isOpen, onClose, onSubmit }) {
     const [modelName, setModelName] = useState("");
@@ -36,7 +37,7 @@ export default function ModalInputs({ isOpen, onClose, onSubmit }) {
         <div className="modal">
             <div className="modal-content">
 
-                <button onClick={handleClose}>X</button>
+                <span className="close" onClick={handleClose}>&times;</span>
 
                 <h2>Save Model</h2>
                 <input
@@ -56,7 +57,7 @@ export default function ModalInputs({ isOpen, onClose, onSubmit }) {
                     value={version}
                     onChange={(e) => setVersion(e.target.value)}
                 />
-                 <button type="submit" onClick={handleSubmit}>Submit</button>
+                 <button className="theButton" type="submit" onClick={handleSubmit}>Submit</button>
             </div>
         </div>
     );
