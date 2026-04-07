@@ -168,6 +168,40 @@ export function setupRoutes(app) {
     }
   });
 
+  app.get('/api/predatorprey', (req, res) => {
+    const { a_prey, b_predation, c_predator, d_reproduction, time, timeFormat } = req.query;
+
+    try {
+      const model = new PredatorPreyModel(
+        a_prey,
+        b_predation,
+        c_predator,
+        d_reproduction,
+        time,
+        timeFormat
+      );
+
+      const result = model.PredatorPreySolver();
+
+      res.json({
+        table: {
+          headers: ["Time", "Prey Population", "Predator Population"],
+          rows: result.results.map(([time, preyPopulation, predatorPopulation]) => ({
+            time, preyPopulation, predatorPopulation
+          }))
+        },
+        graph: {
+          rows: result.graphResults.map(([time, preyPopulation, predatorPopulation]) => ({
+            time, preyPopulation, predatorPopulation
+          }))
+        }
+      });
+
+    } catch (err) {
+      res.status(400).json({ error: err.message });
+    }
+  });
+
   app.get("/users", async (req, res) => {
     try {
       const result = await client.query("SELECT * FROM users");

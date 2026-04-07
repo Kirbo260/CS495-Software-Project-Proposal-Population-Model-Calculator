@@ -40,7 +40,22 @@ export default function APIHelper(req, res, next) {
         ? req.query.actualValues.includes(",")
         ? req.query.actualValues.split(",").map(Number)
         : Number(req.query.actualValues)
-        : null // Array of actual population values
+        : null, // Array of actual population values
+
+        // We can add more parameters here as needed for other models, such as parameters specific to the predator-prey model, etc.
+        a_prey: req.query.a_prey ? Number(req.query.a_prey) : null,
+
+        b_predation: req.query.b_predation ? Number(req.query.b_predation) : null,
+
+        c_predator: req.query.c_predator ? Number(req.query.c_predator) : null,
+
+        d_reproduction: req.query.d_reproduction ? Number(req.query.d_reproduction) : null,
+    
+        timeChange : req.query.timeChange ? Number(req.query.timeChange) : null,
+
+        finalTime : req.query.finalTime ? Number(req.query.finalTime) : null
+
+
     }
     next();
 }
