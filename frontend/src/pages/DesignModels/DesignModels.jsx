@@ -11,7 +11,7 @@ export default function DesignModels() {
 
     const modelOptions = [
         {
-            label: "Population Growth Rate",
+            label: "Continuous Growth",
             link: "#"
         },
         {
@@ -19,7 +19,7 @@ export default function DesignModels() {
             link: "#"
         },
         {
-            label: "Exponential Growth",
+            label: "Population Growth Rate",
             link: "/design-models/exponential-growth-model"
         },
         {
