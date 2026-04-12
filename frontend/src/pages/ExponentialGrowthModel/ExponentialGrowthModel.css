@@ -131,6 +131,12 @@
     background-color: #D9D9D9;
 }
 
+.graph-error {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #7a0019;
+}
+
 .btn-reopen {
     width: 45px;
     height: 45px;
