@@ -4,7 +4,7 @@ import { FaPlus } from "react-icons/fa6";
 import graphBg from "../../assets/graph.png";
 import "./ExponentialGrowthModel.css";
 import { useMemo, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Plot from "react-plotly.js";
 
 const GRAPH_DURATION = 10;
@@ -13,6 +13,8 @@ export default function ExponentialGrowthModel() {
 
     const [isPanelOpen, setIsPanelOpen] = useState(true);
     const [isCompareOpen, setIsCompareOpen] = useState(false);
+    const [isSaveModal, setIsSaveModal] = useState(false);
+    const navigate = useNavigate();
 
     const [form, setForm] = useState({
         initialPopulation: "100",
@@ -20,6 +22,8 @@ export default function ExponentialGrowthModel() {
     })
 
     const [zoomLevel, setZoomLevel] = useState(1);
+    const [xPan, setXPan] = useState(50);
+    const [yPan, setYPan] = useState(50);
 
     const chartSeries = useMemo(() => {
         const p0 = Number(form.initialPopulation);
@@ -92,20 +96,44 @@ export default function ExponentialGrowthModel() {
 
 
     const plotRange = useMemo(() => {
-        const [xMin, xMax] = basePlotRange.x;
-        const [yMin, yMax] = basePlotRange.y;
+        // const [xMin, xMax] = basePlotRange.x;
+        // const [yMin, yMax] = basePlotRange.y;
 
-        const xCenter = (xMin + xMax) / 2;
-        const yCenter = (yMin + yMax) / 2;
+        // const xCenter = (xMin + xMax) / 2;
+        // const yCenter = (yMin + yMax) / 2;
 
-        const xHalf = ((xMax - xMin) * zoomLevel) / 2;
-        const yHalf = ((yMax - yMin) * zoomLevel) / 2;
+        // const xHalf = ((xMax - xMin) * zoomLevel) / 2;
+        // const yHalf = ((yMax - yMin) * zoomLevel) / 2;
+
+        // return {
+        //     x: [Math.max(0, xCenter - xHalf), xCenter + xHalf],
+        //     y: [Math.max(0, yCenter - yHalf), yCenter  + yHalf]
+        // }
+
+        const [baseXMin, baseXMax] = basePlotRange.x;
+        const [baseYMin, baseYMax] = basePlotRange.y;
+
+        const baseXSpan = baseXMax - baseXMin;
+        const baseYSpan = baseYMax - baseYMin;
+
+        const visibleXSpan = baseXSpan * zoomLevel;
+        const visisbleYSpan = baseYSpan * zoomLevel;
+
+        const clampedXSpan = Math.min(visibleXSpan, baseXSpan);
+        const clampedYSpan = Math.min(visisbleYSpan, baseYSpan);
+
+        const movableX = Math.max(0, baseXSpan - clampedXSpan);
+        const movableY = Math.max(0, baseYSpan);
+
+        const xStart = baseXMin + (xPan / 100) * movableX;
+        const yStart = baseYMin + ((100 - yPan) / 100) * movableY;
 
         return {
-            x: [Math.max(0, xCenter - xHalf), xCenter + xHalf],
-            y: [Math.max(0, yCenter - yHalf), yCenter  + yHalf]
+            x: [xStart, xStart + clampedXSpan],
+            y: [yStart, yStart + clampedYSpan]
         }
-    }, [basePlotRange, zoomLevel]);
+
+    }, [basePlotRange, zoomLevel, xPan, yPan]);
 
 
     const handleChange = (event) => {
@@ -117,6 +145,8 @@ export default function ExponentialGrowthModel() {
         }));
 
         setZoomLevel(1);
+        setXPan(50);
+        setYPan(50);
     }
 
     const handleZoomIn = () => {
@@ -190,7 +220,7 @@ export default function ExponentialGrowthModel() {
             </div>
 
             <div className="exponential-growth-model-content">
-                <button className="btn btn-circle btn-close">
+                <button className="btn btn-circle btn-close" type="button" onClick={() => setIsSaveModal(true)}>
                     <IoClose />
                 </button>
 
@@ -208,6 +238,9 @@ export default function ExponentialGrowthModel() {
                         <BiCollapseHorizontal />
                     </button>
                 </div>
+
+                    <input type="range" min={0} max={100} value={yPan} onChange={(event) => setYPan(Number(event.target.value))} className="graph-pan-slider graph-pan-slider-y" />
+                    <input type="range" min={0} max={100} value={xPan} onChange={(event) => setXPan(event.target.value)} className="graph-pan-slider graph-pan-slider-x"  />
 
                 {
                     isPanelOpen ? (
@@ -278,6 +311,34 @@ export default function ExponentialGrowthModel() {
                     </div>
 
                 </div>
+
+            {isSaveModal && (
+                <div className="save-modal-overlay">
+                    <div className="save-model-modal">
+                        <div className="save-model-header">
+                            <button type="button" className="save-model-close" onClick={() => setIsSaveModal(false)}>
+                                <IoClose />
+                            </button>
+                            <h2>Saving Model</h2>
+                        </div>
+
+                        <div className="save-model-body">
+                            <input type="text" placeholder="Name of graph" className="save-model-input" />
+
+                            <div className="save-model-actions">
+                                <button type="button" className="save-model-btn save-btn">
+                                    Save
+                                </button>
+                                <button type="button" className="save-model-btn cancel-btn" onClick={() => navigate("/design-models")}>
+                                    Cancel
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            )}
+
 
             </div>
         </div>
