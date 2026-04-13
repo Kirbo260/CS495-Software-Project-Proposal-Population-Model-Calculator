@@ -5,6 +5,7 @@ export default function ModalInputs({ isOpen, onClose, onSubmit }) {
     const [modelName, setModelName] = useState("");
     const [description, setDescription] = useState("");
     const [version, setVersion] = useState("");
+    const [type, setType] = useState("");
 
     const handleClose = () => {
         onClose();
@@ -16,13 +17,16 @@ export default function ModalInputs({ isOpen, onClose, onSubmit }) {
         const data = {
         name: modelName,
         description,
-        version
+        version,
+        type
+
     };
 
     console.log({
       modelName,
       description,
-      version
+      version,
+      type
     });
 
     onSubmit(data);
@@ -57,6 +61,20 @@ export default function ModalInputs({ isOpen, onClose, onSubmit }) {
                     value={version}
                     onChange={(e) => setVersion(e.target.value)}
                 />
+                <select
+                    type="text"
+                    placeholder="Type"
+                    value={type}
+                    onChange={(e) => setType(e.target.value)}
+                >
+                    <option value="">Select Type</option>
+                    <option value="logistic">Logistic</option>
+                    <option value="continuous">Continuous</option>
+                    <option value="discrete">Discrete</option>
+                    <option value="predator_prey">Predator-Prey</option>
+                    <option value="EmComparison">EmComparison</option>
+                </select>
+        
                  <button className="theButton" type="submit" onClick={handleSubmit}>Submit</button>
             </div>
         </div>

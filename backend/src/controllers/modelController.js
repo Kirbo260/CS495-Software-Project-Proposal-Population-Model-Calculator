@@ -4,7 +4,7 @@ import { client } from '../../db.js';
 // Create a new model entry
 export const createModel = async (req, res) => {
     // store the model information in the database
-    const { name, description, version, inputs } = req.body;
+    const { name, description, version, inputs, type } = req.body;
 
     // user_id with jwt 
     const user_id = req.user.userId; // assuming auth middleware sets req.user
@@ -12,8 +12,8 @@ export const createModel = async (req, res) => {
 
     try {
         const result = await client.query(
-            'INSERT INTO models (user_id, name, description, version, inputs) VALUES ($1, $2, $3, $4, $5) RETURNING *',
-            [user_id, name, description, version, JSON.stringify(inputs)]
+            'INSERT INTO models (user_id, name, description, version, inputs, type) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
+            [user_id, name, description, version, JSON.stringify(inputs), type]
         );
         res.status(201).json(result.rows[0]);
     } catch (error) {
@@ -60,11 +60,11 @@ export const getModelById = async (req, res) => {
 export const updateModel = async (req, res) => {
     const user_id = req.user.userId; // assuming auth middleware sets req.user
     const model_id = req.params.id;
-    const { name, description, version, inputs } = req.body;
+    const { name, description, version, inputs, type } = req.body;
     try {
         const result = await client.query(
-            'UPDATE models SET name = $1, description = $2, version = $3, inputs = $4 WHERE id = $5 AND user_id = $6 RETURNING *',
-            [name, description, version, JSON.stringify(inputs), model_id, user_id]
+            'UPDATE models SET name = $1, description = $2, version = $3, inputs = $4, type = $5 WHERE id = $6 AND user_id = $7 RETURNING *',
+            [name, description, version, JSON.stringify(inputs), type, model_id, user_id]
         );
         if (result.rows.length === 0) {
             return res.status(404).json({ error: 'Model not found or not authorized' });
