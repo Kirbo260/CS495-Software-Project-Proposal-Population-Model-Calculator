@@ -32,7 +32,7 @@ export default function DesignModels() {
         <>
             <div className="design-models">
                 <div className="design-models-header">
-                    <button className="back-btn" onClick={() => navigate(-1)}>
+                    <button className="back-btn" onClick={() => navigate("/")}>
                         <IoChevronBack size={45} />
                         <span>Back</span>
                     </button>
