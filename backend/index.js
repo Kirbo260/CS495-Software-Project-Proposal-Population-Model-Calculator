@@ -24,4 +24,6 @@ connectDB().then(async () => {
   })
   .catch(err => {
     console.error("Failed to connect to PostgreSQL:", err);
+    console.error("Database init failed:", err);
+    process.exit(1); // stop server if DB fails to connect or initialize
   });
