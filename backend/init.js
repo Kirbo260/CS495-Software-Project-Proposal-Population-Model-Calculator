@@ -25,9 +25,22 @@ export const initDB = async () => {
                 name TEXT NOT NULL,
                 description TEXT,
                 version TEXT,
+                type ENUM('logistic', 'continuous', 'discrete', 'predator_prey', 'EmComparison'), 
 
                 inputs JSONB,   -- stores all values needed to replay graphs
 
+                created_at TIMESTAMP DEFAULT NOW() 
+            );
+        `);
+
+        // CSV TABLE
+        await client.query(`
+            CREATE TABLE IF NOT EXISTS csv_files (
+                id SERIAL PRIMARY KEY,
+                user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+                filename TEXT NOT NULL,
+                file BYTEA, -- store the actual file as binary data
+                data JSONB,  -- store CSV data as JSON for easy retrieval
                 created_at TIMESTAMP DEFAULT NOW()
             );
         `);
