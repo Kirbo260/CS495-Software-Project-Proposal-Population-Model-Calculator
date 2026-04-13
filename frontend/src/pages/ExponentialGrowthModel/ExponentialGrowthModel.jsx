@@ -25,34 +25,49 @@ export default function ExponentialGrowthModel() {
         const p0 = Number(form.initialPopulation);
         const pf = Number(form.finalPopulation);
 
-        if (!Number.isFinite(p0) || !Number.isFinite(pf) || p0 <= 0 || pf <= 0) {
+        if (!Number.isFinite(p0) || !Number.isFinite(pf) || p0 === 0 || pf === 0) {
             return {
                 x: [0],
                 y: [0],
                 isValid: false,
-                maxY: 0
+                maxY: 10,
+                minY: 10
+            }
+        }
+
+        const sameSign = (p0 > 0 && pf > 0) || (p0 < 0 && pf < 0);
+        if(!sameSign) {
+            return {
+                x: [0],
+                y: [0],
+                isValid: false,
+                maxY: 10,
+                minY: -10
             }
         }
 
         const totalTime = GRAPH_DURATION;
-
-        const ratePerStep = Math.pow(pf / p0, 1 / totalTime) - 1;
-
         const samples = 120;
+
+        const sign = Math.sign(p0);
+        const startAbs = Math.abs(p0);
+        const endAbs = Math.abs(pf);
+
+        const ratePerStep = Math.pow(endAbs / startAbs, 1 / totalTime) - 1;
+
         const x = Array.from(
             { length: samples + 1 },
             (_, i) => (totalTime * i) / samples
         );
 
-        const y = x.map((t) => p0 * Math.pow(1 + ratePerStep, t));
-        const maxY = Math.max(...y);
+        const y = x.map((t) => sign * startAbs * Math.pow(1 + ratePerStep, t));
 
         return {
             x,
             y,
             isValid: true,
-            maxY,
-            ratePerStep
+            maxY: Math.max(...y),
+            minY: Math.min(...y)
         }
     }, [form]);
 
@@ -60,13 +75,18 @@ export default function ExponentialGrowthModel() {
         if(!chartSeries.isValid) {
             return {
                 x: [0, GRAPH_DURATION],
-                y: [0, 10]
+                y: [-10, 10]
             }
         }
 
+        const minY = chartSeries.minY;
+        const maxY = chartSeries.maxY;
+        const span = Math.max(10, maxY - minY);
+        const padding = span * 0.15;
+
         return {
             x: [0, GRAPH_DURATION],
-            y: [0, Math.max(10, chartSeries.maxY * 1.15)]
+            y: [minY - padding, maxY + padding]
         }
     }, [chartSeries]);
 
@@ -141,7 +161,7 @@ export default function ExponentialGrowthModel() {
                             zeroline: true,
                             zerolinecolor: "#000",
                             fixedrange: true,
-                            showticklabels: false,
+                            showticklabels: true,
                             ticks: "",
                             title: ""
                         },
@@ -154,7 +174,7 @@ export default function ExponentialGrowthModel() {
                             zerolinecolor: "#000",
                             zerolinewidth: 5,
                             fixedrange: true,
-                            showticklabels: false,
+                            showticklabels: true,
                             ticks: "",
                             title: ""
                         },
@@ -217,6 +237,11 @@ export default function ExponentialGrowthModel() {
                                         </select>
                                     </div> */}
                                 </form>
+                                {!chartSeries.isValid && (
+                                    <p className="graph-error">
+                                        Use two positive values or two negative values. Exponential curvees cannot cross zero.
+                                    </p>
+                                )}
                             </div>
 
                         </div>
