@@ -3,9 +3,10 @@ import express from 'express';
 import { createUser } from '../controllers/userControllers.js';
 import { loginUser, logoutUser } from '../controllers/LoginController.js';
 import { authMiddleware } from '../middleWare/AuthMiddleWare.js';
-import uploadMiddle from '../middleWare/uploadMiddleWare.js';
+import uploadMiddleWare from '../middleWare/uploadMiddleWare.js';
 import { createModel, getModels, getModelById, deleteModel, deleteAllModelsForUser } from '../controllers/modelController.js';
 import { uploadCSV, getCSVFiles, getCSVFileById, deleteCSVFile, deleteAllCSVFilesForUser } from '../controllers/FileController.js';
+import { processCSV } from '../controllers/ProcessController.js';
 
 const router = express.Router();
 
@@ -34,8 +35,11 @@ router.delete("/:id", authMiddleware, deleteModel);
 
 router.delete("/my", authMiddleware, deleteAllModelsForUser);
 
-// routes for uploading and managing CSV files, protected by authMiddleware
-router.post("/upload", uploadMiddle.single("file"), uploadCSV);
+// routes for uploading csv
+router.post("/upload/process", uploadMiddleWare("Regular"), processCSV);
+
+// routes for uploading and storing csv files, protected by authMiddleware
+router.post("/upload/store", uploadMiddleWare("Regular"), uploadCSV);
 
 router.get("/files", authMiddleware, getCSVFiles);
 

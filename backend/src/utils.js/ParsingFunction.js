@@ -1,7 +1,7 @@
 // PapaParsing for CSV parsing
 import Papa from "papaparse";
 
-export const parseCSV = (csvFile) => {
+const parseCSV = (csvFile) => {
 
     return new Promise((resolve, reject) => {
         Papa.parse(csvFile, {
@@ -23,3 +23,5 @@ export const parseCSV = (csvFile) => {
         });
     });
 };
+
+export default parseCSV;

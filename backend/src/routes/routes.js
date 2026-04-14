@@ -3,6 +3,7 @@ import ContinuousGrowthModel from "../services/ContinuousGrowthModel.js";
 import LogisticGrowthModel from "../services/LogisticGrowthModel.js";
 import DiscreteGrowthModel from "../services/DiscreteGrowthModel.js";
 import EMComparison from "../services/EMComparison.js";
+import PredatorPreyModel from "../services/PredatorPrey.js";
 import ApiHelper from "../utils.js/ApiHelper.js";
 import { client } from '../../db.js';
 
@@ -168,8 +169,8 @@ export function setupRoutes(app) {
     }
   });
 
-  app.get('/api/predatorprey', (req, res) => {
-    const { a_prey, b_predation, c_predator, d_reproduction, time, timeFormat } = req.query;
+  app.get('/api/predatorprey', ApiHelper, (req, res) => {
+    const { a_prey, b_predation, c_predator, d_reproduction, time, timeChange, finalTime, preyInitial, predatorInitial } = req.ApiHelper;
 
     try {
       const model = new PredatorPreyModel(
@@ -178,24 +179,41 @@ export function setupRoutes(app) {
         c_predator,
         d_reproduction,
         time,
-        timeFormat
+        finalTime,
+        timeChange,
+        preyInitial,
+        predatorInitial
       );
 
-      const result = model.PredatorPreySolver();
+      console.log({
+  a_prey,
+  b_predation,
+  c_predator,
+  d_reproduction,
+  timeChange,
+  finalTime,
+  preyInitial,
+  predatorInitial
+});
+      const result = model.LoktaVolterraSolver();
 
-      res.json({
-        table: {
-          headers: ["Time", "Prey Population", "Predator Population"],
-          rows: result.results.map(([time, preyPopulation, predatorPopulation]) => ({
-            time, preyPopulation, predatorPopulation
-          }))
-        },
-        graph: {
-          rows: result.graphResults.map(([time, preyPopulation, predatorPopulation]) => ({
-            time, preyPopulation, predatorPopulation
-          }))
-        }
-      });
+ res.json({
+  table: {
+    headers: ["Time", "Prey Population", "Predator Population"],
+    rows: result.time.map((t, i) => ({
+      time: t,
+      preyPopulation: Number(result.prey[i]).toFixed(4),
+      predatorPopulation: Number(result.predator[i]).toFixed(4)
+    }))
+  },
+  graph: {
+    rows: result.time.map((t, i) => ({
+      time: t,
+      preyPopulation: Number(result.prey[i]).toFixed(2),
+      predatorPopulation: Number(result.predator[i]).toFixed(2)
+    }))
+  }
+});
 
     } catch (err) {
       res.status(400).json({ error: err.message });
