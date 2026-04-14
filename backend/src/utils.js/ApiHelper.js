@@ -53,8 +53,11 @@ export default function APIHelper(req, res, next) {
     
         timeChange : req.query.timeChange ? Number(req.query.timeChange) : null,
 
-        finalTime : req.query.finalTime ? Number(req.query.finalTime) : null
+        finalTime : req.query.finalTime ? Number(req.query.finalTime) : null,
 
+        preyInitial: req.query.preyInitial ? Number(req.query.preyInitial) : null,
+
+        predatorInitial: req.query.predatorInitial ? Number(req.query.predatorInitial) : null
 
     }
     next();

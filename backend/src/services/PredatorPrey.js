@@ -1,51 +1,85 @@
-// Predator-Prey model implementation in JavaScript
-// This model describes the interactions between two species: a predator and its prey. The population dynamics are governed by a set of differential equations.
-// The equations are as follows:
-// dP/dt = aP - bP*H (Prey population growth and predation)
-// dH/dt = cP*H - dH (Predator population growth and natural death) (Lotka-Volterra equations)
-import TimeChecker from "../utils.js/TimeChecker.js";
-import GrowthRate from "../utils.js/GrowthRate.js";
-
+// Predator-Prey model using RK4 (Runge–Kutta 4th order)
 export default class PredatorPrey {
-    constructor(constantA, constantB, constantC, constantH, startTime, endTime, timeChange, preyInitial, predatorInitial) {
-        this.preyInitial = preyInitial; // Initial population of prey
-        this.predatorInitial = predatorInitial; // Initial population of predators
-        this.a = constantA; // Growth rate of prey (a)
-        this.b = constantB; // Rate at which predators consume prey (b)
-        this.c = constantC; // Growth rate of predators per consumed prey (c)
-        this.h = constantH; // Natural death rate of predators (h)
-        this.time = startTime; // Start time for the simulation
-        this.endTime = endTime; // End time for the simulation
-        this.timeChange = timeChange; // Time step for the simulation
+    constructor(a_prey, b_predation, c_predator, d_reproduction, startTime, endTime, timeChange, preyInitial, predatorInitial) {
+        this.preyInitial = Number(preyInitial);
+        this.predatorInitial = Number(predatorInitial);
+
+        this.a = Number(a_prey);
+        this.b = Number(b_predation);
+        this.c = Number(c_predator);
+        this.d = Number(d_reproduction);
+
+        this.time = Number(startTime);
+        this.endTime = Number(endTime);
+        this.dt = Number(timeChange);
     }
 
-    // Method to calculate the population of prey and predators over time
+    // Derivatives
+    dPrey(prey, predator) {
+        return this.a * prey - (this.b * prey * predator);
+    }
+
+    dPredator(prey, predator) {
+        return this.c * prey * predator - (this.d * predator);
+    }
+
     calculatePopulation() {
-        const x = [this.preyInitial];
-        const y = [this.predatorInitial];
-        const tValues = [this.time];
-        const a = this.a;
-        const b = this.b;
-        const c = this.c;
-        const h = this.h;
-        const dt = this.timeChange;
+        let prey = this.preyInitial;
+        let predator = this.predatorInitial;
+        let t = this.time;
 
-        for (let i = 0, t = this.time; t <= this.endTime; t += dt, i++) {
-            // Calculate the change in prey and predator populations
-            const dPrey = (a * x[i] - (b * x[i] * y[i])) * dt;
-            const dPredator = (c * x[i] * y[i] - (h * y[i])) * dt;
+        const x = [prey];
+        const y = [predator];
+        const tValues = [t];
 
-            // Update the populations & time
-            x.push(Number((x[i] + dPrey).toFixed(2))); // Round to 2 decimal places for better readability
-            y.push(Number((y[i] + dPredator).toFixed(2)));
-            tValues.push(t + dt);
+        const dt = this.dt;
+
+        while (t < this.endTime - dt) {
+
+            // RK4 for prey
+            const k1x = this.dPrey(prey, predator) * dt;
+            const k1y = this.dPredator(prey, predator) * dt;
+
+            const k2x = this.dPrey(prey + 0.5 * k1x, predator + 0.5 * k1y) * dt;
+            const k2y = this.dPredator(prey + 0.5 * k1x, predator + 0.5 * k1y) * dt;
+
+            const k3x = this.dPrey(prey + 0.5 * k2x, predator + 0.5 * k2y) * dt;
+            const k3y = this.dPredator(prey + 0.5 * k2x, predator + 0.5 * k2y) * dt;
+
+            const k4x = this.dPrey(prey + k3x, predator + k3y) * dt;
+            const k4y = this.dPredator(prey + k3x, predator + k3y) * dt;
+
+            // Update state
+            // prey + dx is the RK4 formula for updating the state
+            // dx = (k1 + 2*k2 + 2*k3 + k4)/6
+            prey = prey + (1 / 6) * (k1x + 2 * k2x + 2 * k3x + k4x);
+            predator = predator + (1 / 6) * (k1y + 2 * k2y + 2 * k3y + k4y);
+
+            t += dt;
+
+            x.push(prey);
+            y.push(predator);
+            tValues.push(Number(t.toFixed(4)));
         }
 
-        return {time: tValues, prey: x, predator: y};
+        if (prey < 0 || predator < 0) {
+            return {
+                time: tValues,
+                prey: x,
+                predator: y,
+                error: "Population became negative — simulation stopped early"
+            };
+        }
+
+        return {
+            time: tValues,
+            prey: x,
+            predator: y
+        };
     }
+
 
     LoktaVolterraSolver() {
         return this.calculatePopulation();
     }
-
 }
