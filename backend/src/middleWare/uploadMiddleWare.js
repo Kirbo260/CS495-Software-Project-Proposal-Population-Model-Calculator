@@ -27,15 +27,18 @@ export default function uploadMiddleWare(modelType) {
                 return res.status(400).json({ error: "No file uploaded" });
             }
 
-            const parsedData = ParsingFunction(req.file.buffer.toString());
+            const parsedData = await ParsingFunction(req.file.buffer.toString());
 
-            if (!parsedData || parsedData.length === 0) {
+            if (!parsedData || parsedData.length === 0 || !parsedData[0]) {
                 return res.status(400).json({ error: "CSV file is empty or invalid" });
             }
 
+            // debug log the parsed data to see what it looks like
+            console.log("Parsed CSV data:", parsedData);
+
             // get the headers from the first row of the parsed data
             // normalize headers to lowercase for easier comparison
-            const headers = Object.keys(parsedData[0]).map(h => h.toLowerCase());
+            const headers = Object.keys(parsedData[0]).map(h => h.trim().toLowerCase());
 
             // Validate that the required columns are present (using aliases)
             if (modelType === "Regular") {
@@ -75,10 +78,10 @@ export default function uploadMiddleWare(modelType) {
         const normalized = {};
 
         for (const standardKey in aliases) {
-            const possibleNames = aliases[standardKey].map(a => a.toLowerCase());
+            const possibleNames = aliases[standardKey].map(a => a.trim().toLowerCase());
 
             for (const key in row) {
-                if (possibleNames.includes(key.toLowerCase())) {
+                if (possibleNames.includes(key.trim().toLowerCase())) {
                     normalized[standardKey] = row[key];
                     break;
                 }
@@ -90,7 +93,7 @@ export default function uploadMiddleWare(modelType) {
 
     // Helper function to find the correct column name based on aliases
     function hasValidColumn(headers, aliasList) {
-        return aliasList.some(alias => headers.includes(alias));
+        return aliasList.some(alias => headers.includes(alias.trim().toLowerCase()));
     }
 
     return [upload.single("file"), validateFileStructure];

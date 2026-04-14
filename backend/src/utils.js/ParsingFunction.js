@@ -5,7 +5,6 @@ const parseCSV = (csvFile) => {
 
     return new Promise((resolve, reject) => {
         Papa.parse(csvFile, {
-            download: true, // allow downloading the file if it's a URL
             header: true, // treat the first row as headers
             comments: "#", // ignore lines starting with #
             skipEmptyLines: true, // skip empty lines
