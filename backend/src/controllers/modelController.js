@@ -27,7 +27,7 @@ export const getModels = async (req, res) => {
     const user_id = req.user.userId; // assuming auth middleware sets req.user
     try {
         const result = await client.query(
-            'SELECT * FROM models WHERE user_id = $1',
+            'SELECT * FROM models WHERE user_id = $1 AND is_deleted = FALSE',
             [user_id]
         );
         res.status(200).json(result.rows);
@@ -43,7 +43,7 @@ export const getModelById = async (req, res) => {
     const model_id = req.params.id;
     try {
         const result = await client.query(
-            'SELECT * FROM models WHERE id = $1 AND user_id = $2',
+            'SELECT * FROM models WHERE id = $1 AND user_id = $2 AND is_deleted = FALSE',
             [model_id, user_id]
         );
         if (result.rows.length === 0) {
@@ -80,15 +80,21 @@ export const updateModel = async (req, res) => {
 export const deleteModel = async (req, res) => {
     const user_id = req.user.userId;
     const model_id = req.params.id;
+
     try {
         const result = await client.query(
-            'DELETE FROM models WHERE id = $1 AND user_id = $2 RETURNING *',
+            `UPDATE models 
+             SET is_deleted = TRUE, deleted_at = NOW()
+             WHERE id = $1 AND user_id = $2
+             RETURNING *`,
             [model_id, user_id]
         );
+
         if (result.rows.length === 0) {
             return res.status(404).json({ error: 'Model not found or not authorized' });
         }
-        res.status(200).json({ message: 'Model deleted successfully' });
+
+        res.status(200).json({ message: 'Model moved to trash' });
     } catch (error) {
         console.error('Error deleting model:', error);
         res.status(500).json({ error: 'Internal server error' });
@@ -100,7 +106,9 @@ export const deleteAllModelsForUser = async (req, res) => {
     const user_id = req.user.userId;
     try {
         await client.query(
-            'DELETE FROM models WHERE user_id = $1',
+            `UPDATE models 
+             SET is_deleted = TRUE, deleted_at = NOW()
+             WHERE user_id = $1`,
             [user_id]
         );
         res.status(200).json({ message: 'All models deleted successfully' });
@@ -110,3 +118,43 @@ export const deleteAllModelsForUser = async (req, res) => {
     }
 };
 
+export const getDeletedModels = async (req, res) => {
+    const user_id = req.user.userId;
+
+    try {
+        const result = await client.query(
+            'SELECT * FROM models WHERE user_id = $1 AND is_deleted = TRUE',
+            [user_id]
+        );
+
+        res.status(200).json(result.rows);
+    } catch (error) {
+        console.error('Error fetching deleted models:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+};
+
+// restore a deleted model
+export const restoreModel = async (req, res) => {
+    const user_id = req.user.userId;
+    const model_id = req.params.id;
+
+    try {
+        const result = await client.query(
+            `UPDATE models 
+             SET is_deleted = FALSE, deleted_at = NULL
+             WHERE id = $1 AND user_id = $2
+             RETURNING *`,
+            [model_id, user_id]
+        );
+
+        if (result.rows.length === 0) {
+            return res.status(404).json({ error: 'Model not found or not authorized' });
+        }
+
+        res.status(200).json({ message: 'Model restored', model: result.rows[0] });
+    } catch (error) {
+        console.error('Error restoring model:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+};

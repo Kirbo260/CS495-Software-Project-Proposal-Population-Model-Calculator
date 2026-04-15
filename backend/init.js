@@ -46,7 +46,9 @@ export const initDB = async () => {
 
                 type model_type, 
 
-                created_at TIMESTAMP DEFAULT NOW() 
+                created_at TIMESTAMP DEFAULT NOW(),
+                deleted_at TIMESTAMP, -- for soft delete
+                is_deleted BOOLEAN DEFAULT FALSE
             );
         `);
 
