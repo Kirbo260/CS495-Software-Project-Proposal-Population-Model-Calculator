@@ -3,7 +3,7 @@ import multer from "multer";
 import ParsingFunction from "../utils.js/ParsingFunction.js";
 import validateCSVData from "../utils.js/csvValdator.js";
 
-export default function uploadMiddleWare(modelType) {
+export default function uploadMiddleWare() {
     // Configure multer to store files in memory (you can change this to disk storage if needed)
     const storage = multer.memoryStorage();
     const upload = multer({ storage: storage , limits: { fileSize: 5 * 1024 * 1024 } }); // limit file size to 5MB
@@ -14,13 +14,19 @@ export default function uploadMiddleWare(modelType) {
         prey_population: ["prey_population", "prey", "preyPop"],
         predator_population: ["predator_population", "predator", "predatorPop"]
     };
-
-    if (!validTypes.includes(modelType)) {
-        throw new Error(`Invalid model type: ${modelType}. Valid model types are ${validTypes.join(", ")}`);
-    }
+  
+    console.log("Validating file structure...");
 
     // Handle structure validation here
     const validateFileStructure = async (req, res, next) => {
+      console.log("Validating file structure...");
+         const modelType = req.params.modelType;
+
+
+         if (!validTypes.includes(modelType)) {
+            return res.status(400).json({ error: `Invalid model type: ${modelType}. Valid model types are ${validTypes.join(", ")}` });
+        }
+
         try {
 
             if (!req.file) {
@@ -96,6 +102,21 @@ export default function uploadMiddleWare(modelType) {
         return aliasList.some(alias => headers.includes(alias.trim().toLowerCase()));
     }
 
-    return [upload.single("file"), validateFileStructure];
+    const uploadHandler = upload.single("file");
+
+return [
+  (req, res, next) => {
+    console.log("🔥 MULTER START");
+    uploadHandler(req, res, (err) => {
+      if (err) {
+        console.log("MULTER ERROR:", err);
+        return res.status(400).json({ error: err.message });
+      }
+      console.log(" MULTER DONE");
+      next();
+    });
+  },
+  validateFileStructure
+];
 }
 

@@ -36,10 +36,10 @@ router.delete("/:id", authMiddleware, deleteModel);
 router.delete("/my", authMiddleware, deleteAllModelsForUser);
 
 // routes for uploading csv
-router.post("/upload/process", uploadMiddleWare("Regular"), processCSV);
+router.post("/upload/process/:modelType", uploadMiddleWare(), processCSV);
 
 // routes for uploading and storing csv files, protected by authMiddleware
-router.post("/upload/store", uploadMiddleWare("Regular"), uploadCSV);
+router.post("/upload/store/:modelType", uploadMiddleWare(), uploadCSV);
 
 router.get("/files", authMiddleware, getCSVFiles);
 
