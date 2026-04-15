@@ -102,21 +102,6 @@ export default function uploadMiddleWare() {
         return aliasList.some(alias => headers.includes(alias.trim().toLowerCase()));
     }
 
-    const uploadHandler = upload.single("file");
-
-return [
-  (req, res, next) => {
-    console.log("🔥 MULTER START");
-    uploadHandler(req, res, (err) => {
-      if (err) {
-        console.log("MULTER ERROR:", err);
-        return res.status(400).json({ error: err.message });
-      }
-      console.log(" MULTER DONE");
-      next();
-    });
-  },
-  validateFileStructure
-];
+    return [upload.single("file"), validateFileStructure];
 }
 

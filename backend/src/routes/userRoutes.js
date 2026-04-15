@@ -4,7 +4,7 @@ import { createUser } from '../controllers/userControllers.js';
 import { loginUser, logoutUser } from '../controllers/LoginController.js';
 import { authMiddleware } from '../middleWare/AuthMiddleWare.js';
 import uploadMiddleWare from '../middleWare/uploadMiddleWare.js';
-import { createModel, getModels, getModelById, deleteModel, deleteAllModelsForUser } from '../controllers/modelController.js';
+import { createModel, getModels, getModelById, updateModel, deleteModel, deleteAllModelsForUser, getDeletedModels, restoreModel } from '../controllers/modelController.js';
 import { uploadCSV, getCSVFiles, getCSVFileById, deleteCSVFile, deleteAllCSVFilesForUser } from '../controllers/FileController.js';
 import { processCSV } from '../controllers/ProcessController.js';
 
@@ -31,9 +31,15 @@ router.get("/my", authMiddleware, getModels);
 
 router.get("/:id", authMiddleware, getModelById);
 
+router.put("/:id", authMiddleware, updateModel);
+
 router.delete("/:id", authMiddleware, deleteModel);
 
 router.delete("/my", authMiddleware, deleteAllModelsForUser);
+
+router.get("/deleted", authMiddleware, getDeletedModels);
+
+router.post("/restore/:id", authMiddleware, restoreModel);
 
 // routes for uploading csv
 router.post("/upload/process/:modelType", uploadMiddleWare(), processCSV);

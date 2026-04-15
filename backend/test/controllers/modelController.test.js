@@ -1,191 +1,227 @@
+import request from "supertest";
+import express from "express";
 import {
-    createModel,
-    getModels,
-    getModelById,
-    updateModel,
-    deleteModel,
-    deleteAllModelsForUser
-} from '../../src/controllers/modelController.js';
+  createModel,
+  getModels,
+  getModelById,
+  updateModel,
+  deleteModel,
+  deleteAllModelsForUser,
+  getDeletedModels,
+  restoreModel
+} from "../../src/controllers/modelController.js";
 
-import { client } from '../../db.js';
+import { client } from "../../db.js";
 
-// mock DB
-jest.mock('../../db.js', () => ({
-    client: {
-        query: jest.fn()
-    }
+//MOCK DB
+jest.mock("../../db.js", () => ({
+  client: {
+    query: jest.fn()
+  }
 }));
 
-describe('Models Controllers', () => {
+// APP SETUP FOR TESTING
+const app = express();
+app.use(express.json());
 
-    beforeEach(() => {
-        jest.clearAllMocks();
+// fake auth middleware
+const mockAuth = (req, res, next) => {
+  req.user = { userId: 1 };
+  next();
+};
+
+app.use(mockAuth);
+
+// routes
+app.post("/models", createModel);
+app.get("/my", getModels);
+app.get("/models/:id", getModelById);
+app.put("/models/:id", updateModel);
+app.delete("/models/:id", deleteModel);
+app.delete("/my", deleteAllModelsForUser);
+app.get("/deleted", getDeletedModels);
+app.post("/restore/:id", restoreModel);
+
+// -------------------- TESTS --------------------
+afterEach(() => {
+  jest.clearAllMocks();
+});
+
+describe("Model Controller", () => {
+
+  // CREATE MODEL
+  test("createModel - success", async () => {
+    client.query.mockResolvedValue({
+      rows: [{ id: 1, name: "test model" }]
     });
 
-    test('createModel should create a new model', async () => {
-        const req = {
-            body: {
-                name: 'Log Model',
-                description: 'Test model',
-                version: '1.0',
-                inputs: { x: [1,2,3] }
-            },
-            user: { id: 1 }
-        };
+    const res = await request(app)
+      .post("/models")
+      .send({
+        name: "test",
+        description: "desc",
+        version: "1",
+        inputs: {},
+        type: "A"
+      });
 
-        client.query.mockResolvedValue({
-            rows: [{ id: 1, ...req.body, user_id: 1 }]
-        });
+    expect(res.status).toBe(201);
+    expect(res.body.name).toBe("test model");
+  });
 
-        let statusCode = null;
-        let jsonData = null;
+  test("createModel - error", async () => {
+    client.query.mockRejectedValue(new Error("DB error"));
 
-        const res = {
-            status: (code) => { statusCode = code; return res; },
-            json: (data) => { jsonData = data; return res; }
-        };
+    const res = await request(app)
+      .post("/models")
+      .send({
+        name: "test",
+        description: "desc",
+        version: "1",
+        inputs: {},
+        type: "A"
+      });
 
-        await createModel(req, res);
+    expect(res.status).toBe(500);
+  });
 
-        if (statusCode !== 201) throw new Error(`Expected 201, got ${statusCode}`);
-        if (!jsonData.name) throw new Error('Model not returned');
-
-        console.log('createModel test passed');
+  // GET MODELS
+  test("getModels - success", async () => {
+    client.query.mockResolvedValue({
+      rows: [{ id: 1 }]
     });
 
-    test('getModels should return user models', async () => {
-        const req = {
-            user: { id: 1 }
-        };
+    const res = await request(app).get("/my");
 
-        client.query.mockResolvedValue({
-            rows: [
-                { id: 1, name: 'Model 1' },
-                { id: 2, name: 'Model 2' }
-            ]
-        });
+    expect(res.status).toBe(200);
+    expect(res.body.length).toBe(1);
+  });
 
-        let resData;
+  test("getModels - error", async () => {
+    client.query.mockRejectedValue(new Error("fail"));
 
-        const res = {
-            status: () => res,
-            json: (data) => { resData = data; return res; }
-        };
+    const res = await request(app).get("/my");
 
-        await getModels(req, res);
+    expect(res.status).toBe(500);
+  });
 
-        if (resData.length !== 2) {
-            throw new Error(`Expected 2 models, got ${resData.length}`);
-        }
-
-        console.log('getModels test passed');
+  // GET BY ID
+  test("getModelById - found", async () => {
+    client.query.mockResolvedValue({
+      rows: [{ id: 1 }]
     });
 
-    test('getModelById should return model', async () => {
-        const req = {
-            params: { id: 1 },
-            user: { id: 1 }
-        };
+    const res = await request(app).get("/models/1");
 
-        client.query.mockResolvedValue({
-            rows: [{ id: 1, name: 'Test Model' }]
-        });
+    expect(res.status).toBe(200);
+  });
 
-        let resData;
-        let statusCode;
+  test("getModelById - not found", async () => {
+    client.query.mockResolvedValue({ rows: [] });
 
-        const res = {
-            status: (code) => { statusCode = code; return res; },
-            json: (data) => { resData = data; return res; }
-        };
+    const res = await request(app).get("/models/999");
 
-        await getModelById(req, res);
+    expect(res.status).toBe(404);
+  });
 
-        if (statusCode !== 200) throw new Error(`Expected 200, got ${statusCode}`);
-        if (!resData.id) throw new Error('Model not returned');
-
-        console.log('getModelById test passed');
+  // UPDATE
+  test("updateModel - success", async () => {
+    client.query.mockResolvedValue({
+      rows: [{ id: 1, name: "updated" }]
     });
 
-    test('updateModel should update and return model', async () => {
-        const req = {
-            params: { id: 1 },
-            user: { id: 1 },
-            body: {
-                name: 'Updated',
-                description: 'Updated desc',
-                version: '2.0',
-                inputs: {}
-            }
-        };
+    const res = await request(app)
+      .put("/models/1")
+      .send({
+        name: "updated",
+        description: "desc",
+        version: "2",
+        inputs: {},
+        type: "B"
+      });
 
-        client.query.mockResolvedValue({
-            rows: [{ id: 1, ...req.body }]
-        });
+    expect(res.status).toBe(200);
+  });
 
-        let resData;
-        let statusCode;
+  test("updateModel - not found", async () => {
+    client.query.mockResolvedValue({ rows: [] });
 
-        const res = {
-            status: (code) => { statusCode = code; return res; },
-            json: (data) => { resData = data; return res; }
-        };
-
-        await updateModel(req, res);
-
-        if (statusCode !== 200) throw new Error(`Expected 200, got ${statusCode}`);
-        if (resData.name !== 'Updated') throw new Error('Update failed');
-
-        console.log('updateModel test passed');
+    const res = await request(app).put("/models/1").send({
+      name: "x",
+      description: "x",
+      version: "x",
+      inputs: {},
+      type: "x"
     });
 
-    test('deleteModel should delete model', async () => {
-        const req = {
-            params: { id: 1 },
-            user: { id: 1 }
-        };
+    expect(res.status).toBe(404);
+  });
 
-        client.query.mockResolvedValue({
-            rows: [{ id: 1 }]
-        });
-
-        let resData;
-        let statusCode;
-
-        const res = {
-            status: (code) => { statusCode = code; return res; },
-            json: (data) => { resData = data; return res; }
-        };
-
-        await deleteModel(req, res);
-
-        if (statusCode !== 200) throw new Error(`Expected 200, got ${statusCode}`);
-        if (!resData.message.includes('deleted')) {
-            throw new Error('Delete failed');
-        }
-
-        console.log('deleteModel test passed');
+  // DELETE (soft delete)
+  test("deleteModel - success", async () => {
+    client.query.mockResolvedValue({
+      rows: [{ id: 1 }]
     });
 
-    test('deleteAllModelsForUser should delete all models', async () => {
-        const req = {
-            user: { id: 1 }
-        };
+    const res = await request(app).delete("/models/1");
 
-        client.query.mockResolvedValue({});
+    expect(res.status).toBe(200);
+    expect(res.body.message).toBe("Model moved to trash");
+  });
 
-        let resData;
+  test("deleteModel - not found", async () => {
+    client.query.mockResolvedValue({ rows: [] });
 
-        const res = {
-            status: () => res,
-            json: (data) => { resData = data; return res; }
-        };
+    const res = await request(app).delete("/models/1");
 
-        await deleteAllModelsForUser(req, res);
+    expect(res.status).toBe(404);
+  });
 
-        if (!resData.message) throw new Error('Delete all failed');
+  // DELETE ALL
+  test("deleteAllModelsForUser - success", async () => {
+    client.query.mockResolvedValue({});
 
-        console.log('deleteAllModels test passed');
+    const res = await request(app).delete("/my");
+
+    expect(res.status).toBe(200);
+  });
+
+  test("deleteAllModelsForUser - error", async () => {
+    client.query.mockRejectedValue(new Error("fail"));
+
+    const res = await request(app).delete("/my");
+
+    expect(res.status).toBe(500);
+  });
+
+  // GET DELETED
+  test("getDeletedModels - success", async () => {
+    client.query.mockResolvedValue({
+      rows: [{ id: 1, is_deleted: true }]
     });
 
+    const res = await request(app).get("/deleted");
+
+    expect(res.status).toBe(200);
+  });
+
+  // RESTORE
+  test("restoreModel - success", async () => {
+    client.query.mockResolvedValue({
+      rows: [{ id: 1, is_deleted: false }]
+    });
+
+    const res = await request(app).post("/restore/1");
+
+    expect(res.status).toBe(200);
+    expect(res.body.message).toBe("Model restored");
+  });
+
+  test("restoreModel - not found", async () => {
+    client.query.mockResolvedValue({ rows: [] });
+
+    const res = await request(app).post("/restore/1");
+
+    expect(res.status).toBe(404);
+  });
 });
