@@ -24,3 +24,54 @@ nav ul {
     gap: 20px;
     font-family: "Roboto", sans-serif;
 }
+
+.user-menu {
+    position: relative;
+    cursor: pointer;
+}
+
+.user-trigger {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: var(--color-white);
+}
+
+.user-menu .user-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px;
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    right: -38px;
+    background-color: var(--color-burgundy);
+    border-left: 2px solid var(--color-black);
+    border-right: 2px solid var(--color-black);
+    border-bottom: 2px solid var(--color-black);
+    border-radius: 8px;
+    padding: 10px 0;
+    min-width: 150px;
+    z-index: 99;
+}
+
+.dropdown-item {
+    display: block;
+    padding: 10px 15px;
+    color: var(--color-white);
+    text-decoration: none;
+    width: 100%;
+    text-align: center;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-family: "Roboto", serif;
+    font-size: 17px;
+}
+
+.dropdown-item:hover {
+    background: rgb(255, 255, 255, 0.1);
+}

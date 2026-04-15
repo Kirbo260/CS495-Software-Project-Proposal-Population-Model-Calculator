@@ -14,6 +14,7 @@ export default function ExponentialGrowthModel() {
     const [isPanelOpen, setIsPanelOpen] = useState(true);
     const [isCompareOpen, setIsCompareOpen] = useState(false);
     const [isSaveModal, setIsSaveModal] = useState(false);
+    const [isCurveModal, setIsCurveModal] = useState(false);
     const navigate = useNavigate();
 
     const [form, setForm] = useState({
@@ -237,6 +238,10 @@ export default function ExponentialGrowthModel() {
                     <button className="btn btn-circle btn-collapse" onClick={() => setIsCompareOpen(true)}>
                         <BiCollapseHorizontal />
                     </button>
+
+                    <button className="btn btn-circle btn-cv" onClick={() => setIsCurveModal(true)}>
+                        CV
+                    </button>
                 </div>
 
                     <input type="range" min={0} max={100} value={yPan} onChange={(event) => setYPan(Number(event.target.value))} className="graph-pan-slider graph-pan-slider-y" />
@@ -339,6 +344,33 @@ export default function ExponentialGrowthModel() {
                 </div>
             )}
 
+            {isCurveModal && (
+                <div className="curve-modal-overlay save-modal-overlay">
+                    <div className="save-model-modal">
+                        <div className="save-model-header">
+                            <h2>Curve Fitting Models</h2>
+                        </div>
+
+                        <div className="save-model-body">
+                            <div className="save-model-actions">
+                                <button type="button" className="save-model-btn save-btn">
+                                    Continuous Growth
+                                </button>
+                                <button type="button" className="save-model-btn save-btn">
+                                    Population Growth rate
+                                </button>
+                                <button type="button" className="save-model-btn save-btn">
+                                    Logistic Growth
+                                </button>
+                                <button type="button" className="save-model-btn save-btn">
+                                    Discrete Growth
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            )}
 
             </div>
         </div>

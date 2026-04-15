@@ -33,12 +33,18 @@
     font-size: 30px;
     cursor: pointer;
     border: none;
+    margin-bottom: 15px;
 }
 
 .btn-close {
     position: absolute;
     top: 20px;
     left: 20px;
+}
+
+.btn-cv {
+    padding: 10px;
+    font-size: 23px;
 }
 
 .exponential-growth-right-buttons {
@@ -359,4 +365,21 @@
 .cancel-btn {
     background-color: var(--color-white);
     color: var(--color-black);
+}
+
+.curve-modal-overlay .save-model-modal {
+    border: 3px solid var(--color-gold);
+}
+
+.curve-modal-overlay .save-model-body {
+    border: 3px solid var(--color-gold);
+}
+
+.curve-modal-overlay .save-model-actions {
+    display: flex;
+    flex-direction: column;
+}
+
+.curve-modal-overlay .save-model-actions button{
+    padding: 14px;
 }
