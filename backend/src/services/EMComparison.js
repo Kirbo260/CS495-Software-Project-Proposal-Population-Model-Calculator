@@ -3,6 +3,7 @@ import ErrorMetrics from "../utils.js/ErrorMetrics.js";
 import LogisticGrowthModel from "./LogisticGrowthModel.js";
 import DiscreteGrowthModel from "./DiscreteGrowthModel.js";
 import ContinuousGrowthModel from "./ContinuousGrowthModel.js";
+import TimeChecker from "../utils.js/TimeChecker.js";
 
 export default class EMComparison {
     constructor(initialPopulation, finalPopulation, growthRate, time, timeFormat,
