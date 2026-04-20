@@ -88,10 +88,28 @@
     margin-bottom: 20px;
 }
 
+.continuous-growth-modal .exponential-growth-panel-header {
+    background-color: var(--color-gold);
+    color: var(--color-black);
+}
+
+.exponential-growth-panel-2 .exponential-growth-panel-header {
+    background-color: var(--color-gold);
+    color: var(--color-black);
+}
+
 .exponential-growth-panel-header h2 {
     color: var(--color-white);
     font-size: 22px;
     letter-spacing: 1px;
+}
+
+.continuous-growth-modal .exponential-growth-panel-header h2, .exponential-growth-panel-2 .exponential-growth-panel-header h2 {
+    color: var(--color-black);
+}
+
+.exponential-growth-panel-header span svg {
+    cursor: pointer;
 }
 
 .exponential-growth-panel-header .btn-minimize {
@@ -168,7 +186,7 @@
     padding: 10px;
 }
 
-.exponential-growth-panel-body input {
+.exponential-growth-panel-body input, .exponential-growth-panel-body select {
     background-color: var(--color-light-pink);
     padding: 7px;
     display: block;

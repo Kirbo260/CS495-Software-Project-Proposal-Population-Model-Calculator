@@ -17,6 +17,7 @@ import DesignModels from '../pages/DesignModels/DesignModels'
 import ExponentialGrowthModel from '../pages/ExponentialGrowthModel/ExponentialGrowthModel'
 import ContinuousGrowthModel from '../pages/ContinuousGrowthModel'
 import StudentSettings from '../pages/StudentSettings/StudentSettings'
+import GetStarted from '../pages/GetStarted/GetStarted'
 
 
 // Page routing paths for site
@@ -41,6 +42,7 @@ export default function AppRoutes() {
       <Route path="/design-models/exponential-growth-model" element={<ExponentialGrowthModel/>} />
       <Route path="/continuousgrowth" element={<ContinuousGrowthModel />} />
       <Route path="/studentsettings" element={<StudentSettings />} />
+      <Route path="/get-started" element={<GetStarted />} />
       {/* Future routes can be added here */}
       </Routes>
   )
