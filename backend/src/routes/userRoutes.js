@@ -5,7 +5,8 @@ import { loginUser, logoutUser } from '../controllers/LoginController.js';
 import { authMiddleware } from '../middleWare/AuthMiddleWare.js';
 import uploadMiddleWare from '../middleWare/uploadMiddleWare.js';
 import { createModel, getModels, getModelById, updateModel, deleteModel, deleteAllModelsForUser, getDeletedModels, restoreModel } from '../controllers/modelController.js';
-import { uploadCSV, getCSVFiles, getCSVFileById, deleteCSVFile, deleteAllCSVFilesForUser } from '../controllers/FileController.js';
+import { uploadCSV, getCSVFileById, deleteAllCSVFilesForUser } from '../controllers/FileController.js';
+// import { uploadCSV, getCSVFiles, getCSVFileById, deleteCSVFile, deleteAllCSVFilesForUser } from '../controllers/FileController.js';
 import { processCSV } from '../controllers/ProcessController.js';
 
 const router = express.Router();
@@ -47,11 +48,11 @@ router.post("/upload/process/:modelType", uploadMiddleWare(), processCSV);
 // routes for uploading and storing csv files, protected by authMiddleware
 router.post("/upload/store/:modelType", uploadMiddleWare(), uploadCSV);
 
-router.get("/files", authMiddleware, getCSVFiles);
+// router.get("/files", authMiddleware, getCSVFiles);
 
 router.get("/files/:id", authMiddleware, getCSVFileById);
 
-router.delete("/files/:id", authMiddleware, deleteCSVFile);
+// router.delete("/files/:id", authMiddleware, deleteCSVFile);
 
 router.delete("/files/my", authMiddleware, deleteAllCSVFilesForUser);
 

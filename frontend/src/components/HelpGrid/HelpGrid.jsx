@@ -6,6 +6,7 @@ import { CiPen } from "react-icons/ci";
 import { TbNumber123 } from "react-icons/tb";
 import { FaArrowRight } from "react-icons/fa6";
 import "./HelpGrid.css"
+import { Link } from "react-router-dom";
 
 
 const HelpGrid = () => {
@@ -16,7 +17,7 @@ const HelpGrid = () => {
                 <div className="help-box">
                     <FaCheck />
                     <h3>Getting Started</h3>
-                    <FaArrowRight />
+                    <Link to="/get-started"><FaArrowRight /></Link>
                 </div>
                 <div className="help-box">
                     <CiViewTable />

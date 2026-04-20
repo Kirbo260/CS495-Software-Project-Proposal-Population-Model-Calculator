@@ -3,7 +3,7 @@ import { BiCollapseHorizontal } from "react-icons/bi";
 import { FaPlus } from "react-icons/fa6";
 import graphBg from "../../assets/graph.png";
 import "./ExponentialGrowthModel.css";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Plot from "react-plotly.js";
 
@@ -15,6 +15,11 @@ export default function ExponentialGrowthModel() {
     const [isCompareOpen, setIsCompareOpen] = useState(false);
     const [isSaveModal, setIsSaveModal] = useState(false);
     const [isCurveModal, setIsCurveModal] = useState(false);
+    const [isExponentialModal, setIsExponetialModal] = useState(false);
+    const [isContinuousModal, setIsContinuousModal] = useState(false);
+
+    const curveModalRef = useRef(null);
+
     const navigate = useNavigate();
 
     const [form, setForm] = useState({
@@ -22,9 +27,35 @@ export default function ExponentialGrowthModel() {
         finalPopulation: "300"
     })
 
+    const [form2, setForm2] = useState({
+        initialPopulation: "100",
+        finalPopulation: "300"
+    })
+
+    const [continuousModalForm, setContinuousModalForm] = useState({
+
+    })
+
     const [zoomLevel, setZoomLevel] = useState(1);
     const [xPan, setXPan] = useState(50);
     const [yPan, setYPan] = useState(50);
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            console.log("triggered")
+            if (curveModalRef.current && !curveModalRef.current.contains(event.target)) {
+                console.log("triggered inside")
+
+                setIsCurveModal(false)
+            }
+        }
+
+        document.addEventListener("mousedown", handleClickOutside);
+
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        }
+    }, [])
 
     const chartSeries = useMemo(() => {
         const p0 = Number(form.initialPopulation);
@@ -41,7 +72,7 @@ export default function ExponentialGrowthModel() {
         }
 
         const sameSign = (p0 > 0 && pf > 0) || (p0 < 0 && pf < 0);
-        if(!sameSign) {
+        if (!sameSign) {
             return {
                 x: [0],
                 y: [0],
@@ -77,7 +108,7 @@ export default function ExponentialGrowthModel() {
     }, [form]);
 
     const basePlotRange = useMemo(() => {
-        if(!chartSeries.isValid) {
+        if (!chartSeries.isValid) {
             return {
                 x: [0, GRAPH_DURATION],
                 y: [-10, 10]
@@ -138,7 +169,7 @@ export default function ExponentialGrowthModel() {
 
 
     const handleChange = (event) => {
-        const {name, value} = event.target;
+        const { name, value } = event.target;
 
         setForm((previous) => ({
             ...previous,
@@ -158,6 +189,30 @@ export default function ExponentialGrowthModel() {
         setZoomLevel((previous) => Math.min(8, previous * 1.25));
     }
 
+    const handleContinuousModalOpen = (event) => {
+        setIsContinuousModal(true);
+        setIsCurveModal(false);
+        setIsPanelOpen(false);
+    }
+
+    const handleContinuousModalClose = (event) => {
+        setIsContinuousModal(false);
+        setIsPanelOpen(true);
+    }
+
+    const handleExponentialModalOpen = (event) => {
+        setIsExponetialModal(true);
+        setIsContinuousModal(false);
+        setIsCurveModal(false);
+        setIsPanelOpen(false);
+    }
+
+    const handleExponentialModalClose = (event) => {
+        setIsExponetialModal(false)
+        setIsContinuousModal(false);
+        setIsPanelOpen(true);
+    }
+
     return (
         <div className="exponential-growth-model">
             {/* <img src={graphBg} alt="Graph Background" /> */}
@@ -173,15 +228,15 @@ export default function ExponentialGrowthModel() {
                                 width: 4,
                                 color: "#111"
                             },
-                            hovertemplate: 
-                                "Step: %{x:.2f}<br>Population: %{y:.2f}<extra></extra>"      
+                            hovertemplate:
+                                "Step: %{x:.2f}<br>Population: %{y:.2f}<extra></extra>"
                         }
                     ]}
                     layout={{
                         autosize: true,
                         paper_bgcolor: "#f4f4f4",
                         plot_bgcolor: "#f4f4f4",
-                        margin: { t: 30, r: 30, b: 30, l: 30},
+                        margin: { t: 30, r: 30, b: 30, l: 30 },
                         showlegend: false,
                         dragmode: false,
                         xaxis: {
@@ -209,15 +264,15 @@ export default function ExponentialGrowthModel() {
                             ticks: "",
                             title: ""
                         },
-                    }} 
-                    config= {{
+                    }}
+                    config={{
                         responsive: true,
                         displayModeBar: false,
                         staticPlot: false
                     }}
                     useResizeHandler
-                    style={{ width: "100%", height: "100%"}}
-                    />
+                    style={{ width: "100%", height: "100%" }}
+                />
             </div>
 
             <div className="exponential-growth-model-content">
@@ -244,8 +299,8 @@ export default function ExponentialGrowthModel() {
                     </button>
                 </div>
 
-                    <input type="range" min={0} max={100} value={yPan} onChange={(event) => setYPan(Number(event.target.value))} className="graph-pan-slider graph-pan-slider-y" />
-                    <input type="range" min={0} max={100} value={xPan} onChange={(event) => setXPan(event.target.value)} className="graph-pan-slider graph-pan-slider-x"  />
+                <input type="range" min={0} max={100} value={yPan} onChange={(event) => setYPan(Number(event.target.value))} className="graph-pan-slider graph-pan-slider-y" />
+                <input type="range" min={0} max={100} value={xPan} onChange={(event) => setXPan(event.target.value)} className="graph-pan-slider graph-pan-slider-x" />
 
                 {
                     isPanelOpen ? (
@@ -261,7 +316,7 @@ export default function ExponentialGrowthModel() {
                             <div className="exponential-growth-panel-body">
                                 <form className="exponential-growth-panel-form" onSubmit={(event) => event.preventDefault()}>
                                     <div className="form-group">
-                                        <input type="text" name="initialPopulation" placeholder="Initial Population" value={form.initialPopulation} onChange={handleChange}/>
+                                        <input type="text" name="initialPopulation" placeholder="Initial Population" value={form.initialPopulation} onChange={handleChange} />
                                     </div>
                                     <div className="form-group">
                                         <input type="number" name="finalPopulation" placeholder="Final Population" value={form.finalPopulation} onChange={handleChange} />
@@ -317,60 +372,141 @@ export default function ExponentialGrowthModel() {
 
                 </div>
 
-            {isSaveModal && (
-                <div className="save-modal-overlay">
-                    <div className="save-model-modal">
-                        <div className="save-model-header">
-                            <button type="button" className="save-model-close" onClick={() => setIsSaveModal(false)}>
-                                <IoClose />
-                            </button>
-                            <h2>Saving Model</h2>
-                        </div>
-
-                        <div className="save-model-body">
-                            <input type="text" placeholder="Name of graph" className="save-model-input" />
-
-                            <div className="save-model-actions">
-                                <button type="button" className="save-model-btn save-btn">
-                                    Save
+                {isSaveModal && (
+                    <div className="save-modal-overlay">
+                        <div className="save-model-modal">
+                            <div className="save-model-header">
+                                <button type="button" className="save-model-close" onClick={() => setIsSaveModal(false)}>
+                                    <IoClose />
                                 </button>
-                                <button type="button" className="save-model-btn cancel-btn" onClick={() => navigate("/design-models")}>
-                                    Cancel
-                                </button>
+                                <h2>Saving Model</h2>
                             </div>
-                        </div>
 
-                    </div>
-                </div>
-            )}
+                            <div className="save-model-body">
+                                <input type="text" placeholder="Name of graph" className="save-model-input" />
 
-            {isCurveModal && (
-                <div className="curve-modal-overlay save-modal-overlay">
-                    <div className="save-model-modal">
-                        <div className="save-model-header">
-                            <h2>Curve Fitting Models</h2>
-                        </div>
-
-                        <div className="save-model-body">
-                            <div className="save-model-actions">
-                                <button type="button" className="save-model-btn save-btn">
-                                    Continuous Growth
-                                </button>
-                                <button type="button" className="save-model-btn save-btn">
-                                    Population Growth rate
-                                </button>
-                                <button type="button" className="save-model-btn save-btn">
-                                    Logistic Growth
-                                </button>
-                                <button type="button" className="save-model-btn save-btn">
-                                    Discrete Growth
-                                </button>
+                                <div className="save-model-actions">
+                                    <button type="button" className="save-model-btn save-btn">
+                                        Save
+                                    </button>
+                                    <button type="button" className="save-model-btn cancel-btn" onClick={() => navigate("/design-models")}>
+                                        Cancel
+                                    </button>
+                                </div>
                             </div>
-                        </div>
 
+                        </div>
                     </div>
-                </div>
-            )}
+                )}
+
+                {isCurveModal && (
+                    <div className="curve-modal-overlay save-modal-overlay">
+                        <div className="save-model-modal" ref={curveModalRef}>
+                            <div className="save-model-header">
+                                <h2>Curve Fitting Models</h2>
+                            </div>
+
+                            <div className="save-model-body">
+                                <div className="save-model-actions">
+                                    <button type="button" className="save-model-btn save-btn" onClick={handleContinuousModalOpen}>
+                                        Continuous Growth
+                                    </button>
+                                    <button type="button" className="save-model-btn save-btn" onClick={handleExponentialModalOpen}>
+                                        Population Growth rate
+                                    </button>
+                                    <button type="button" className="save-model-btn save-btn">
+                                        Logistic Growth
+                                    </button>
+                                    <button type="button" className="save-model-btn save-btn">
+                                        Discrete Growth
+                                    </button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                )}
+
+                {
+                    isContinuousModal && (
+                        <div className="continuous-growth-modal exponential-growth-panel">
+                            <div className="exponential-growth-panel-header">
+                                <span onClick={handleContinuousModalClose}>
+                                    <IoRemove size={25} />
+                                </span>
+                                <h2>Continuous Growth Model</h2>
+                                <button className="btn-minimize" onClick={handleContinuousModalClose}><IoChevronDown size={25} /></button>
+                            </div>
+
+                            <div className="exponential-growth-panel-body">
+                                <form className="exponential-growth-panel-form" onSubmit={(event) => event.preventDefault()}>
+                                    <div className="form-group">
+                                        <input type="text" name="time" placeholder="Time values (e.g., (0,1,2,3))" />
+                                    </div>
+                                    <div className="form-group">
+                                        <select name="time-format" className="continuous-select">
+                                            <option value="">Select time format</option>
+                                            <option value="years">Years</option>
+                                            <option value="months">Months</option>
+                                            <option value="days">Days</option>
+                                        </select>
+                                    </div>
+                                    <div className="form-group">
+                                        <input type="number" name="initialPopulation" placeholder="Initial Population" />
+                                    </div>
+                                    <div className="form-group">
+                                        <input type="text" name="growth-rate" placeholder="Growth rate" />
+                                    </div>
+                                </form>
+                                {!chartSeries.isValid && (
+                                    <p className="graph-error">
+                                        Use two positive values or two negative values. Exponential curvees cannot cross zero.
+                                    </p>
+                                )}
+                            </div>
+
+                        </div>
+                    )
+                }
+
+                {
+                    isExponentialModal && (
+                        <div className="exponential-growth-panel exponential-growth-panel-2">
+                            <div className="exponential-growth-panel-header">
+                                <span>
+                                    {/* <IoRemove size={25}/> */}
+                                </span>
+                                <h2>Population Growth Model</h2>
+                                <button className="btn-minimize" onClick={handleExponentialModalClose}><IoChevronDown size={25} /></button>
+                            </div>
+
+                            <div className="exponential-growth-panel-body">
+                                <form className="exponential-growth-panel-form" onSubmit={(event) => event.preventDefault()}>
+                                    <div className="form-group">
+                                        <input type="text" name="initialPopulation" placeholder="Initial Population" value={form2.initialPopulation} onChange={handleChange} />
+                                    </div>
+                                    <div className="form-group">
+                                        <input type="number" name="finalPopulation" placeholder="Final Population" value={form2.finalPopulation} onChange={handleChange} />
+                                    </div>
+                                    {/* <div className="form-group">
+                                        <input type="text" placeholder="Time" />
+                                        <select name="growth-select" className="growth-select">
+                                            <option value="year">Year</option>
+                                            <option value="month">Month</option>
+                                            <option value="day">Day</option>
+                                        </select>
+                                    </div> */}
+                                </form>
+                                {!chartSeries.isValid && (
+                                    <p className="graph-error">
+                                        Use two positive values or two negative values. Exponential curvees cannot cross zero.
+                                    </p>
+                                )}
+                            </div>
+
+                        </div>
+                    ) 
+                }
 
             </div>
         </div>
