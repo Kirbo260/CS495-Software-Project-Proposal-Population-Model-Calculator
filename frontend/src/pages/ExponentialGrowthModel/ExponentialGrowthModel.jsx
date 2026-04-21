@@ -28,8 +28,8 @@ export default function ExponentialGrowthModel() {
     })
 
     const [form2, setForm2] = useState({
-        initialPopulation: "100",
-        finalPopulation: "300"
+        initialPopulation: "200",
+        finalPopulation: "500"
     })
 
     const [continuousModalForm, setContinuousModalForm] = useState({
@@ -57,9 +57,9 @@ export default function ExponentialGrowthModel() {
         }
     }, [])
 
-    const chartSeries = useMemo(() => {
-        const p0 = Number(form.initialPopulation);
-        const pf = Number(form.finalPopulation);
+    const buildChartSeries = (values) => {
+        const p0 = Number(values.initialPopulation);
+        const pf = Number(values.finalPopulation);
 
         if (!Number.isFinite(p0) || !Number.isFinite(pf) || p0 === 0 || pf === 0) {
             return {
@@ -67,8 +67,8 @@ export default function ExponentialGrowthModel() {
                 y: [0],
                 isValid: false,
                 maxY: 10,
-                minY: 10
-            }
+                minY: -10
+            };
         }
 
         const sameSign = (p0 > 0 && pf > 0) || (p0 < 0 && pf < 0);
@@ -79,11 +79,11 @@ export default function ExponentialGrowthModel() {
                 isValid: false,
                 maxY: 10,
                 minY: -10
-            }
+            };
         }
 
         const totalTime = GRAPH_DURATION;
-        const samples = 120;
+        const samples = 300;
 
         const sign = Math.sign(p0);
         const startAbs = Math.abs(p0);
@@ -91,11 +91,7 @@ export default function ExponentialGrowthModel() {
 
         const ratePerStep = Math.pow(endAbs / startAbs, 1 / totalTime) - 1;
 
-        const x = Array.from(
-            { length: samples + 1 },
-            (_, i) => (totalTime * i) / samples
-        );
-
+        const x = Array.from({ length: samples + 1 }, (_, i) => (totalTime * i) / samples);
         const y = x.map((t) => sign * startAbs * Math.pow(1 + ratePerStep, t));
 
         return {
@@ -104,27 +100,32 @@ export default function ExponentialGrowthModel() {
             isValid: true,
             maxY: Math.max(...y),
             minY: Math.min(...y)
-        }
-    }, [form]);
+        };
+    };
+
+    const chartSeries = useMemo(() => buildChartSeries(form), [form]);
+    const chartSeries2 = useMemo(() => buildChartSeries(form2), [form2]);
 
     const basePlotRange = useMemo(() => {
-        if (!chartSeries.isValid) {
+        const validSeries = [chartSeries, chartSeries2].filter((series) => series.isValid);
+
+        if (!validSeries.length) {
             return {
                 x: [0, GRAPH_DURATION],
                 y: [-10, 10]
-            }
+            };
         }
 
-        const minY = chartSeries.minY;
-        const maxY = chartSeries.maxY;
+        const minY = Math.min(...validSeries.map((series) => series.minY));
+        const maxY = Math.max(...validSeries.map((series) => series.maxY));
         const span = Math.max(10, maxY - minY);
         const padding = span * 0.15;
 
         return {
             x: [0, GRAPH_DURATION],
             y: [minY - padding, maxY + padding]
-        }
-    }, [chartSeries]);
+        };
+    }, [chartSeries, chartSeries2]);
 
 
     const plotRange = useMemo(() => {
@@ -181,6 +182,19 @@ export default function ExponentialGrowthModel() {
         setYPan(50);
     }
 
+    const handleChangeForm2 = (event) => {
+        const { name, value } = event.target;
+
+        setForm2((previous) => ({
+            ...previous,
+            [name]: value
+        }));
+
+        setZoomLevel(1);
+        setXPan(50);
+        setYPan(50);
+    };
+
     const handleZoomIn = () => {
         setZoomLevel((previous) => Math.max(0.2, previous * 0.8));
     }
@@ -219,25 +233,51 @@ export default function ExponentialGrowthModel() {
             <div className="plot-wrapper">
                 <Plot
                     data={[
-                        {
-                            x: chartSeries.x,
-                            y: chartSeries.y,
-                            type: "scatter",
-                            mode: "lines",
-                            line: {
-                                width: 4,
-                                color: "#111"
-                            },
-                            hovertemplate:
-                                "Step: %{x:.2f}<br>Population: %{y:.2f}<extra></extra>"
-                        }
+                        ...(chartSeries.isValid
+                            ? [
+                                {
+                                    x: chartSeries.x,
+                                    y: chartSeries.y,
+                                    type: "scatter",
+                                    mode: "lines",
+                                    name: "Model 1",
+                                    line: {
+                                        width: 4,
+                                        color: "#111",
+                                        shape: "spline",
+                                        smoothing: 1.2
+                                    },
+                                    hovertemplate:
+                                        "Model 1<br>Step: %{x:.2f}<br>Population: %{y:.2f}<extra></extra>"
+                                }
+                            ]
+                            : []),
+                        ...(chartSeries2.isValid
+                            ? [
+                                {
+                                    x: chartSeries2.x,
+                                    y: chartSeries2.y,
+                                    type: "scatter",
+                                    mode: "lines",
+                                    name: "Model 2",
+                                    line: {
+                                        width: 4,
+                                        color: "#1d4ed8",
+                                        shape: "spline",
+                                        smoothing: 1.2
+                                    },
+                                    hovertemplate:
+                                        "Model 2<br>Step: %{x:.2f}<br>Population: %{y:.2f}<extra></extra>"
+                                }
+                            ]
+                            : [])
                     ]}
                     layout={{
                         autosize: true,
                         paper_bgcolor: "#f4f4f4",
                         plot_bgcolor: "#f4f4f4",
                         margin: { t: 30, r: 30, b: 30, l: 30 },
-                        showlegend: false,
+                        showlegend: true,
                         dragmode: false,
                         xaxis: {
                             range: plotRange.x,
@@ -483,10 +523,10 @@ export default function ExponentialGrowthModel() {
                             <div className="exponential-growth-panel-body">
                                 <form className="exponential-growth-panel-form" onSubmit={(event) => event.preventDefault()}>
                                     <div className="form-group">
-                                        <input type="text" name="initialPopulation" placeholder="Initial Population" value={form2.initialPopulation} onChange={handleChange} />
+                                        <input type="text" name="initialPopulation" placeholder="Initial Population" value={form2.initialPopulation} onChange={handleChangeForm2} />
                                     </div>
                                     <div className="form-group">
-                                        <input type="number" name="finalPopulation" placeholder="Final Population" value={form2.finalPopulation} onChange={handleChange} />
+                                        <input type="number" name="finalPopulation" placeholder="Final Population" value={form2.finalPopulation} onChange={handleChangeForm2} />
                                     </div>
                                     {/* <div className="form-group">
                                         <input type="text" placeholder="Time" />
@@ -505,7 +545,7 @@ export default function ExponentialGrowthModel() {
                             </div>
 
                         </div>
-                    ) 
+                    )
                 }
 
             </div>
