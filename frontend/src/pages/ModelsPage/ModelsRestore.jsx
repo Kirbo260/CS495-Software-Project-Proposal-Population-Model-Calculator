@@ -1,17 +1,16 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-//import "./DeletedModelsPage.css";
 import { IoChevronBack } from "react-icons/io5";
 
 export default function DeletedModelsPage() {
   const [deletedModels, setDeletedModels] = useState([]);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-  // Fetch deleted models
   useEffect(() => {
-    const fetchDeleted = async () => {
+    const fetchDeletedModels = async () => {
       try {
-        const res = await fetch("/api/deleted", {
+        const res = await fetch(`/api/deleted`, {
           method: "GET",
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`
@@ -19,16 +18,25 @@ export default function DeletedModelsPage() {
         });
 
         const data = await res.json();
-        setDeletedModels(data);
+        console.log("API response:", data);
+
+        if (!res.ok) {
+          throw new Error(data.error || "Failed to fetch deleted models");
+        }
+
+        // Ensure it's always an array
+        setDeletedModels(Array.isArray(data) ? data : []);
       } catch (err) {
         console.error("Error fetching deleted models:", err);
+        setDeletedModels([]); // fallback
+      } finally {
+        setLoading(false);
       }
     };
 
-    fetchDeleted();
+    fetchDeletedModels();
   }, []);
 
-  // Restore model
   const handleRestore = async (id) => {
     try {
       const res = await fetch(`/api/models/restore/${id}`, {
@@ -56,42 +64,41 @@ export default function DeletedModelsPage() {
 
   return (
     <div className="deleted-page">
-
-      {/* HEADER */}
       <div className="deleted-header">
         <button className="back-btn" onClick={() => navigate("/models")}>
           <IoChevronBack size={35} />
           Back
         </button>
-
         <h1>Recycle Bin</h1>
       </div>
 
-      {/* EMPTY STATE */}
-      {deletedModels.length === 0 ? (
+      {/* Loading state */}
+      {loading ? (
+        <p>Loading...</p>
+      ) : deletedModels.length === 0 ? (
         <div className="empty-bin">
           <p>No deleted models found</p>
         </div>
       ) : (
         <div className="deleted-list">
-          {deletedModels.map((model) => (
-            <div key={model.id} className="deleted-card">
+          {/* Safe guard */}
+          {Array.isArray(deletedModels) &&
+            deletedModels.map((model) => (
+              <div key={model.id} className="deleted-card">
+                <div className="deleted-info">
+                  <h3>{model.name}</h3>
+                  <p>{model.description}</p>
+                  <span>Version: {model.version}</span>
+                </div>
 
-              <div className="deleted-info">
-                <h3>{model.name}</h3>
-                <p>{model.description}</p>
-                <span>Version: {model.version}</span>
+                <button
+                  className="restore-btn"
+                  onClick={() => handleRestore(model.id)}
+                >
+                  Restore
+                </button>
               </div>
-
-              <button
-                className="restore-btn"
-                onClick={() => handleRestore(model.id)}
-              >
-                Restore
-              </button>
-
-            </div>
-          ))}
+            ))}
         </div>
       )}
     </div>
