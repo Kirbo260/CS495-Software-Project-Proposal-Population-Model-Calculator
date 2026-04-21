@@ -34,7 +34,7 @@ router.get("/:id", authMiddleware, getModelById);
 
 router.put("/:id", authMiddleware, updateModel);
 
-router.delete("/:id", authMiddleware, deleteModel);
+router.put("/models/:id/delete", authMiddleware, deleteModel);
 
 router.delete("/my", authMiddleware, deleteAllModelsForUser);
 
