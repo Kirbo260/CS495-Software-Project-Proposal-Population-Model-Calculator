@@ -28,7 +28,7 @@ export async function createUser(req, res) {
         }
 
         const result = await client.query(
-            "INSERT INTO users (first_name, last_name, age, email, password) VALUES ($1, $2, $3, $4, $5)",
+            "INSERT INTO users (first_name, last_name, age, email, password) VALUES ($1, $2, $3, $4, $5) RETURNING id, email",
             [firstName, lastName, parsedAge, email, hashedPassword]
         );
 
@@ -82,7 +82,7 @@ export async function forgotPassword(req, res) {
 
         //send to user email
         // Create reset link
-        const resetLink = `http://localhost:5000/reset-password/${resetToken}`;
+        const resetLink = `http://localhost:5173/reset-password/${resetToken}`;
 
         console.log("Reset link:", resetLink); // for now
 

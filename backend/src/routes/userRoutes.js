@@ -59,5 +59,6 @@ router.delete("/files/my", authMiddleware, deleteAllCSVFilesForUser);
 // Forgot password routes 
 router.post("/forgot", forgotPassword);
 
-router.post("/reset", resetPassword);
+router.post("/reset/:token", resetPassword);
+
 export default router;

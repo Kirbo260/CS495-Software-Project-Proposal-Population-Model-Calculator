@@ -6,42 +6,48 @@ import SecondaryHeader from "../../components/Header/SecondaryHeader";
 export default function ForgetPassword() {
     const [form, setForm] = useState({
         email: "",
-        password: "",
-        confirmPassword: ""
     });
 
     const [error, setError] = useState("");
     const [success, setSuccess] = useState("");
+    //const [loading, setLoading] = useState(""); // to prevent spam clicks
 
     const onChange = (event) => {
         const { name, value } = event.target;
         setForm((p) => ({ ...p, [name]: value }));
     }
 
-    const onSubmit = (event) => {
-        event.preventDefault();
-        setError("");
-        setSuccess("");
+const onSubmit = async (event) => {
+    event.preventDefault();
+    setError("");
+    setSuccess("");
 
-        if(!form.email.trim()) {
-            setError("Email is required.");
-            return;
-        }
-
-        if(!form.password.trim()) {
-            setError("New password is required.");
-            return;
-        }
-
-        if(form.password !== form.confirmPassword) {
-            setError("Passwords do not match.");
-            return;
-        }
-
-
-        console.log("Login submit")
-        setSuccess("Passsword reset submitted successfully")
+    if (!form.email.trim()) {
+        setError("Email is required.");
+        return;
     }
+
+    try {
+        const res = await fetch("/api/forgot", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ email: form.email }),
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+            setError(data.error);
+            return;
+        }
+
+        setSuccess("Reset link sent to email");
+    } catch (err) {
+        setError("Something went wrong");
+    }
+};
 
     return (
         <div className="forget-password">
@@ -52,18 +58,9 @@ export default function ForgetPassword() {
                     <form onSubmit={onSubmit}>
                         <div className="form-group">
                             <label htmlFor="email">Verify Email</label>
-                            <input type="text" name="email" onChange={onChange} />
-                            <Link to="#">Send request code</Link>
+                            <input type="email" name="email" value={form.email} onChange={onChange} />
+                           {/* <Link to="#">Send request code</Link> */}
                         </div>
-                        <div className="form-group">
-                            <label htmlFor="password">New Password</label>
-                            <input type="password" name="password" onChange={onChange} />
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="confirmPassword">Confirm Password</label>
-                            <input type="password" name="confirmPassword" onChange={onChange}/>
-                        </div>
-
                         {error && <p className="error-message">{error}</p>}
                         {success && <p className="success-message">{success}</p>}
 
