@@ -1,6 +1,8 @@
 // Parameter Estimation Service
 // This service is responsible for estimating the parameters of the population growth models based on the input data and the selected model type.
 import ContinuousEstimate from  "../utils.js/ContinuousEstimate.js";
+import DiscreteEstimate from "../utils.js/DiscreteEstimate.js";
+import LogisticEstimate from "../utils.js/LogisticEstimate.js";
 
 export default class ParameterEstimation {
     constructor(time, population, modelType) {
@@ -10,9 +12,16 @@ export default class ParameterEstimation {
     }
 
     estimateParameters() {
+        const growthRate
+
         if (this.modelType === "continuous") {
-            const growthRate = new ContinuousEstimate(this.time, this.population).estimateContinuousGrowthRate();
-            return { growthRate };
+            growthRate = new ContinuousEstimate(this.time, this.population).estimateContinuousGrowthRate();
+            return { growthRate }; // return an object for easier coding
+        }
+
+        if (this.modelType === "discrete"){
+            growthRate = new DiscreteEstimate(this.time,this.population).estimateDiscreteGrowthRate();
+            return {growthRate};
         }
 
         // Add parameter estimation logic for other model types (Discrete, Logistic) here
