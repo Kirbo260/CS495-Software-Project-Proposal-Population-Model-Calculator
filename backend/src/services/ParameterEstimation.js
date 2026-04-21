@@ -12,7 +12,7 @@ export default class ParameterEstimation {
     }
 
     estimateParameters() {
-        const growthRate
+        const growthRate = 0;
 
         if (this.modelType === "continuous") {
             growthRate = new ContinuousEstimate(this.time, this.population).estimateContinuousGrowthRate();

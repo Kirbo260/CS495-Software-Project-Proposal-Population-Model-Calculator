@@ -1,6 +1,6 @@
 // src/routes/userRoutes.js
 import express from 'express';
-import { createUser } from '../controllers/userControllers.js';
+import { createUser, forgotPassword, resetPassword } from '../controllers/userControllers.js';
 import { loginUser, logoutUser } from '../controllers/LoginController.js';
 import { authMiddleware } from '../middleWare/AuthMiddleWare.js';
 import uploadMiddleWare from '../middleWare/uploadMiddleWare.js';
@@ -56,4 +56,8 @@ router.get("/files/:id", authMiddleware, getCSVFileById);
 
 router.delete("/files/my", authMiddleware, deleteAllCSVFilesForUser);
 
+// Forgot password routes 
+router.post("/forgot", forgotPassword);
+
+router.post("/reset", resetPassword);
 export default router;

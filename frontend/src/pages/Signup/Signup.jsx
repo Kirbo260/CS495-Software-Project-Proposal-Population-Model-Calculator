@@ -30,6 +30,9 @@ export default function Signup() {
             if (response.ok) {
                 const data = await response.json();
                 console.log(data.message);
+
+                 // store JWT token
+                localStorage.setItem("token", data.token);
                 navigate("/");
             } else {
                 const errorData = await response.json();

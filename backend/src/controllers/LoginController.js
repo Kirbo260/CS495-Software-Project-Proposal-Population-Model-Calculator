@@ -3,6 +3,7 @@
 import { client } from "../../db.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import {generateToken} from "../utils.js/TokenGenerator.js"
 
 export async function loginUser(req, res) {
     const { email, password } = req.body;
@@ -20,7 +21,7 @@ export async function loginUser(req, res) {
             return res.status(400).json({ error: "Invalid email or password" });
         }
         
-        // JWT TOKEN GENERATION
+        /* JWT TOKEN GENERATION
             const token = jwt.sign(
             {
                 userId: user.id,
@@ -28,7 +29,9 @@ export async function loginUser(req, res) {
             },
             process.env.JWT_SECRET,
             { expiresIn: "30m" }
-        );
+        );*/
+
+        const token = generateToken(user);
 
         res.status(200).json({ message: "Login successful", token });
     } catch (err) {

@@ -20,9 +20,13 @@ export default class LogisticEstimate {
         throw new Error("Population values must be positive");
     }
 
+    K = Math.max(this.population); // max population equals Carrying Capacity
 
 
-    return {r , k} // rate and carrying capacity
+    
+
+
+    return {r , K} // rate and carrying capacity
 }
 
 }
