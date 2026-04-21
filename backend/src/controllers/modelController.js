@@ -127,6 +127,7 @@ export const getDeletedModels = async (req, res) => {
             [user_id]
         );
 
+        //console.log(localStorage.getItem("token"));
         res.status(200).json(result.rows);
     } catch (error) {
         console.error('Error fetching deleted models:', error);

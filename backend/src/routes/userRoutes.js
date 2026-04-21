@@ -11,54 +11,41 @@ import { processCSV } from '../controllers/ProcessController.js';
 
 const router = express.Router();
 
-// POST /signup
+// AUTH / PROFILE
 router.post('/signup', createUser);
+router.post('/login', loginUser);
+router.post('/logout', logoutUser);
 
-// GET /profile (protected route)
 router.get('/profile', authMiddleware, (req, res) => {
     res.status(200).json({ user: req.user });
 });
 
-// POST /login
-router.post('/login', loginUser);
-
-// POST /logout
-router.post('/logout', logoutUser);
-
-// routes for saving and retrieving models will go here, protected by authMiddleware
-router.post("/models", authMiddleware, createModel);
-
-router.get("/my", authMiddleware, getModels);
-
-router.get("/:id", authMiddleware, getModelById);
-
-router.put("/:id", authMiddleware, updateModel);
-
-router.put("/models/:id/delete", authMiddleware, deleteModel);
-
-router.delete("/my", authMiddleware, deleteAllModelsForUser);
-
+// MODELS (STATIC ROUTES FIRST)
 router.get("/deleted", authMiddleware, getDeletedModels);
 
+router.post("/models", authMiddleware, createModel);
+router.get("/my", authMiddleware, getModels);
+router.delete("/my", authMiddleware, deleteAllModelsForUser);
+
+// MODEL ACTION ROUTES
 router.post("/models/restore/:id", authMiddleware, restoreModel);
 
-// routes for uploading csv
-router.post("/upload/process/:modelType", uploadMiddleWare(), processCSV);
+// IMPORTANT: more specific routes before generic ones
+router.put("/models/:id/delete", authMiddleware, deleteModel);
 
-// routes for uploading and storing csv files, protected by authMiddleware
+// GENERIC ROUTE LAST (VERY IMPORTANT)
+router.get("/:id", authMiddleware, getModelById);
+router.put("/:id", authMiddleware, updateModel);
+
+// FILE ROUTES
+router.post("/upload/process/:modelType", uploadMiddleWare(), processCSV);
 router.post("/upload/store/:modelType", uploadMiddleWare(), uploadCSV);
 
-// router.get("/files", authMiddleware, getCSVFiles);
-
 router.get("/files/:id", authMiddleware, getCSVFileById);
-
-// router.delete("/files/:id", authMiddleware, deleteCSVFile);
-
 router.delete("/files/my", authMiddleware, deleteAllCSVFilesForUser);
 
-// Forgot password routes 
+// PASSWORD ROUTES
 router.post("/forgot", forgotPassword);
-
 router.post("/reset/:token", resetPassword);
 
 export default router;
