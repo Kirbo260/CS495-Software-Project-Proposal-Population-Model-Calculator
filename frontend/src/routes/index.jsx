@@ -19,6 +19,7 @@ import ContinuousGrowthModel from '../pages/ContinuousGrowthModel'
 import StudentSettings from '../pages/StudentSettings/StudentSettings'
 import GetStarted from '../pages/GetStarted/GetStarted'
 import ResetPassword from '../pages/ForgetPassword/ResetPassword'
+import ModelsRestore from '../pages/ModelsPage/ModelsRestore'
 
 
 // Page routing paths for site
@@ -45,6 +46,7 @@ export default function AppRoutes() {
       <Route path="/studentsettings" element={<StudentSettings />} />
       <Route path="/get-started" element={<GetStarted />} />
       <Route path="/reset-password/:token" element={<ResetPassword/>} />
+      <Route path="/deletedModels" element={<ModelsRestore/>} />
       {/* Future routes can be added here */}
       </Routes>
   )

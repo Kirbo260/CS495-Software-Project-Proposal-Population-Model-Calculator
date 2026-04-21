@@ -1,11 +1,15 @@
 import { useState, useEffect } from "react";
 import { FaPlus } from "react-icons/fa6";
 import { IoChevronBack, IoClose } from "react-icons/io5";
+import { useNavigate } from "react-router-dom";
 import "./ModelsPage.css";
 
 export default function ModelsPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [models, setModels] = useState([]);
+  const navigate = useNavigate();
+
+  const token = localStorage.getItem("token");
 
   // Fetch models
   useEffect(() => {
@@ -22,19 +26,24 @@ export default function ModelsPage() {
 
   // DELETE FUNCTION
   const handleDelete = (id) => {
-    fetch(`/api/${id}`, {
-      method: "DELETE",
+    fetch(`/api/models/${id}/delete`, {
+      method: "PUT",
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`
+        Authorization: token ? `Bearer ${token}` : ""
       }
     })
-      .then((res) => res.json())
-      .then(() => {
-        // remove from UI instantly
-        setModels(models.filter((model) => model.id !== id));
-        alert("Model deleted successfully!");
+      .then(async (res) => {
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error);
+        return data;
       })
-      .catch((err) => console.error("Delete failed:", err));
+      .then(() => {
+        setModels((prev) => prev.filter((model) => model.id !== id));
+      })
+      .catch((err) => {
+        console.error(err);
+        alert("Delete failed: " + err.message);
+      });
   };
 
   return (
@@ -94,6 +103,7 @@ export default function ModelsPage() {
           </div>
         ))
       )}
+       <button type="button" className="save-model-btn save-btn"><a href="/deletedModels">RESTORE MODELS PAGE</a></button>
 
       {isModalOpen && (
         <div className="save-modal-overlay">

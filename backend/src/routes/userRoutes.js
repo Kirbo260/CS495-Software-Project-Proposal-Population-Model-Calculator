@@ -40,7 +40,7 @@ router.delete("/my", authMiddleware, deleteAllModelsForUser);
 
 router.get("/deleted", authMiddleware, getDeletedModels);
 
-router.post("/restore/:id", authMiddleware, restoreModel);
+router.post("/models/restore/:id", authMiddleware, restoreModel);
 
 // routes for uploading csv
 router.post("/upload/process/:modelType", uploadMiddleWare(), processCSV);

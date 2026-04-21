@@ -46,6 +46,7 @@ export default function ResetPassword() {
 
         } catch (err) {
             setError("Server error. Try again.");
+            console.err("Server error. Try again.",err);
         }
     };
 

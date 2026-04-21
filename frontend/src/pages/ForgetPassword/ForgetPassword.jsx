@@ -46,6 +46,7 @@ const onSubmit = async (event) => {
         setSuccess("Reset link sent to email");
     } catch (err) {
         setError("Something went wrong");
+        console.err("Server error. Try again.",err);
     }
 };
 
