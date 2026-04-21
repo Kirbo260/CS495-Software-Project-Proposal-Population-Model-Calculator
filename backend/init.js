@@ -14,6 +14,10 @@ export const initDB = async () => {
                 age INTEGER,
                 email TEXT UNIQUE NOT NULL,
                 password TEXT NOT NULL,
+
+                reset_token TEXT,
+                reset_token_expiry TIMESTAMPTZ,
+
                 created_at TIMESTAMP DEFAULT NOW()
             );
         `);
