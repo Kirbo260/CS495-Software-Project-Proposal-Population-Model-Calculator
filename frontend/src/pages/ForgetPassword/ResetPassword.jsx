@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useState } from "react";
-import "./ForgetPassword.css"
+//import "./ForgetPassword.css"
 
 export default function ResetPassword() {
     const { token } = useParams();
@@ -46,31 +46,36 @@ export default function ResetPassword() {
 
         } catch (err) {
             setError("Server error. Try again.");
-            console.err("Server error. Try again.",err);
+            console.err("Server error. Try again.", err);
         }
     };
 
     return (
-        <form onSubmit={onSubmit}>
-            <input
-                type="password"
-                placeholder="New password"
-                onChange={(e) =>
-                    setForm({ ...form, password: e.target.value })
-                }
-            />
+        <div className="forget-password">
+            <form onSubmit={onSubmit}>
+                <div className="reset-password">
+                    <h1>Reset Password</h1>
+                    <input
+                        type="password"
+                        placeholder="New password"
+                        onChange={(e) =>
+                            setForm({ ...form, password: e.target.value })
+                        }
+                    />
 
-            <input
-                type="password"
-                placeholder="Confirm password"
-                onChange={(e) =>
-                    setForm({ ...form, confirmPassword: e.target.value })
-                }
-            />
+                    <input
+                        type="password"
+                        placeholder="Confirm password"
+                        onChange={(e) =>
+                            setForm({ ...form, confirmPassword: e.target.value })
+                        }
+                    />
 
-            <button>Reset Password</button>
-            {error && <p className="error-message">{error}</p>}
-            {message && <p className="success-message">{message}</p>}
-        </form>
+                    <button className="btn btn-secondary">Reset Password</button>
+                </div>
+                {error && <p className="error-message">{error}</p>}
+                {message && <p className="success-message">{message}</p>}
+            </form>
+        </div>
     );
 }

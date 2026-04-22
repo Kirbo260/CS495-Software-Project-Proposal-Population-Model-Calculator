@@ -6,14 +6,28 @@
     justify-content: initial;
 }
 
-.models-page .design-models-header {
+.design-models-header {
+  background-color: var(--color-dark-pink);
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--color-gold);
+  margin-bottom: 50px;
+
+}
+
+/* center title perfectly */
+
+/*.design-models-header {
     background-color: var(--color-dark-pink);
     padding: 10px 0;
     display: flex;
+    align-items: center;
     justify-content: space-between;
     border-bottom: 1px solid var(--color-gold);
-    margin-bottom: 50px;
-}
+    margin-bottom: 50px; 
+}*/
 
 .models-page h1 {
     font-size: 52px;
@@ -139,4 +153,41 @@
     padding: 20px 5px;
     display: block;
     text-align: center;
+}
+
+.model-card {
+    background: linear-gradient(135deg, #ff4d4d, #ffcc00);
+    color: white;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    position: relative;
+}
+
+.dr-button {
+    background:#990000;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+/*The description on the card*/
+.card-info h3 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.card-info p {
+  margin: 5px 0;
+  color: #bbb;
+}
+
+.card-info span {
+  font-size: 12px;
+  color: #fff9f9;
 }

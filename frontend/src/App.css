@@ -63,3 +63,13 @@ button {
     color: var(--color-white);
     font-family: "Roboto", sans-serif;
 }
+
+.btn-secondary:hover {
+  transform: scale(1.05);
+  background: #000000;
+}
+
+.btn-secondary{
+  cursor: pointer;
+  transition: 0.2s ease;
+}
