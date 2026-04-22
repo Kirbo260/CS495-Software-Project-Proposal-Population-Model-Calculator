@@ -51,7 +51,7 @@ export default function ResetPassword() {
     };
 
     return (
-        <div className="forget-password">
+        <div className="forget-password_reset">
             <form onSubmit={onSubmit}>
                 <div className="reset-password">
                     <h1>Reset Password</h1>
