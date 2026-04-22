@@ -44,7 +44,6 @@ export default function ExponentialGrowthModel() {
         const handleClickOutside = (event) => {
             console.log("triggered")
             if (curveModalRef.current && !curveModalRef.current.contains(event.target)) {
-                console.log("triggered inside")
 
                 setIsCurveModal(false)
             }

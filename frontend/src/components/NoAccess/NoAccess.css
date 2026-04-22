@@ -1,0 +1,52 @@
+.access-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.access-modal {
+    background-color: var(--color-light-pink);
+    border-radius: 25px;
+    width: 100%;
+    max-width: fit-content;
+    min-width: 500px;
+    overflow: hidden;
+}
+
+.access-modal-header {
+    background-color: var(--color-burgundy);
+    color: var(--color-white);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    padding: 10px;
+    border-radius: 25px;
+}
+
+.access-modal-header h2 {
+    font-size: 28px;
+    letter-spacing: 2px;
+}
+
+.access-modal-header svg {
+    cursor: pointer;
+}
+
+.access-modal-content {
+    max-width: 90%;
+    margin: 0 auto 20px;
+}
+
+.access-modal-body {
+    padding: 24px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: var(--color-dark-pink);
+    font-family: "Roboto", serif;
+}
