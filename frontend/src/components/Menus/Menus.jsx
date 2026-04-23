@@ -2,10 +2,12 @@ import { Link, useNavigate } from "react-router-dom"
 import "./Menus.css"
 import { useState } from "react"
 import NoAccess from "../NoAccess/NoAccess";
+import ComingSoon from "../ComingSoon/ComingSoon";
 
 export default function Menus() {
     const navigate = useNavigate();
     const [showAccessModal, setShowAccessModal] = useState(false);
+    const [showComingSoonModal, setShowComingSoonModal] = useState(false);
 
     const handleProtectedClick = (path) => {
         const token = localStorage.getItem("token");
@@ -15,6 +17,11 @@ export default function Menus() {
             return;
         }
 
+        if(!path || path === "#") {
+            setShowComingSoonModal(true);
+            return
+        }
+
         navigate(path);
     }
 
@@ -22,6 +29,9 @@ export default function Menus() {
         setShowAccessModal(false);
     }
 
+    const closeComingSoonModal = () => {
+        setShowComingSoonModal(false);
+    }
 
     return (
         <div className="menu-grid">
@@ -40,11 +50,12 @@ export default function Menus() {
                 </div>
                 <div className="menu-box">
                     <h3>Quick Calc</h3>
-                    <button className="btn btn-primary" onClick={() => Navigate("/modelselection")}>Calculate</button>
+                    <button className="btn btn-primary" onClick={() => navigate("/modelselection")}>Calculate</button>
                 </div>
             </div>
 
             {showAccessModal && <NoAccess setShowAccessModal={setShowAccessModal}/>}
+            {showComingSoonModal && <ComingSoon setShowComingSoonModal={setShowComingSoonModal}/>}
         </div>
     )
 }

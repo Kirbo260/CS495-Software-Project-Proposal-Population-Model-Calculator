@@ -8,7 +8,6 @@ import { FaArrowRight } from "react-icons/fa6";
 import "./HelpGrid.css"
 import { Link } from "react-router-dom";
 
-
 const HelpGrid = () => {
   return (
     <div className="help-grid">
@@ -22,21 +21,21 @@ const HelpGrid = () => {
                 <div className="help-box">
                     <CiViewTable />
                     <h3>Model Tools</h3>
-                    <FaArrowRight />
+                    <Link to="/get-started"><FaArrowRight /></Link>
                 </div>
                 <div className="help-box">
                     <CiUser />
-                    <h3>Account roles</h3>
-                    <FaArrowRight />
+                    <h3>Example Models</h3>
+                    <Link to="/get-started"><FaArrowRight /></Link>
                 </div>
                 <div className="help-box">
                     <FiBook />
-                    <h3>ABout PMC</h3>
+                    <h3>About PMC</h3>
                     <FaArrowRight />
                 </div>
                 <div className="help-box">
                     <CiPen />
-                    <h3>Assignment guide</h3>
+                    <h3>Sharing guide</h3>
                     <FaArrowRight />
                 </div>
                 <div className="help-box">

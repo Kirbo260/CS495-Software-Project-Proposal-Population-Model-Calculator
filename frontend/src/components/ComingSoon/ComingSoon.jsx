@@ -1,9 +1,9 @@
 import { AiOutlineStop } from "react-icons/ai";
-import "./NoAccess.css";
+import "./ComingSoon.css";
 import { IoClose } from "react-icons/io5";
 import { useEffect, useRef } from "react";
 
-export default function NoAccess({ setShowAccessModal }) {
+export default function ComingSoon({ setShowComingSoonModal }) {
     const NoAcessModalRef = useRef(null);
 
     useEffect(() => {
@@ -11,7 +11,7 @@ export default function NoAccess({ setShowAccessModal }) {
             console.log("triggered")
             if (NoAcessModalRef.current && !NoAcessModalRef.current.contains(event.target)) {
 
-                setShowAccessModal(false)
+                setShowComingSoonModal(false)
             }
         }
 
@@ -23,7 +23,7 @@ export default function NoAccess({ setShowAccessModal }) {
     }, [])
 
     const closeModal = () => {
-        setShowAccessModal(false);
+        setShowComingSoonModal(false);
     }
 
     return (
@@ -31,18 +31,18 @@ export default function NoAccess({ setShowAccessModal }) {
             <div className="access-modal" onClick={(event) => event.stopPropagation()}>
                 <div className="access-modal-header">
                     <button type="button" className="save-model-close"
-                        onClick={() => setShowAccessModal(false)}
+                        onClick={() => setShowComingSoonModal(false)}
                     >
                         <IoClose />
                     </button>
-                    <h2>You Dont Have Access</h2>
+                    <h2>Coming Soon</h2>
                     <span></span>
                 </div>
                 <div className="access-modal-body">
                     <div className="access-icon">
                         <AiOutlineStop size={200} color="#C47384" />
                     </div>
-                    <p>You must sign in or sign up in order to use this feature</p>
+                    <p>This feature is not added to our website, stay tuned for when it does</p>
                 </div>
             </div>
         </div>
