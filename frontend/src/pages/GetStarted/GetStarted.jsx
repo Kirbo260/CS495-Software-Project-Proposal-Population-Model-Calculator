@@ -8,11 +8,20 @@ import Compare from "../../assets/compare.png";
 import Close from "../../assets/Close.png";
 import "./GetStarted.css";
 import FinalPopulationVideo from "../../../ExampleVideos/continuous/finalPopulation.mp4";
+import coninitial from "../../../ExampleVideos/continuous/conInitial.mp4";
+import conrate from "../../../ExampleVideos/continuous/conRate.mp4";
+import contime from "../../../ExampleVideos/continuous/conTime.mp4";
+import disfinal from "../../../ExampleVideos/discrete/disFinal.mp4";
+import disinitial from "../../../ExampleVideos/discrete/disInitial.mp4";
+import disrate from "../../../ExampleVideos/discrete/disRate.mp4";
+import distime from "../../../ExampleVideos/discrete/disTime.mp4";
+
+
 
 export default function GetStarted() {
     return (
         <div class="get-started">
-            <div className="container">
+    t            <div className="container">
                 <div className="get-started-grid">
                     <div className="content">
                         <section id="get-started" className="get-started-content">
@@ -98,13 +107,13 @@ export default function GetStarted() {
                                     <summary>Continuous Growth Model</summary>
 
                                     <div className="accordion-content">
-                                        <a
-                                            href="https://www.youtube.com/watch?v=YOUR_VIDEO_LINK"
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                        >
-                                            Calculate Growth Rate
-                                        </a>
+                                         <div className="accordion-video">
+                                            <h4>Calculate Growth Rate</h4>
+
+                                            <video controls>
+                                                <source src={conrate} type="video/mp4" />
+                                            </video>
+                                        </div>
 
                                         <div className="accordion-video">
                                             <h4>Calculate Final Population</h4>
@@ -114,22 +123,22 @@ export default function GetStarted() {
                                             </video>
                                         </div>
 
-                                        <a
-                                            href="https://www.youtube.com/watch?v=YOUR_VIDEO_LINK"
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                        >
-                                            Calculate time
-                                        </a>
+                                         <div className="accordion-video">
+                                            <h4>Calculate Time</h4>
+
+                                            <video controls>
+                                                <source src={contime} type="video/mp4" />
+                                            </video>
+                                        </div>
 
 
-                                        <a
-                                            href="https://www.youtube.com/watch?v=YOUR_VIDEO_LINK"
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                        >
-                                            Initial Population
-                                        </a>
+                                        <div className="accordion-video">
+                                            <h4>Calculate Initial Population</h4>
+
+                                            <video controls>
+                                                <source src={coninitial} type="video/mp4" />
+                                            </video>
+                                        </div>
                                     </div>
                                 </details>
 
@@ -137,38 +146,38 @@ export default function GetStarted() {
                                     <summary>Discrete Growth Model</summary>
 
                                     <div className="accordion-content">
-                                        <a
-                                            href="https://www.youtube.com/watch?v=YOUR_VIDEO_LINK"
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                        >
-                                            Calculate Growth Rate
-                                        </a>
+                                         <div className="accordion-video">
+                                            <h4>Calculate Rate</h4>
 
-                                        <a
-                                            href="https://www.youtube.com/watch?v=YOUR_VIDEO_LINK"
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                        >
-                                            Calculate Final Population
-                                        </a>
+                                            <video controls>
+                                                <source src={disrate} type="video/mp4" />
+                                            </video>
+                                        </div>
 
-                                        <a
-                                            href="https://www.youtube.com/watch?v=YOUR_VIDEO_LINK"
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                        >
-                                            Calculate time
-                                        </a>
+                                         <div className="accordion-video">
+                                            <h4>Calculate Final Population</h4>
+
+                                            <video controls>
+                                                <source src={disfinal} type="video/mp4" />
+                                            </video>
+                                        </div>
+
+                                       <div className="accordion-video">
+                                            <h4>Calculate Time</h4>
+
+                                            <video controls>
+                                                <source src={distime} type="video/mp4" />
+                                            </video>
+                                        </div>
 
 
-                                        <a
-                                            href="https://www.youtube.com/watch?v=YOUR_VIDEO_LINK"
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                        >
-                                            Initial Population
-                                        </a>
+                                         <div className="accordion-video">
+                                            <h4>Calculate Initial Population</h4>
+
+                                            <video controls>
+                                                <source src={disinitial} type="video/mp4" />
+                                            </video>
+                                        </div>
                                     </div>
                                 </details>
 
