@@ -14,15 +14,16 @@ function LogisticGrowth() {
     const [deathRate, setDeathRate] = useState("");
     const [count, setCount] = useState(0);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [csvFile, setCsvFile] = useState(null);
 
-      // check if user is logged in to conditionally render the save button
-      // Outside so handleSave can access it and conditionally render the save button
+    // check if user is logged in to conditionally render the save button
+    // Outside so handleSave can access it and conditionally render the save button
     const isLoggedIn = !!localStorage.getItem("token");
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-       const params = new URLSearchParams({
+        const params = new URLSearchParams({
             time: time || "",
             timeFormat: timeFormat || "none",
             initialPopulation: initial || "",
@@ -41,30 +42,62 @@ function LogisticGrowth() {
         setData(result); // Store the result for visualization*/
     };
 
-        const handleSave = (mdata) => {
+    const handleCSVUpload = async () => {
+        if (!csvFile) {
+            alert("Please select a CSV file");
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append("file", csvFile);
+
+        try {
+            const response = await fetch(
+                "/api/upload/process/logistic/Regular",
+                {
+                    method: "POST",
+                    body: formData
+                }
+            );
+
+            const result = await response.json();
+
+            // directly update graph + table
+            setData(result);
+
+            // optionally show save button
+            setCount(1);
+
+        } catch (error) {
+            console.error("Upload failed:", error);
+        }
+    };
+
+    const handleSave = (mdata) => {
 
 
-    // Open the modal to input model details
-       const modelData = ({
+        // Open the modal to input model details
+        const modelData = ({
             name: mdata.name,
             description: mdata.description,
             version: mdata.version,
             inputs: {
-            time: time || "",
-            timeFormat: timeFormat || "none",
-            initialPopulation: initial || "",
-            finalPopulation: final || "",
-            carryingCapacity: carryingCapacity || "",
-            growthRate: rate || "",
-            birthRate: birthRate || "",
-            deathRate: deathRate || ""}
+                time: time || "",
+                timeFormat: timeFormat || "none",
+                initialPopulation: initial || "",
+                finalPopulation: final || "",
+                carryingCapacity: carryingCapacity || "",
+                growthRate: rate || "",
+                birthRate: birthRate || "",
+                deathRate: deathRate || ""
+            }
         });
 
         console.log("FINAL MODEL:", modelData);
         console.log("TOKEN:", localStorage.getItem("token"));
-        
+
         // Send the model data to the backend to save in the database
-       fetch("/api/models", {
+        fetch("/api/models", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -72,15 +105,15 @@ function LogisticGrowth() {
             },
             body: JSON.stringify(modelData)
         })
-        .then((res) => res.json())
-        .then((data) => {
-            console.log("Model saved:", data);
-            alert("Model saved successfully!");
-        })
-        .catch((error) => {
-            console.error("Error saving model:", error);
-            alert("Failed to save model.");
-        });
+            .then((res) => res.json())
+            .then((data) => {
+                console.log("Model saved:", data);
+                alert("Model saved successfully!");
+            })
+            .catch((error) => {
+                console.error("Error saving model:", error);
+                alert("Failed to save model.");
+            });
     };
 
 
@@ -103,6 +136,20 @@ function LogisticGrowth() {
             <button className="home-btn">
                 <a href="/">HomePage</a>
             </button>
+
+            <div className="csv-upload-section">
+                <h3>Upload CSV Dataset</h3>
+
+                <input
+                    type="file"
+                    accept=".csv"
+                    onChange={(e) => setCsvFile(e.target.files[0])}
+                />
+
+                <button onClick={handleCSVUpload} className="calculate-btn">
+                    Upload CSV
+                </button>
+            </div>
 
             <form className="model-form" onSubmit={handleSubmit}>
                 <input
@@ -162,8 +209,8 @@ function LogisticGrowth() {
                 />
                 <button type="submit" className="calculate-btn" onClick={() => setCount(1)} >Calculate</button>
             </form>
-            {isLoggedIn && count==1 && (
-                
+            {isLoggedIn && count == 1 && (
+
                 <button onClick={() => setIsModalOpen(true)} className="save-btn">
                     Save Model
                 </button>

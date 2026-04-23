@@ -7,6 +7,7 @@ import CV from "../../assets/cv.png";
 import Compare from "../../assets/compare.png";
 import Close from "../../assets/Close.png";
 import "./GetStarted.css";
+import FinalPopulationVideo from "../../../ExampleVideos/continuous/finalPopulation.mp4";
 
 export default function GetStarted() {
     return (
@@ -86,17 +87,152 @@ export default function GetStarted() {
                         </section>
                         <section id="example-models" className="get-started-content">
                             <h1>Video Explanation</h1>
-                            <iframe width="560" height="315" src="https://www.youtube.com/embed/9xwazD5SyVg?si=YROPyZxaW-WG9XW8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-                            <h2>Video description:</h2>
-                            <p>The graphing calculator page provides four different types of datasets to
-                                model real-world growth. The Population Growth Rate model focuses on how
-                                quickly a population changes over time using a rate-based approach.
-                                The Logistic Growth model represents growth that starts rapidly but slows
-                                down as it approaches a maximum limit, known as carrying capacity.
-                                The Continuous Growth model assumes data changes smoothly at every
-                                moment, typically following an exponential pattern. In contrast,
-                                the Discrete Growth model represents changes at specific intervals
-                                (such as yearly or monthly), making it useful for step-by-step data analysis.</p>
+                            <p>
+                                Browse tutorials for each population model and parameter.
+                                Click a section to expand and access the related videos.
+                            </p>
+
+                            <div className="video-accordion">
+
+                                <details className="accordion-item">
+                                    <summary>Continuous Growth Model</summary>
+
+                                    <div className="accordion-content">
+                                        <a
+                                            href="https://www.youtube.com/watch?v=YOUR_VIDEO_LINK"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                        >
+                                            Calculate Growth Rate
+                                        </a>
+
+                                        <div className="accordion-video">
+                                            <h4>Calculate Final Population</h4>
+
+                                            <video controls>
+                                                <source src={FinalPopulationVideo} type="video/mp4" />
+                                            </video>
+                                        </div>
+
+                                        <a
+                                            href="https://www.youtube.com/watch?v=YOUR_VIDEO_LINK"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                        >
+                                            Calculate time
+                                        </a>
+
+
+                                        <a
+                                            href="https://www.youtube.com/watch?v=YOUR_VIDEO_LINK"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                        >
+                                            Initial Population
+                                        </a>
+                                    </div>
+                                </details>
+
+                                <details className="accordion-item">
+                                    <summary>Discrete Growth Model</summary>
+
+                                    <div className="accordion-content">
+                                        <a
+                                            href="https://www.youtube.com/watch?v=YOUR_VIDEO_LINK"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                        >
+                                            Calculate Growth Rate
+                                        </a>
+
+                                        <a
+                                            href="https://www.youtube.com/watch?v=YOUR_VIDEO_LINK"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                        >
+                                            Calculate Final Population
+                                        </a>
+
+                                        <a
+                                            href="https://www.youtube.com/watch?v=YOUR_VIDEO_LINK"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                        >
+                                            Calculate time
+                                        </a>
+
+
+                                        <a
+                                            href="https://www.youtube.com/watch?v=YOUR_VIDEO_LINK"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                        >
+                                            Initial Population
+                                        </a>
+                                    </div>
+                                </details>
+
+                                <details className="accordion-item">
+                                    <summary>Logistic Growth Model</summary>
+
+                                    <div className="accordion-content">
+                                        <a
+                                            href="https://www.youtube.com/watch?v=YOUR_VIDEO_LINK"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                        >
+                                            Calculate Growth Rate
+                                        </a>
+
+                                        <a
+                                            href="https://www.youtube.com/watch?v=YOUR_VIDEO_LINK"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                        >
+                                            Calculate Final Population
+                                        </a>
+
+                                        <a
+                                            href="https://www.youtube.com/watch?v=YOUR_VIDEO_LINK"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                        >
+                                            Calculate time
+                                        </a>
+
+
+                                        <a
+                                            href="https://www.youtube.com/watch?v=YOUR_VIDEO_LINK"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                        >
+                                            Initial Population
+                                        </a>
+
+                                        <a
+                                            href="https://www.youtube.com/watch?v=YOUR_VIDEO_LINK"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                        >
+                                            Calculate Carrying Capacity
+                                        </a>
+                                    </div>
+                                </details>
+
+                                <details className="accordion-item">
+                                    <summary>Predator-Prey Model</summary>
+
+                                    <div className="accordion-content">
+                                        <a
+                                            href="https://www.youtube.com/watch?v=YOUR_VIDEO_LINK"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                        >
+                                            Predator-Prey values
+                                        </a>
+                                    </div>
+                                </details>
+                            </div>
                         </section>
                     </div>
                     <aside>

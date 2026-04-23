@@ -32,6 +32,7 @@ export default class ContinuousEstimate {
     }
 
     const r = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);
+    console.log("The rate is : " + r );
 
     return {r};
 }

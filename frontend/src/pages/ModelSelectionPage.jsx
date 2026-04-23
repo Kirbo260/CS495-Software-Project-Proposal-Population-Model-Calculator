@@ -5,9 +5,9 @@ function ModelSelectionPage() {
         <div className="model-selection-page">
             <h1>Choose your Model Calculator</h1>
             <div className="model-buttons">
-                <button className="model-btn">
+               {/*<button className="model-btn">
                     <a href="/populationgrowth">Population Growth Rate</a>
-                </button>
+                </button>*/}
                 <button className="model-btn">
                     <a href="/logisticgrowth">Logistic Growth</a>
                 </button>

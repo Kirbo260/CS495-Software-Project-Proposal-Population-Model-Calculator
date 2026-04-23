@@ -12,16 +12,17 @@ export default class ParameterEstimation {
     }
 
     estimateParameters() {
-        const growthRate = 0;
 
         if (this.modelType === "continuous") {
-            growthRate = new ContinuousEstimate(this.time, this.population).estimateContinuousGrowthRate();
-            return { growthRate }; // return an object for easier coding
+            const values = new ContinuousEstimate(this.time, this.population).estimateContinuousGrowthRate();
+            console.log("The value rate" + values.r)
+            return values; // return an object for easier coding
         }
 
         if (this.modelType === "discrete"){
-            growthRate = new DiscreteEstimate(this.time,this.population).estimateDiscreteGrowthRate();
-            return {growthRate};
+            const values = new DiscreteEstimate(this.time,this.population).estimateDiscreteGrowthRate();
+            console.log("The value rate" + values.r)
+            return values;
         }
 
          if (this.modelType === "logistic"){

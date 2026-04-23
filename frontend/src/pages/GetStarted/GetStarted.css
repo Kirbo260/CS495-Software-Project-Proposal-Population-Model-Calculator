@@ -61,3 +61,88 @@ iframe {
     height: 550px; */
     margin-bottom: 20px;
 }
+
+/* Accordion css */
+
+.video-accordion {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    margin-top: 30px;
+}
+
+.accordion-item {
+    background: #ffffff;
+    border-radius: 18px;
+    border: 1px solid #e5e5e5;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+.accordion-item summary {
+    cursor: pointer;
+    padding: 20px 25px;
+    font-size: 20px;
+    font-weight: 600;
+    color: #2b2b2b;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background 0.3s ease;
+}
+
+.accordion-item summary:hover {
+    background-color: #f5f5f5;
+}
+
+.accordion-item summary::-webkit-details-marker {
+    display: none;
+}
+
+.accordion-item summary::after {
+    content: "+";
+    font-size: 24px;
+    font-weight: bold;
+    transition: transform 0.3s ease;
+}
+
+.accordion-item[open] summary::after {
+    content: "−";
+}
+
+.accordion-content {
+    display: flex;
+    flex-direction: column;
+    padding: 0 25px 25px;
+    gap: 12px;
+}
+
+.accordion-content a {
+    text-decoration: none;
+    background: #fafafa;
+    border: 1px solid #ececec;
+    padding: 14px 18px;
+    border-radius: 12px;
+    color: #333;
+    font-weight: 500;
+    transition: all 0.25s ease;
+}
+
+.accordion-content a:hover {
+    background: #111827;
+    color: white;
+    transform: translateX(6px);
+}
+
+.accordion-video {
+    margin-top: 15px;
+}
+
+.accordion-video video {
+    width: 100%;
+    border-radius: 12px;
+    margin-top: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.12);
+}

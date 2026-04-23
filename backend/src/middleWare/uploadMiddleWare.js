@@ -14,17 +14,15 @@ export default function uploadMiddleWare() {
         prey_population: ["prey_population", "prey", "preyPop"],
         predator_population: ["predator_population", "predator", "predatorPop"]
     };
-  
-    console.log("Validating file structure...");
 
     // Handle structure validation here
     const validateFileStructure = async (req, res, next) => {
       console.log("Validating file structure...");
-         const modelType = req.params.modelType;
+         const validType = req.params.validType;
 
 
-         if (!validTypes.includes(modelType)) {
-            return res.status(400).json({ error: `Invalid model type: ${modelType}. Valid model types are ${validTypes.join(", ")}` });
+         if (!validTypes.includes(validType)) {
+            return res.status(400).json({ error: `Invalid model type: ${validType}. Valid model types are ${validTypes.join(", ")}` });
         }
 
         try {
@@ -47,7 +45,7 @@ export default function uploadMiddleWare() {
             const headers = Object.keys(parsedData[0]).map(h => h.trim().toLowerCase());
 
             // Validate that the required columns are present (using aliases)
-            if (modelType === "Regular") {
+            if (validType === "Regular") {
                 if (!hasValidColumn(headers, aliases.time)
                     || !hasValidColumn(headers, aliases.population)) {
                     return res.status(400).json({ error: "CSV file must contain 'time' and 'population' columns (or their aliases)" });
@@ -55,7 +53,7 @@ export default function uploadMiddleWare() {
             }
 
             // For Predator-Prey model, check for the presence of either the standard column names or their aliases
-            if (modelType === "Predator-prey") {
+            if (validType === "Predator-prey") {
                 if (!hasValidColumn(headers, aliases.time)
                     || !hasValidColumn(headers, aliases.prey_population)
                     || !hasValidColumn(headers, aliases.predator_population)) {
@@ -67,7 +65,7 @@ export default function uploadMiddleWare() {
             const normalizedData = parsedData.map(row => normalizeRow(row, aliases));
 
             // Validate the normalized data using the validateCSVData function
-            await validateCSVData(normalizedData, modelType);
+            await validateCSVData(normalizedData, validType);
 
             // If validation passes, attach the parsed data to the request object for use in the controller
             req.parsedData = normalizedData;

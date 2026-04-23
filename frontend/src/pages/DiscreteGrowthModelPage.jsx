@@ -14,6 +14,7 @@ function DiscreteGrowth() {
     const [deathRate, setDeathRate] = useState("");
     const [count, setCount] = useState(0);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [csvFile, setCsvFile] = useState(null);
 
     // check if user is logged in to conditionally render the save button
     // Outside so handleSave can access it and conditionally render the save button
@@ -37,6 +38,37 @@ function DiscreteGrowth() {
         );
         const result = await response.json();
         setData(result);
+    };
+
+    const handleCSVUpload = async () => {
+        if (!csvFile) {
+            alert("Please select a CSV file");
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append("file", csvFile);
+
+        try {
+            const response = await fetch(
+                "/api/upload/process/discrete/Regular",
+                {
+                    method: "POST",
+                    body: formData
+                }
+            );
+
+            const result = await response.json();
+
+            // directly update graph + table
+            setData(result);
+
+            // optionally show save button
+            setCount(1);
+
+        } catch (error) {
+            console.error("Upload failed:", error);
+        }
     };
 
     const handleSave = (mdata) => {
@@ -101,6 +133,20 @@ function DiscreteGrowth() {
             <button className="home-btn">
                 <a href="/">HomePage</a>
             </button>
+
+            <div className="csv-upload-section">
+                <h3>Upload CSV Dataset</h3>
+
+                <input
+                    type="file"
+                    accept=".csv"
+                    onChange={(e) => setCsvFile(e.target.files[0])}
+                />
+
+                <button onClick={handleCSVUpload} className="calculate-btn">
+                    Upload CSV
+                </button>
+            </div>
 
             <form className="model-form" onSubmit={handleSubmit}>
                 <input

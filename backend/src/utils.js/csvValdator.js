@@ -18,13 +18,13 @@ export default async function validateCSVData(parsedData, validType) {
         });
   
         // check if any rows of numbers are not valid numbers
-    if (modelType === validTypes[0]) { // Regular model
+    if (validType === validTypes[0]) { // Regular model
             if (Number.isNaN(Number(row.time)) 
                 || Number.isNaN(Number(row.population))) {
                 throw new Error(`Invalid data at row ${index + 1}: time and population must be numbers`);
             }
 
-    } else if (modelType === validTypes[1]) { // Predator-prey model
+    } else if (validType === validTypes[1]) { // Predator-prey model
             if (Number.isNaN(Number(row.time)) 
                 || Number.isNaN(Number(row.prey_population))
                 || Number.isNaN(Number(row.predator_population))) {

@@ -7,7 +7,7 @@ import uploadMiddleWare from '../middleWare/uploadMiddleWare.js';
 import { createModel, getModels, getModelById, updateModel, deleteModel, deleteAllModelsForUser, getDeletedModels, restoreModel } from '../controllers/modelController.js';
 import { uploadCSV, getCSVFileById, deleteAllCSVFilesForUser } from '../controllers/FileController.js';
 // import { uploadCSV, getCSVFiles, getCSVFileById, deleteCSVFile, deleteAllCSVFilesForUser } from '../controllers/FileController.js';
-import { processCSV } from '../controllers/ProcessController.js';
+import { emProcessCSV, conProcessCSV, disProcessCSV, logProcessCSV, predPreyProcessCSV } from '../controllers/ProcessController.js';
 
 const router = express.Router();
 
@@ -38,8 +38,12 @@ router.get("/:id", authMiddleware, getModelById);
 router.put("/:id", authMiddleware, updateModel);
 
 // FILE ROUTES
-router.post("/upload/process/:validType", uploadMiddleWare(), processCSV);
-router.post("/upload/store/:validType", uploadMiddleWare(), uploadCSV);
+router.post("/upload/process/emcomparsion/:validType", uploadMiddleWare(), emProcessCSV); // comparing models
+router.post("/upload/process/continuous/:validType", uploadMiddleWare(), conProcessCSV); // continuous
+router.post("/upload/process/discrete/:validType", uploadMiddleWare(), disProcessCSV); // discrete
+router.post("/upload/process/logistic/:validType", uploadMiddleWare(), logProcessCSV); // logistic
+router.post("/upload/process/predator-prey/:validType", uploadMiddleWare(), predPreyProcessCSV); // pred-prey
+router.post("/upload/store/:validType", uploadMiddleWare(), uploadCSV); //storing csv
 
 router.get("/files/:id", authMiddleware, getCSVFileById);
 router.delete("/files/my", authMiddleware, deleteAllCSVFilesForUser);
