@@ -95,7 +95,7 @@ export default function GetStarted() {
                             <img src={Close} alt="Close" />
                         </section>
                         <section id="example-models" className="get-started-content">
-                            <h1>Video Explanation</h1>
+                            <h1>Example models</h1>
                             <p>
                                 Browse tutorials for each population model and parameter.
                                 Click a section to expand and access the related videos.
