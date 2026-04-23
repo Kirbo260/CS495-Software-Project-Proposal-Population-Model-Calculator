@@ -43,7 +43,7 @@ router.post("/upload/process/continuous/:validType", uploadMiddleWare(), conProc
 router.post("/upload/process/discrete/:validType", uploadMiddleWare(), disProcessCSV); // discrete
 router.post("/upload/process/logistic/:validType", uploadMiddleWare(), logProcessCSV); // logistic
 router.post("/upload/process/predator-prey/:validType", uploadMiddleWare(), predPreyProcessCSV); // pred-prey
-router.post("/upload/store/:validType", uploadMiddleWare(), uploadCSV); //storing csv
+router.post("/upload/store/:validType", authMiddleware, uploadMiddleWare(), uploadCSV); //storing csv
 
 router.get("/files/:id", authMiddleware, getCSVFileById);
 router.delete("/files/my", authMiddleware, deleteAllCSVFilesForUser);

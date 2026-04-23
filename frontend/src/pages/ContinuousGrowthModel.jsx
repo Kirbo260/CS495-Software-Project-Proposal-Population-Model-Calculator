@@ -72,8 +72,7 @@ function ContinuousGrowth() {
     }
   };
 
-  const handleSave = (mdata) => {
-
+ const handleSave = (mdata) => {
 
     // Open the modal to input model details
     const modelData = ({
