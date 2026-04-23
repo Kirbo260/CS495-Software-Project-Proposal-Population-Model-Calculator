@@ -68,16 +68,8 @@ export default function ModelsPage() {
         </div>
       ) : (
         Array.isArray(models) && models.map((model) => (
-          <div
+          <div className="model-card"
             key={model.id}
-            style={{
-              background: "linear-gradient(135deg, #ff4d4d, #ffcc00)",
-              color: "white",
-              padding: "15px",
-              marginBottom: "10px",
-              borderRadius: "8px",
-              position: "relative"
-            }}
           >
             <h3>{model.name}</h3>
             <p>{model.description}</p>
@@ -86,17 +78,7 @@ export default function ModelsPage() {
             {/* 🔥 Delete Button */}
             <button
               onClick={() => handleDelete(model.id)}
-              style={{
-                position: "absolute",
-                top: "10px",
-                right: "10px",
-                background: "#990000",
-                color: "white",
-                border: "none",
-                padding: "5px 10px",
-                cursor: "pointer",
-                borderRadius: "5px"
-              }}
+              className="dr-button"
             >
               Delete
             </button>

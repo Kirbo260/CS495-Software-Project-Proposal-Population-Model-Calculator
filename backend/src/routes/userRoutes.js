@@ -38,8 +38,8 @@ router.get("/:id", authMiddleware, getModelById);
 router.put("/:id", authMiddleware, updateModel);
 
 // FILE ROUTES
-router.post("/upload/process/:modelType", uploadMiddleWare(), processCSV);
-router.post("/upload/store/:modelType", uploadMiddleWare(), uploadCSV);
+router.post("/upload/process/:validType", uploadMiddleWare(), processCSV);
+router.post("/upload/store/:validType", uploadMiddleWare(), uploadCSV);
 
 router.get("/files/:id", authMiddleware, getCSVFileById);
 router.delete("/files/my", authMiddleware, deleteAllCSVFilesForUser);

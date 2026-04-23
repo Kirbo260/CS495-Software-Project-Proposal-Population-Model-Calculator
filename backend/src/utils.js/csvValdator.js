@@ -1,11 +1,11 @@
 // Validates the csv file numbers, just numbers
 
-export default async function validateCSVData(parsedData, modelType) {
+export default async function validateCSVData(parsedData, validType) {
     let data = parsedData;
     // Check if the required columns are present
     const validTypes = ["Regular", "Predator-prey"];
 
-    if (!validTypes.includes(modelType)) {
+    if (!validTypes.includes(validType)) {
         throw new Error(`Invalid model type: ${modelType}. Valid model types are ${validTypes.join(", ")}`);
     }
 

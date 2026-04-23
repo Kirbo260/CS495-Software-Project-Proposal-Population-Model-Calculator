@@ -33,7 +33,7 @@ export default class ContinuousEstimate {
 
     const r = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);
 
-    return r;
+    return {r};
 }
 }
 
