@@ -40,7 +40,7 @@ export default function Menus() {
                 </div>
                 <div className="menu-box">
                     <h3>Quick Calc</h3>
-                    <button className="btn btn-primary" onClick={() => Navigate("/modelselection")}>Calculate</button>
+                    <button className="btn btn-primary" onClick={() => navigate("/modelselection")}>Calculate</button>
                 </div>
             </div>
 
