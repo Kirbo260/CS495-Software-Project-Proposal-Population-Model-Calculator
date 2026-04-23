@@ -24,6 +24,11 @@ export default class ParameterEstimation {
             return {growthRate};
         }
 
+         if (this.modelType === "logistic"){
+            const values = new LogisticEstimate(this.time,this.population).estimateLogisticGrowthRate();
+            return values;
+        }
+
         // Add parameter estimation logic for other model types (Discrete, Logistic) here
         throw new Error(`Parameter estimation for model type ${this.modelType} is not implemented yet.`);
     }

@@ -30,7 +30,7 @@ export default class DiscreteEstimate {
         
         lambda = Math.exp(logLambda/count);
         r = lambda - 1;
-        return r; 
+        return {r}; 
     }
 
     }

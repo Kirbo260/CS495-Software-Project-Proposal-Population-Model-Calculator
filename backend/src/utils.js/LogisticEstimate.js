@@ -22,9 +22,8 @@ export default class LogisticEstimate {
 
     K = Math.max(this.population); // max population equals Carrying Capacity
 
-
+    r = 0.30; // come back to this
     
-
 
     return {r , K} // rate and carrying capacity
 }

@@ -32,6 +32,17 @@ export const processCSV = async (req, res) => {
     let actualValues = population; // Use the actual population values for EM comparison
     let modelTypeForEM = "continuous"; // Pass the model type to EMComparison for accurate error metric calculation
 
+    if (modelTypeForPM == "continuous"){
+
+    }else if (modelTypeForPM == "discrete"){
+
+    }else if (modelTypeForPM == "logistic"){
+
+    }else if(modelTypeForPM == "predator-prey"){
+
+    }else if(modelTypeForPM == "continuous"){
+
+    }
     const emComparison = new EMComparison(
         initialPopulation, 
         finalPopulation,
@@ -49,7 +60,7 @@ export const processCSV = async (req, res) => {
 
     return res.status(200).json({
         message: "Processing successful",
-       parameters: parameters,
-       emResults: emResults
+        parameters: parameters,
+        emResults: emResults
     });
 };

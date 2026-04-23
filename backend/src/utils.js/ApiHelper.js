@@ -36,6 +36,8 @@ export default function APIHelper(req, res, next) {
 
         modelType: req.query.modelType, // "growth" or "decay" for discrete growth model
 
+        validType: req.query.validType, // "predator-prey' or "other growth models" 
+
         actualValues: req.query.actualValues
         ? req.query.actualValues.includes(",")
         ? req.query.actualValues.split(",").map(Number)
