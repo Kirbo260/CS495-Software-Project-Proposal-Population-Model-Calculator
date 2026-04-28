@@ -21,7 +21,7 @@ import distime from "../../../ExampleVideos/discrete/disTime.mp4";
 export default function GetStarted() {
     return (
         <div class="get-started">
-    t            <div className="container">
+            <div className="container">
                 <div className="get-started-grid">
                     <div className="content">
                         <section id="get-started" className="get-started-content">
@@ -107,7 +107,7 @@ export default function GetStarted() {
                                     <summary>Continuous Growth Model</summary>
 
                                     <div className="accordion-content">
-                                         <div className="accordion-video">
+                                        <div className="accordion-video">
                                             <h4>Calculate Growth Rate</h4>
 
                                             <video controls>
@@ -123,7 +123,7 @@ export default function GetStarted() {
                                             </video>
                                         </div>
 
-                                         <div className="accordion-video">
+                                        <div className="accordion-video">
                                             <h4>Calculate Time</h4>
 
                                             <video controls>
@@ -146,7 +146,7 @@ export default function GetStarted() {
                                     <summary>Discrete Growth Model</summary>
 
                                     <div className="accordion-content">
-                                         <div className="accordion-video">
+                                        <div className="accordion-video">
                                             <h4>Calculate Rate</h4>
 
                                             <video controls>
@@ -154,7 +154,7 @@ export default function GetStarted() {
                                             </video>
                                         </div>
 
-                                         <div className="accordion-video">
+                                        <div className="accordion-video">
                                             <h4>Calculate Final Population</h4>
 
                                             <video controls>
@@ -162,7 +162,7 @@ export default function GetStarted() {
                                             </video>
                                         </div>
 
-                                       <div className="accordion-video">
+                                        <div className="accordion-video">
                                             <h4>Calculate Time</h4>
 
                                             <video controls>
@@ -171,7 +171,7 @@ export default function GetStarted() {
                                         </div>
 
 
-                                         <div className="accordion-video">
+                                        <div className="accordion-video">
                                             <h4>Calculate Initial Population</h4>
 
                                             <video controls>

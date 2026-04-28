@@ -20,6 +20,7 @@ import StudentSettings from '../pages/StudentSettings/StudentSettings'
 import GetStarted from '../pages/GetStarted/GetStarted'
 import ResetPassword from '../pages/ForgetPassword/ResetPassword'
 import ModelsRestore from '../pages/ModelsPage/ModelsRestore'
+import SharingData from '../pages/SharingData/SharingData'
 
 
 // Page routing paths for site
@@ -47,6 +48,7 @@ export default function AppRoutes() {
       <Route path="/get-started" element={<GetStarted />} />
       <Route path="/reset-password/:token" element={<ResetPassword/>} />
       <Route path="/deletedModels" element={<ModelsRestore/>} />
+      <Route path="/sharing-data" element={<SharingData />} />
       {/* Future routes can be added here */}
       </Routes>
   )

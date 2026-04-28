@@ -46,7 +46,7 @@ export default function Menus() {
                 </div>
                 <div className="menu-box">
                     <h3>Sharing Data</h3>
-                    <button to="#" className="btn btn-primary" onClick={() => handleProtectedClick("#")}>View</button>
+                    <button className="btn btn-primary" onClick={() => handleProtectedClick("/sharing-data")}>View</button>
                 </div>
                 <div className="menu-box">
                     <h3>Quick Calc</h3>
