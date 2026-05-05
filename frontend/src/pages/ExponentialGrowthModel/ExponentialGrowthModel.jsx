@@ -3,13 +3,16 @@ import { BiCollapseHorizontal } from "react-icons/bi";
 import { FaPlus } from "react-icons/fa6";
 import graphBg from "../../assets/graph.png";
 import "./ExponentialGrowthModel.css";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, version } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Plot from "react-plotly.js";
 
 const GRAPH_DURATION = 10;
 
 export default function ExponentialGrowthModel() {
+    const curveModalRef = useRef(null);
+
+    const navigate = useNavigate();
 
     const [isPanelOpen, setIsPanelOpen] = useState(true);
     const [isCompareOpen, setIsCompareOpen] = useState(false);
@@ -17,10 +20,6 @@ export default function ExponentialGrowthModel() {
     const [isCurveModal, setIsCurveModal] = useState(false);
     const [isExponentialModal, setIsExponetialModal] = useState(false);
     const [isContinuousModal, setIsContinuousModal] = useState(false);
-
-    const curveModalRef = useRef(null);
-
-    const navigate = useNavigate();
 
     const [form, setForm] = useState({
         initialPopulation: "100",
@@ -30,6 +29,11 @@ export default function ExponentialGrowthModel() {
     const [form2, setForm2] = useState({
         initialPopulation: "200",
         finalPopulation: "500"
+    })
+
+    const [appliedForm2, setAppliedForm2] = useState({
+        initialPopulation: "",
+        finalPopulation: ""
     })
 
     const [continuousForm, setContinuousForm] = useState({
@@ -47,6 +51,16 @@ export default function ExponentialGrowthModel() {
     const [xPan, setXPan] = useState(50);
     const [yPan, setYPan] = useState(50);
 
+    const [savedModels, setSavedModels] = useState([]);
+    const [modelIsLoading, setModelIsLoading] = useState(false);
+    const [selectedModel, setSelectedModel] = useState(null);
+    const [selectedModelData, setSelectedModelData] = useState(null);
+    const [selectedModelLoading, setSelectedModelLoading] = useState(false);
+    const [selectedModelError, setSelectedModelError] = useState("");
+    const [saveModelName, setSaveModelName] = useState("");
+    const [saveLoading, setSaveLoading] = useState(false);
+    const [saveError, setSaveError] = useState("");
+
     useEffect(() => {
         const handleClickOutside = (event) => {
             console.log("triggered")
@@ -62,6 +76,18 @@ export default function ExponentialGrowthModel() {
             document.removeEventListener("mousedown", handleClickOutside);
         }
     }, [])
+
+    useEffect(() => {
+        if (!isCompareOpen) return;
+        const token = localStorage.getItem("token");
+        if (!token) return;
+        setModelIsLoading(true);
+        fetch("/api/my", { headers: { Authorization: `Bearer ${token}` } })
+            .then(response => response.json())
+            .then(data => { if (Array.isArray(data)) setSavedModels(data); })
+            .catch(error => console.error("Failed to fetch saved models.", error))
+            .finally(() => setModelIsLoading(false));
+    }, [isCompareOpen])
 
     const buildChartSeries = (values) => {
         const p0 = Number(values.initialPopulation);
@@ -110,7 +136,7 @@ export default function ExponentialGrowthModel() {
     };
 
     const chartSeries = useMemo(() => buildChartSeries(form), [form]);
-    const chartSeries2 = useMemo(() => buildChartSeries(form2), [form2]);
+    const chartSeries2 = useMemo(() => buildChartSeries(appliedForm2), [appliedForm2]);
 
     const basePlotRange = useMemo(() => {
         // const validSeries = [chartSeries, chartSeries2].filter((series) => series.isValid);
@@ -124,7 +150,7 @@ export default function ExponentialGrowthModel() {
             ...(hasContinuous ? [] : [chartSeries2])
         ].filter((series) => series.isValid);
 
-        if(!visibleSeries.length && !hasContinuous) {
+        if (!visibleSeries.length && !hasContinuous) {
             return {
                 x: [0, GRAPH_DURATION],
                 y: [-10, 10]
@@ -149,7 +175,6 @@ export default function ExponentialGrowthModel() {
             y: [minY - padding, maxY + padding]
         };
     }, [chartSeries, chartSeries2, continuousData]);
-
 
     const plotRange = useMemo(() => {
         // const [xMin, xMax] = basePlotRange.x;
@@ -191,6 +216,93 @@ export default function ExponentialGrowthModel() {
 
     }, [basePlotRange, zoomLevel, xPan, yPan]);
 
+    const selectedModelInputs = useMemo(() => {
+        if (!selectedModel) return null;
+        try {
+            return typeof selectedModel.inputs === "string"
+                ? JSON.parse(selectedModel.inputs)
+                : selectedModel.inputs || {};
+        } catch (error) {
+            return {};
+        }
+    }, [selectedModel]);
+
+    const selectedModelKind = useMemo(() => {
+        if (!selectedModelInputs) return null;
+        const i = selectedModelInputs;
+        const has = (k) => i[k] !== undefined && i[k] !== null && String(i[k]).trim() !== "";
+
+        if (has("initialPopulation") && has("finalPopulation") && !has("growthRate") && !has("time")) return "exponential";
+
+        if (has("growthRate") && has("time") && has("initialPopulation")) return "continuous";
+        return "unknown";
+
+    }, [selectedModelInputs]);
+
+    const selectedModelSeries = useMemo(() => {
+        if (selectedModelKind !== "exponential") return null;
+
+        return buildChartSeries({
+            initialPopulation: selectedModelInputs.initialPopulation ?? "0",
+            finalPopulation: selectedModelInputs.finalPopulation ?? "0"
+        })
+
+    }, [selectedModelKind, selectedModelInputs])
+
+    const selectedModelPlotRange = useMemo(() => {
+        if (!selectedModelSeries?.isValid) return { x: [0, GRAPH_DURATION], y: [-10, 10] };
+        const span = Math.max(10, selectedModelSeries.maxY - selectedModelSeries.minY);
+        const padding = span * 0.15;
+
+        return {
+            x: [0, GRAPH_DURATION],
+            y: [selectedModelSeries.minY - padding, selectedModelSeries.maxY + padding]
+        }
+    }, [selectedModelSeries])
+
+    useEffect(() => {
+        if (!selectedModel) { setSelectedModel(null); setSelectedModelError(""); return; }
+        if (selectedModelKind !== "continuous") { setSelectedModelData(null); setSelectedModelError(""); return; }
+
+        const i = selectedModelInputs;
+        const params = new URLSearchParams({
+            time: i.time || "",
+            timeFormat: i.timeFormat || "none",
+            initialPopulation: i.initialPopulation || "",
+            finalPopulation: i.finalPopulation || "",
+            growthRate: i.growthRate || "",
+            birthRate: i.birthRate || "",
+            deathRate: i.deathRate || ""
+        })
+
+        let cancelled = false;
+        setSelectedModelLoading(true);
+        setSelectedModelError("");
+        fetch(`/api/continuousgrowth?${params.toString()}`)
+            .then(response => response.json())
+            .then(data => {
+                if (cancelled) return;
+                if (data?.graph?.rows?.length) setSelectedModelData(data);
+                else {
+                    setSelectedModelError(data?.error || "No data returned for this model.");
+                    setSelectedModelData(null);
+                };
+
+            })
+            .catch(error => {
+                if (!cancelled) {
+                    setSelectedModelError("failed to load model data");
+                    setSelectedModelData(null);
+                }
+            })
+            .finally(() => {
+                if (!cancelled) {
+                    setSelectedModelLoading(false);
+                }
+            })
+
+        return () => { cancelled = true; }
+    }, [selectedModel, selectedModelKind, selectedModelInputs]);
 
     const handleChange = (event) => {
         const { name, value } = event.target;
@@ -213,10 +325,15 @@ export default function ExponentialGrowthModel() {
             [name]: value
         }));
 
+    };
+
+    const handleApplyForm2 = (event) => {
+        event.preventDefault();
+        setAppliedForm2(form2);
         setZoomLevel(1);
         setXPan(50);
         setYPan(50);
-    };
+    }
 
     const handleZoomIn = () => {
         setZoomLevel((previous) => Math.max(0.2, previous * 0.8));
@@ -282,6 +399,9 @@ export default function ExponentialGrowthModel() {
     const handleContinuousModalClose = (event) => {
         setIsContinuousModal(false);
         setIsPanelOpen(true);
+
+        setContinuousData(null);
+        setContinuousError("");
     }
 
     const handleExponentialModalOpen = (event) => {
@@ -297,31 +417,72 @@ export default function ExponentialGrowthModel() {
         setIsPanelOpen(true);
     }
 
+    const handleSaveModel = async () => {
+        if (!saveModelName.trimEnd()) {
+            setSaveError("Please enter a name for the model");
+            return;
+        }
+
+        const token = localStorage.getItem("token");
+        if (!token) {
+            setSaveError("YOu must be logged in to save a model");
+            return;
+        }
+
+        try {
+            const response = await fetch("/api/models", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    name: saveModelName.trim(),
+                    description: "",
+                    version: "1.0",
+                    inputs: { initialPopulation: form.initialPopulation, finalPopulation: form.finalPopulation },
+                    type: "continuous"
+                })
+            });
+            if (!response.ok) {
+                const data = await response.json();
+                throw new Error(data.error || "Failed to save model.");
+            }
+            setSaveModelName("");
+            setIsSaveModal(false);
+        } catch (error) {
+            setSaveError(error.message);
+        }
+        finally {
+            setSaveLoading(false);
+        }
+    }
+
     const hasContinuous = !!continuousData?.graph?.rows?.length;
 
     return (
-        <div className="exponential-growth-model">
+        <div className={`exponential-growth-model${selectedModel ? ' split-view' : ''}`}>
             <div className="plot-wrapper">
                 <Plot
                     data={[
-                        ...(chartSeries.isValid) ? 
-                         [
-                            {
-                                x: chartSeries.x,
-                                y: chartSeries.y,
-                                type: "scatter",
-                                mode: "lines",
-                                name: "Model 1",
-                                line: {
-                                    width: 4,
-                                    color: "#111",
-                                    shape: "spline",
-                                    smoothing: 1.2
-                                },
-                                hovertemplate:
-                                    "Model 1<br>Step: %{x:.2f}<br>Population: %{y:.2f}<extra></extra>"
-                            }
-                        ]: [],
+                        ...(chartSeries.isValid) ?
+                            [
+                                {
+                                    x: chartSeries.x,
+                                    y: chartSeries.y,
+                                    type: "scatter",
+                                    mode: "lines",
+                                    name: "Baseline",
+                                    line: {
+                                        width: 4,
+                                        color: "#111",
+                                        shape: "spline",
+                                        smoothing: 1.2
+                                    },
+                                    hovertemplate:
+                                        "Baseline<br>Step: %{x:.2f}<br>Population: %{y:.2f}<extra></extra>"
+                                }
+                            ] : [],
                         ...(!hasContinuous && chartSeries2.isValid
                             ? [
                                 {
@@ -329,7 +490,7 @@ export default function ExponentialGrowthModel() {
                                     y: chartSeries2.y,
                                     type: "scatter",
                                     mode: "lines",
-                                    name: "Model 2",
+                                    name: "Population Growth",
                                     line: {
                                         width: 4,
                                         color: "#1d4ed8",
@@ -337,7 +498,7 @@ export default function ExponentialGrowthModel() {
                                         smoothing: 1.2
                                     },
                                     hovertemplate:
-                                        "Model 2<br>Step: %{x:.2f}<br>Population: %{y:.2f}<extra></extra>"
+                                        "Population Growth<br>Step: %{x:.2f}<br>Population: %{y:.2f}<extra></extra>"
                                 }
                             ]
                             : []),
@@ -358,7 +519,7 @@ export default function ExponentialGrowthModel() {
                                 hovertemplate: "Continuous<br>Time: %{x}<br>Population: %{y:.2f}<extra></extra>"
                             }
                         ] : []),
-                       
+
                         ...(continuousData?.table?.rows?.length ? [
                             {
                                 x: continuousData.table.rows.map((r) => r.time),
@@ -418,6 +579,150 @@ export default function ExponentialGrowthModel() {
                 />
             </div>
 
+            {selectedModel && (
+                <div className="compare-graph-panel">
+                    <div className="compare-graph-header">
+                        <h3>{selectedModel.name}</h3>
+                        {selectedModel.type && (
+                            <span className="compare-saved-model-type">{selectedModel.type}</span>
+                        )}
+                        <button
+                            type="button"
+                            className="compare-graph-close"
+                            onClick={() => setSelectedModel(null)}
+                        >
+                            <IoClose />
+                        </button>
+                    </div>
+                    <div className="compare-graph-inner">
+                        {selectedModelKind === "exponential" && selectedModelSeries?.isValid ? (
+                            <Plot
+                                data={[
+                                    {
+                                        x: selectedModelSeries.x,
+                                        y: selectedModelSeries.y,
+                                        type: "scatter",
+                                        mode: "lines",
+                                        name: selectedModel.name,
+                                        line: {
+                                            width: 4,
+                                            color: "#111",
+                                            shape: "spline",
+                                            smoothing: 1.2
+                                        },
+                                        hovertemplate:
+                                            "%{fullData.name}<br>Step: %{x:.2f}<br>Population: %{y:.2f}<extra></extra>"
+                                    }
+                                ]}
+                                layout={{
+                                    autosize: true,
+                                    paper_bgcolor: "#f4f4f4",
+                                    plot_bgcolor: "#f4f4f4",
+                                    margin: { t: 30, r: 30, b: 30, l: 30 },
+                                    showlegend: true,
+                                    dragmode: false,
+                                    xaxis: {
+                                        range: selectedModelPlotRange.x,
+                                        showgrid: true,
+                                        gridcolor: "rgba(0,0,0,0.35)",
+                                        zeroline: true,
+                                        zerolinecolor: "#000",
+                                        fixedrange: true,
+                                        title: ""
+                                    },
+                                    yaxis: {
+                                        range: selectedModelPlotRange.y,
+                                        showgrid: true,
+                                        gridcolor: "rgba(0,0,0,0.35)",
+                                        zeroline: true,
+                                        zerolinecolor: "#000",
+                                        zerolinewidth: 5,
+                                        fixedrange: true,
+                                        title: ""
+                                    }
+                                }}
+                                config={{
+                                    responsive: true,
+                                    displayModeBar: false,
+                                    staticPlot: false
+                                }}
+                                useResizeHandler
+                                style={{ width: "100%", height: "100%" }}
+                            />
+                        ) : selectedModelKind === "continuous" ? (
+                            selectedModelLoading ? (
+                                <div className="compare-graph-placeholder">
+                                    Loading model data...
+                                </div>
+                            ) : selectedModelData?.graph?.rows?.length ? (
+                                <Plot
+                                    data={[
+                                        {
+                                            x: selectedModelData.graph.rows.map((r) => r.time),
+                                            y: selectedModelData.graph.rows.map((r) => r.population),
+                                            type: "scatter",
+                                            mode: "lines",
+                                            name: selectedModel.name,
+                                            line: {
+                                                width: 3,
+                                                color: "#8B0000",
+                                                shape: "spline",
+                                                smoothing: 1.2
+                                            },
+                                            hovertemplate:
+                                                "%{fullData.name}<br>Time: %{x}<br>Population: %{y:.2f}<extra></extra>"
+                                        },
+                                        ...(selectedModelData.table?.rows?.length
+                                            ? [
+                                                {
+                                                    x: selectedModelData.table.rows.map((r) => r.time),
+                                                    y: selectedModelData.table.rows.map((r) => r.population),
+                                                    type: "scatter",
+                                                    mode: "markers",
+                                                    name: "Data Points",
+                                                    marker: {
+                                                        color: "#FFD700",
+                                                        size: 10,
+                                                        line: { color: "#8B0000", width: 1 }
+                                                    },
+                                                    hovertemplate:
+                                                        "Point<br>Time: %{x}<br>Population: %{y:.2f}<extra></extra>"
+                                                }
+                                            ]
+                                            : [])
+                                    ]}
+                                    layout={{
+                                        autosize: true,
+                                        paper_bgcolor: "#f4f4f4",
+                                        plot_bgcolor: "#f4f4f4",
+                                        margin: { t: 30, r: 30, b: 30, l: 30 },
+                                        showlegend: true,
+                                        dragmode: false,
+                                        xaxis: { showgrid: true, gridcolor: "rgba(0,0,0,0.35)", zeroline: true, zerolinecolor: "#000", fixedrange: true, title: "" },
+                                        yaxis: { showgrid: true, gridcolor: "rgba(0,0,0,0.35)", zeroline: true, zerolinecolor: "#000", zerolinewidth: 5, fixedrange: true, title: "" }
+                                    }}
+                                    config={{
+                                        responsive: true,
+                                        displayModeBar: false,
+                                        staticPlot: false
+                                    }}
+                                    useResizeHandler
+                                    style={{ width: "100%", height: "100%" }}
+                                />
+                            ) : (
+                                <div className="compare-graph-placeholder">
+                                    {selectedModelError || "No data available for this model."}
+                                </div>
+                            )
+                        ) : (
+                            <div className="compare-graph-placeholder">
+                                This model type cannot be displayed.
+                            </div>
+                        )}
+                    </div>
+                </div>
+            )}
+
             <div className="exponential-growth-model-content">
                 <button className="btn btn-circle btn-close" type="button" onClick={() => setIsSaveModal(true)}>
                     <IoClose />
@@ -433,7 +738,10 @@ export default function ExponentialGrowthModel() {
                         </button>
                     </div>
 
-                    <button className="btn btn-circle btn-collapse" onClick={() => setIsCompareOpen(true)}>
+                    <button className="btn btn-circle btn-collapse" onClick={() => {
+                        setSelectedModel(null);
+                        setIsCompareOpen(true);}
+                    } >
                         <BiCollapseHorizontal />
                     </button>
 
@@ -457,13 +765,14 @@ export default function ExponentialGrowthModel() {
                             </div>
 
                             <div className="exponential-growth-panel-body">
-                                <form className="exponential-growth-panel-form" onSubmit={(event) => event.preventDefault()}>
+                                <form className="exponential-growth-panel-form" onSubmit={handleApplyForm2}>
                                     <div className="form-group">
                                         <input type="text" name="initialPopulation" placeholder="Initial Population" value={form.initialPopulation} onChange={handleChange} />
                                     </div>
                                     <div className="form-group">
                                         <input type="number" name="finalPopulation" placeholder="Final Population" value={form.finalPopulation} onChange={handleChange} />
                                     </div>
+                                    <button type="submit" className="save-model-btn save-btn" style={{ width: "100%" }}>Calculate</button>
                                 </form>
                                 {!chartSeries.isValid && (
                                     <p className="graph-error">
@@ -480,7 +789,8 @@ export default function ExponentialGrowthModel() {
                     )
                 }
 
-                <div className={`compare-side-panel ${isCompareOpen ? "open" : ""}`}>
+                <div className={`compare-side-panel ${isCompareOpen && !selectedModel ? "open" : ""}`}
+                    style={selectedModel ? {display: "none"} : undefined}>
                     <div className="compare-panel-header">
                         <button onClick={() => setIsCompareOpen(false)} className="compare-back-btn">
                             <IoChevronBack size={30} />
@@ -493,6 +803,16 @@ export default function ExponentialGrowthModel() {
                             <span><FaPlus size={100} /></span>
                             <p>Create a new model</p>
                         </Link>
+
+                        {!modelIsLoading && savedModels.map(model => (
+                            <div key={model.id}
+                            className="compare-model-box compare-saved-model-box"
+                            onClick={() => {setSelectedModel(model); setIsCompareOpen(false)}}>
+                                <div className="compare-saved-model-name">{model.name}</div>
+                                {model.description && <p className="compare-saved-model-desc">{model.description}</p>}
+                                {model.type && <span className="compare-saved-model-type">{model.type}</span>}
+                            </div>
+                        ))}
 
                         {/* <Link to="#" className="compare-model-box compare-model-box-graph">
                             <span></span>
