@@ -7,6 +7,20 @@ import "./ModelsPage.css";
 export default function ModelsPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [models, setModels] = useState([]);
+
+  const getRoute = (type, id) => {
+    switch (type) {
+      case "logistic":
+        return `/logisticgrowth/${id}`;
+      case "continuous":
+        return `/continuousgrowth/${id}`;
+      case "discrete":
+        return `/discretegrowth/${id}`;
+      default:
+        return "../ModelsPage.jsx";
+    }
+  };
+
   const navigate = useNavigate();
 
   const token = localStorage.getItem("token");
@@ -70,22 +84,31 @@ export default function ModelsPage() {
         Array.isArray(models) && models.map((model) => (
           <div className="model-card"
             key={model.id}
+            onClick={() =>
+              navigate(getRoute(model.type, model.id), { state: { model } })
+            }
+            style={{ cursor: "pointer" }}
           >
             <h3>{model.name}</h3>
             <p>{model.description}</p>
+            <p>{model.type}</p>
             <p><strong>Version:</strong> {model.version}</p>
 
-            {/* 🔥 Delete Button */}
+            {/*Delete Button */}
             <button
-              onClick={() => handleDelete(model.id)}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleDelete(model.id)
+              }}
               className="dr-button"
             >
               Delete
             </button>
+
           </div>
         ))
       )}
-       <button type="button" className="save-model-btn save-btn"><a href="/deletedModels">RESTORE MODELS PAGE</a></button>
+      <button type="button" className="save-model-btn save-btn"><a href="/deletedModels">RESTORE MODELS PAGE</a></button>
 
       {isModalOpen && (
         <div className="save-modal-overlay">

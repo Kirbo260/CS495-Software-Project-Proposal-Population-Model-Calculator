@@ -35,15 +35,24 @@ export default function AppRoutes() {
       <Route path="/signup/instructor" element={<InstructorSignup />} />
       <Route path="/help" element={<Help />} />
       <Route path="/populationgrowth" element={<PopulationGrowth />} />
+
       <Route path="/logisticgrowth" element={<LogisticGrowthModel />} />
+      <Route path="/logisticgrowth/:id" element={<LogisticGrowthModel />} />
+
       <Route path="/modelselection" element={<ModelSelectionPage />} />
+
       <Route path="/discretegrowth" element={<DiscreteGrowth />} />
+      <Route path="/discretegrowth/:id" element={<DiscreteGrowth />} />
+
       <Route path="/predatorprey" element={<PredatorPrey />} />
       <Route path="/emcomparison" element={<EMComparison />} />
       <Route path="/models" element={<ModelsPage />} />
       <Route path="/design-models" element={<DesignModels />} />
       <Route path="/design-models/exponential-growth-model" element={<ExponentialGrowthModel/>} />
+
       <Route path="/continuousgrowth" element={<ContinuousGrowthModel />} />
+      <Route path="/continuousgrowth/:id" element={<ContinuousGrowthModel />} />
+
       <Route path="/studentsettings" element={<StudentSettings />} />
       <Route path="/get-started" element={<GetStarted />} />
       <Route path="/reset-password/:token" element={<ResetPassword/>} />

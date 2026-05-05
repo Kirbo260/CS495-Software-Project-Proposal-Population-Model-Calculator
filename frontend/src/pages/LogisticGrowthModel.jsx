@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useLocation, useParams } from "react-router-dom";
 import Plot from "react-plotly.js";
 import ModalInputs from "../components/ModalInputs";
 
@@ -16,9 +17,52 @@ function LogisticGrowth() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [csvFile, setCsvFile] = useState(null);
 
-    // check if user is logged in to conditionally render the save button
+    // check if user is logged in to conditionally rendesr the save button
     // Outside so handleSave can access it and conditionally render the save button
     const isLoggedIn = !!localStorage.getItem("token");
+    const token = localStorage.getItem("token");
+
+    // Get saved model data if coming from ModelsPage after clicking on a model
+    const location = useLocation();
+    const modelData = location.state?.modelData;
+    const { id } = useParams();
+
+    useEffect(() => {
+        if (!modelData && id && token) {
+            fetch(`/api/my/${id}`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`
+                }
+            })
+                .then(res => {
+                    // Handle expired token or unauthorized access
+                    if (res.status === 401) {
+                        console.warn("Unauthorized access - token may have expired");
+                        localStorage.removeItem("token");
+                        window.location.href = "/login"; // Redirect to login page
+                        return;
+                    }
+
+                    if (!res.ok) throw new Error("Failed to fetch model");
+                    return res.json();
+                })
+                .then(data => {
+                    const inputs = data?.inputs || {};
+
+                    setTime(inputs.time || "");
+                    setTimeFormat(inputs.timeFormat || "none");
+                    setInitial(inputs.initialPopulation || "");
+                    setRate(inputs.growthRate || "");
+                    setCarryingCapacity(inputs.carryingCapacity || "");
+                    setFinal(inputs.finalPopulation || "");
+                    setBirthRate(inputs.birthRate || "");
+                    setDeathRate(inputs.deathRate || "");
+                })
+                .catch(err => console.error(err));
+        }
+    }, [modelData, id, token]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -81,6 +125,7 @@ function LogisticGrowth() {
             name: mdata.name,
             description: mdata.description,
             version: mdata.version,
+            type: mdata.type,
             inputs: {
                 time: time || "",
                 timeFormat: timeFormat || "none",
@@ -105,7 +150,8 @@ function LogisticGrowth() {
             },
             body: JSON.stringify(modelData)
         })
-            .then((res) => res.json())
+            .then((res) => 
+                res.json())
             .then((data) => {
                 console.log("Model saved:", data);
                 alert("Model saved successfully!");

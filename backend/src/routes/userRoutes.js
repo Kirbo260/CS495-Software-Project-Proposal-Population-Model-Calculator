@@ -36,8 +36,8 @@ router.post("/models/restore/:id", authMiddleware, restoreModel);
 router.put("/models/:id/delete", authMiddleware, deleteModel);
 
 // GENERIC ROUTE LAST (VERY IMPORTANT)
-router.get("/:id", authMiddleware, getModelById);
-router.put("/:id", authMiddleware, updateModel);
+router.get("/my/:id", authMiddleware, getModelById);
+router.put("/my/:id", authMiddleware, updateModel);
 
 // FILE ROUTES
 router.post("/upload/process/emcomparsion/:validType", uploadMiddleWare(), emProcessCSV); // comparing models

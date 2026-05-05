@@ -5,6 +5,7 @@ export const uploadCSV = async (req, res) => {
     const file = req.file;
     const parsedData = req.parsedData;
     const user_id = req.user.userId;
+    const model_id = req.params.modelId;
 
     if (!file) {
         return res.status(400).json({ error: "No file uploaded" });
@@ -18,8 +19,8 @@ export const uploadCSV = async (req, res) => {
 
     try {
         const result = await client.query(
-            'INSERT INTO csv_files (file_name, file_data) VALUES ($1, $2, $3) RETURNING *',
-            [user_id, file.originalname, file.buffer]
+            'INSERT INTO csv_files (file_name, file_data, user_id, model_id) VALUES ($1, $2, $3, $4) RETURNING *',
+            [file.originalname, file.buffer, user_id, model_id]
         );
 
         console.log("File uploaded:", result.rows[0]);
@@ -60,7 +61,4 @@ export const deleteCSVFile = async (req, res) => {
         return res.status(500).json({ error: 'Internal server error' });
     }
 };
-
-// due to testing 
-// no user authentication yet
 export const deleteAllCSVFilesForUser = async (req, res) => {};

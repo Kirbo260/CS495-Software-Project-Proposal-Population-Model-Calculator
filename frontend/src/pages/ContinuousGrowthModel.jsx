@@ -79,6 +79,7 @@ function ContinuousGrowth() {
       name: mdata.name,
       description: mdata.description,
       version: mdata.version,
+      type: mdata.type,
       inputs: {
         time: time || "",
         timeFormat: timeFormat || "none",
