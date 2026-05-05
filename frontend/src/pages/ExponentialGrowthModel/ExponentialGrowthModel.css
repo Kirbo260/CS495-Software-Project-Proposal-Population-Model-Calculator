@@ -18,7 +18,7 @@
     pointer-events: none;
 }
 
-.exponential-growth-model-content > * {
+.exponential-growth-model-content>* {
     pointer-events: auto;
 }
 
@@ -73,7 +73,7 @@
     align-items: center;
     font-size: 30px;
     cursor: pointer;
-    border: none;    
+    border: none;
 }
 
 .exponential-growth-panel {
@@ -113,7 +113,8 @@
     letter-spacing: 1px;
 }
 
-.continuous-growth-modal .exponential-growth-panel-header h2, .exponential-growth-panel-2 .exponential-growth-panel-header h2 {
+.continuous-growth-modal .exponential-growth-panel-header h2,
+.exponential-growth-panel-2 .exponential-growth-panel-header h2 {
     color: var(--color-black);
 }
 
@@ -151,7 +152,7 @@
     background: #fff;
     border: 3px solid #111;
     cursor: pointer;
-    margin-top:- 7px;
+    margin-top: - 7px;
     top: -5px;
     position: relative;
 }
@@ -162,7 +163,7 @@
     border-radius: 999px;
 }
 
-.graph-pan-slider::-moz-range-thumb{
+.graph-pan-slider::-moz-range-thumb {
     width: 22px;
     height: 22px;
     border-radius: 50%;
@@ -195,7 +196,8 @@
     padding: 10px;
 }
 
-.exponential-growth-panel-body input, .exponential-growth-panel-body select {
+.exponential-growth-panel-body input,
+.exponential-growth-panel-body select {
     background-color: var(--color-light-pink);
     padding: 7px;
     display: block;
@@ -407,6 +409,104 @@
     flex-direction: column;
 }
 
-.curve-modal-overlay .save-model-actions button{
+.curve-modal-overlay .save-model-actions button {
     padding: 14px;
+}
+
+.compare-saved-model-box {
+    cursor: default;
+    gap: 8px;
+    align-items: flex-start;
+}
+
+.compare-saved-model-name {
+    font-weight: 700;
+    font-size: 16px;
+    word-break: break-word;
+}
+
+.compare-saved-model-desc {
+    font-size: 13px;
+    opacity: 0.8;
+    word-break: break-word;
+}
+
+.compare-saved-model-type {
+    font-size: 12px;
+    background: var(--color-burgundy);
+    color: var(--color-white);
+    padding: 2px 10px;
+    border-radius: 999px;
+    margin-top: auto;
+}
+
+.compare-models-loading {
+    font-size: 14px;
+    opacity: 0.7;
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 20px 0;
+}
+
+.split-view .plot-wrapper {
+    right: 50%;
+}
+
+.split-view .exponential-growth-model-content {
+    right: 50%;
+}
+
+.compare-graph-panel {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+    background: #f4f4f4;
+    border-left: 3px solid var(--color-gold);
+    display: flex;
+    flex-direction: column;
+}
+
+.compare-graph-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    background: var(--color-burgundy);
+    color: var(--color-white);
+    flex-shrink: 0;
+}
+
+.compare-graph-header h3 {
+    flex: 1;
+    margin: 0;
+    font-size: 20px;
+    letter-spacing: 1px;
+}
+
+.compare-graph-close {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--color-white);
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+}
+
+.compare-graph-inner {
+    flex: 1;
+    min-height: 0;
+}
+
+.compare-graph-placeholder {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    padding: 30px;
+    text-align: center;
+    color: #7a0019;
 }
