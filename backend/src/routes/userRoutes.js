@@ -4,7 +4,7 @@ import { createUser, forgotPassword, resetPassword } from '../controllers/userCo
 import { loginUser, logoutUser } from '../controllers/LoginController.js';
 import { authMiddleware } from '../middleWare/AuthMiddleWare.js';
 import uploadMiddleWare from '../middleWare/uploadMiddleWare.js';
-import { createModel, getModels, getModelById, updateModel, deleteModel, deleteAllModelsForUser, getDeletedModels, restoreModel } from '../controllers/modelController.js';
+import { createModel, getModels, getModelById, updateModel, deleteModel, deleteAllModelsForUser, getDeletedModels, restoreModel, permanentlyDeleteModel, shareModel } from '../controllers/modelController.js';
 import { uploadCSV, getCSVFileById, deleteAllCSVFilesForUser } from '../controllers/FileController.js';
 // import { uploadCSV, getCSVFiles, getCSVFileById, deleteCSVFile, deleteAllCSVFilesForUser } from '../controllers/FileController.js';
 import { emProcessCSV, conProcessCSV, disProcessCSV, logProcessCSV, predPreyProcessCSV } from '../controllers/ProcessController.js';
@@ -26,6 +26,8 @@ router.get("/deleted", authMiddleware, getDeletedModels);
 router.post("/models", authMiddleware, createModel);
 router.get("/my", authMiddleware, getModels);
 router.delete("/my", authMiddleware, deleteAllModelsForUser);
+router.post("/share/:id", authMiddleware, shareModel);
+router.delete("/permanently/:id", authMiddleware, permanentlyDeleteModel);
 
 // MODEL ACTION ROUTES
 router.post("/models/restore/:id", authMiddleware, restoreModel);

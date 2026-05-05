@@ -159,3 +159,63 @@ export const restoreModel = async (req, res) => {
         res.status(500).json({ error: 'Internal server error' });
     }
 };
+
+// permanently delete a model from the database
+export const permanentlyDeleteModel = async (req, res) => {
+    const user_id = req.user.userId;
+    const model_id = req.params.id;
+    try {
+        const result = await client.query(
+            'DELETE FROM models WHERE id = $1 AND user_id = $2 RETURNING *',
+            [model_id, user_id]
+        );
+        if (result.rowCount === 0) {
+            return res.status(404).json({ error: 'Model not found or not authorized' });
+        }
+        res.status(200).json({ message: 'Model permanently deleted', model: result.rows[0] });
+    }
+    catch (error) {
+        console.error('Error permanently deleting model:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+};
+
+// Share a model with another user by email 
+export const shareModel = async (req, res) => {
+    const user_id = req.user.userId; // the user who is sharing the model
+    const model_id = req.params.id; // the model being shared
+    const { email } = req.body; // the email of the user to share with
+
+    try {
+
+        // Check if the user to share with exists
+        const userResult = await client.query(
+            'SELECT id FROM users WHERE email = $1',
+            [email]
+        );
+        if (userResult.rows.length === 0) { // user not found
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        // Check if the model exists and belongs to the user
+        const modelResult = await client.query(
+            'SELECT * FROM models WHERE id = $1 AND user_id = $2 AND is_deleted = FALSE',
+            [model_id, user_id]
+        );
+        if (modelResult.rows.length === 0) {
+            return res.status(404).json({ error: 'Model not found or not authorized' });
+        }
+
+        // Share the model with the user
+        await client.query(
+             'INSERT INTO models (user_id, name, description, version, inputs, type, copied_from) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *',
+            [userResult.rows[0].id, modelResult.rows[0].name, modelResult.rows[0].description,
+            modelResult.rows[0].version, modelResult.rows[0].inputs, modelResult.rows[0].type, model_id]
+        );
+
+        res.status(200).json({ message: 'Model shared successfully' });
+    } catch (error) {
+        console.error('Error sharing model:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+};

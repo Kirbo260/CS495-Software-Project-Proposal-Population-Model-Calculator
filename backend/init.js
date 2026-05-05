@@ -48,7 +48,9 @@ export const initDB = async () => {
                 version TEXT,
                 inputs JSONB,   -- stores all values needed to replay graphs
 
-                type model_type, 
+                type model_type, -- for filtering and UI purposes
+
+                copied_from_model_id INTEGER, -- for tracking copies
 
                 created_at TIMESTAMP DEFAULT NOW(),
                 deleted_at TIMESTAMP, -- for soft delete
@@ -60,8 +62,13 @@ export const initDB = async () => {
         await client.query(`
             CREATE TABLE IF NOT EXISTS csv_files (
                 id SERIAL PRIMARY KEY,
+                user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+                model_id INTEGER NOT NULL REFERENCES models(id) ON DELETE CASCADE,
+
+
                 file_name TEXT NOT NULL,
                 file_data BYTEA, -- store the actual file as binary data
+                
                 created_at TIMESTAMP DEFAULT NOW()
             );
         `);
