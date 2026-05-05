@@ -51,6 +51,7 @@ export const initDB = async () => {
                 type model_type, -- for filtering and UI purposes
 
                 copied_from_model_id INTEGER, -- for tracking copies
+                has_csv BOOLEAN DEFAULT FALSE, -- whether the model has an associated CSV file
 
                 created_at TIMESTAMP DEFAULT NOW(),
                 deleted_at TIMESTAMP, -- for soft delete

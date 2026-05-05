@@ -10,10 +10,19 @@ export const createModel = async (req, res) => {
     const user_id = req.user.userId; // assuming auth middleware sets req.user
     // error handling for missing fields
 
+    // to check if there is a csv_file
+    const file = req.file;
+    const has_csv = !!file; // convert to boolean, true if file exists, false if not
+    if (!file) {
+        has_csv = false;
+    } else {
+        has_csv = true;
+    }
+
     try {
         const result = await client.query(
-            'INSERT INTO models (user_id, name, description, version, inputs, type) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
-            [user_id, name, description, version, JSON.stringify(inputs), type]
+            'INSERT INTO models (user_id, name, description, version, inputs, type, has_csv) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *',
+            [user_id, name, description, version, JSON.stringify(inputs), type, has_csv]
         );
         res.status(201).json(result.rows[0]);
     } catch (error) {
@@ -188,6 +197,8 @@ export const shareModel = async (req, res) => {
 
     try {
 
+        await client.query('BEGIN'); // start transaction
+
         // Check if the user to share with exists
         const userResult = await client.query(
             'SELECT id FROM users WHERE email = $1',
@@ -207,11 +218,33 @@ export const shareModel = async (req, res) => {
         }
 
         // Share the model with the user
-        await client.query(
-             'INSERT INTO models (user_id, name, description, version, inputs, type, copied_from) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *',
+        const newModelResult = await client.query(
+            'INSERT INTO models (user_id, name, description, version, inputs, type, copied_from_model_id) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *',
             [userResult.rows[0].id, modelResult.rows[0].name, modelResult.rows[0].description,
             modelResult.rows[0].version, modelResult.rows[0].inputs, modelResult.rows[0].type, model_id]
         );
+
+        const files = await client.query(
+            'SELECT * FROM csv_files WHERE model_id = $1',
+            [model_id]
+        );
+
+        // If there are associated files, copy them for the new model
+        if (files.rows.length > 0) {
+            await client.query(
+                `INSERT INTO csv_files (file_name, file_data, user_id, model_id) VALUES ($1, $2, $3, $4)`,
+                [
+                    files.rows[0].file_name,
+                    files.rows[0].file_data,
+                    userResult.rows[0].id, // new owner
+                    newModelResult.rows[0].id // model_id 
+                ]
+            );
+        }
+
+        await client.query('COMMIT'); // commit transaction
+
+        await client.query('ROLLBACK'); // rollback transaction if any error occurs
 
         res.status(200).json({ message: 'Model shared successfully' });
     } catch (error) {
