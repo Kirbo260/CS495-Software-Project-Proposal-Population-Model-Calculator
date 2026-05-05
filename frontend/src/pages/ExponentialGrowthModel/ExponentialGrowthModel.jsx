@@ -32,9 +32,16 @@ export default function ExponentialGrowthModel() {
         finalPopulation: "500"
     })
 
-    const [continuousModalForm, setContinuousModalForm] = useState({
-
-    })
+    const [continuousForm, setContinuousForm] = useState({
+        time: "",
+        timeFormat: "none",
+        initialPopulation: "",
+        finalPopulation: "",
+        growthRate: ""
+    });
+    const [continuousData, setContinuousData] = useState(null);
+    const [continuousError, setContinuousError] = useState("");
+    const [continuousLoading, setContinuousLoading] = useState(false);
 
     const [zoomLevel, setZoomLevel] = useState(1);
     const [xPan, setXPan] = useState(50);
@@ -106,25 +113,42 @@ export default function ExponentialGrowthModel() {
     const chartSeries2 = useMemo(() => buildChartSeries(form2), [form2]);
 
     const basePlotRange = useMemo(() => {
-        const validSeries = [chartSeries, chartSeries2].filter((series) => series.isValid);
+        // const validSeries = [chartSeries, chartSeries2].filter((series) => series.isValid);
 
-        if (!validSeries.length) {
+        const continuousXs = continuousData?.graph?.rows?.map((r) => Number(r.time)) ?? [];
+        const continuousYs = continuousData?.graph?.rows?.map((r) => Number(r.population)) ?? [];
+        const hasContinuous = continuousXs.length > 0;
+
+        const visibleSeries = [
+            chartSeries,
+            ...(hasContinuous ? [] : [chartSeries2])
+        ].filter((series) => series.isValid);
+
+        if(!visibleSeries.length && !hasContinuous) {
             return {
                 x: [0, GRAPH_DURATION],
                 y: [-10, 10]
-            };
+            }
         }
 
-        const minY = Math.min(...validSeries.map((series) => series.minY));
-        const maxY = Math.max(...validSeries.map((series) => series.maxY));
+        const ySources = [
+            ...visibleSeries.map((series) => series.minY),
+            ...visibleSeries.map((series) => series.maxY),
+            ...continuousYs
+        ]
+
+        const minY = Math.min(...ySources);
+        const maxY = Math.max(...ySources);
+
+        const xMax = hasContinuous ? Math.max(GRAPH_DURATION, ...continuousXs) : GRAPH_DURATION;
         const span = Math.max(10, maxY - minY);
         const padding = span * 0.15;
 
         return {
-            x: [0, GRAPH_DURATION],
+            x: [0, xMax],
             y: [minY - padding, maxY + padding]
         };
-    }, [chartSeries, chartSeries2]);
+    }, [chartSeries, chartSeries2, continuousData]);
 
 
     const plotRange = useMemo(() => {
@@ -202,6 +226,53 @@ export default function ExponentialGrowthModel() {
         setZoomLevel((previous) => Math.min(8, previous * 1.25));
     }
 
+    const handleContinuousChange = (event) => {
+        const { name, value } = event.target;
+        setContinuousForm((previous) => ({
+            ...previous,
+            [name]: value
+        }))
+    }
+
+    const handleContinuousSubmit = async (event) => {
+        event.preventDefault();
+        setContinuousError("");
+        setContinuousLoading(true);
+
+        const params = new URLSearchParams({
+            time: continuousForm.time || "",
+            timeFormat: continuousForm.timeFormat || "none",
+            initialPopulation: continuousForm.initialPopulation || "",
+            finalPopulation: continuousForm.finalPopulation || "",
+            growthRate: continuousForm.growthRate || ""
+        })
+
+        try {
+            const response = await fetch(`/api/continuousgrowth?${params.toString()}`);
+            if (!response.ok) {
+                throw new Error(`Request failed (${response.status})`);
+            }
+            const result = await response.json();
+
+            if (!result?.graph?.rows?.length) {
+                setContinuousError("No data returned, Check your inputs and try again.");
+                setContinuousData(null);
+            } else {
+                setContinuousData(result);
+                setZoomLevel(1);
+                setXPan(50);
+                setYPan(50);
+            }
+
+        } catch (error) {
+            console.error("Continuous growth request failed:", error);
+            setContinuousError("Could not calculate. Please try again");
+            setContinuousData(null);
+        } finally {
+            setContinuousLoading(false);
+        }
+    }
+
     const handleContinuousModalOpen = (event) => {
         setIsContinuousModal(true);
         setIsCurveModal(false);
@@ -226,32 +297,32 @@ export default function ExponentialGrowthModel() {
         setIsPanelOpen(true);
     }
 
+    const hasContinuous = !!continuousData?.graph?.rows?.length;
+
     return (
         <div className="exponential-growth-model">
-            {/* <img src={graphBg} alt="Graph Background" /> */}
             <div className="plot-wrapper">
                 <Plot
                     data={[
-                        ...(chartSeries.isValid
-                            ? [
-                                {
-                                    x: chartSeries.x,
-                                    y: chartSeries.y,
-                                    type: "scatter",
-                                    mode: "lines",
-                                    name: "Model 1",
-                                    line: {
-                                        width: 4,
-                                        color: "#111",
-                                        shape: "spline",
-                                        smoothing: 1.2
-                                    },
-                                    hovertemplate:
-                                        "Model 1<br>Step: %{x:.2f}<br>Population: %{y:.2f}<extra></extra>"
-                                }
-                            ]
-                            : []),
-                        ...(chartSeries2.isValid
+                        ...(chartSeries.isValid) ? 
+                         [
+                            {
+                                x: chartSeries.x,
+                                y: chartSeries.y,
+                                type: "scatter",
+                                mode: "lines",
+                                name: "Model 1",
+                                line: {
+                                    width: 4,
+                                    color: "#111",
+                                    shape: "spline",
+                                    smoothing: 1.2
+                                },
+                                hovertemplate:
+                                    "Model 1<br>Step: %{x:.2f}<br>Population: %{y:.2f}<extra></extra>"
+                            }
+                        ]: [],
+                        ...(!hasContinuous && chartSeries2.isValid
                             ? [
                                 {
                                     x: chartSeries2.x,
@@ -269,7 +340,40 @@ export default function ExponentialGrowthModel() {
                                         "Model 2<br>Step: %{x:.2f}<br>Population: %{y:.2f}<extra></extra>"
                                 }
                             ]
-                            : [])
+                            : []),
+
+                        ...(hasContinuous ? [
+                            {
+                                x: continuousData.graph.rows.map((r) => r.time),
+                                y: continuousData.graph.rows.map((r) => r.population),
+                                type: "scatter",
+                                mode: "lines",
+                                name: "Continuous Growth",
+                                line: {
+                                    width: 3,
+                                    color: "#880000",
+                                    shape: "spline",
+                                    smoothing: 1.2
+                                },
+                                hovertemplate: "Continuous<br>Time: %{x}<br>Population: %{y:.2f}<extra></extra>"
+                            }
+                        ] : []),
+                       
+                        ...(continuousData?.table?.rows?.length ? [
+                            {
+                                x: continuousData.table.rows.map((r) => r.time),
+                                y: continuousData.table.rows.map((r) => r.population),
+                                type: "scatter",
+                                mode: "markers",
+                                name: "Dark Points",
+                                marker: {
+                                    color: "#FFD700",
+                                    size: 10,
+                                    line: { color: "#8B0000", width: 1 }
+                                },
+                                hovertemplate: "Point<br>Time: %{x}<br>Population: %{y:.2f}<extra></extra>"
+                            }
+                        ] : []),
                     ]}
                     layout={{
                         autosize: true,
@@ -360,14 +464,6 @@ export default function ExponentialGrowthModel() {
                                     <div className="form-group">
                                         <input type="number" name="finalPopulation" placeholder="Final Population" value={form.finalPopulation} onChange={handleChange} />
                                     </div>
-                                    {/* <div className="form-group">
-                                        <input type="text" placeholder="Time" />
-                                        <select name="growth-select" className="growth-select">
-                                            <option value="year">Year</option>
-                                            <option value="month">Month</option>
-                                            <option value="day">Day</option>
-                                        </select>
-                                    </div> */}
                                 </form>
                                 {!chartSeries.isValid && (
                                     <p className="graph-error">
@@ -478,25 +574,33 @@ export default function ExponentialGrowthModel() {
                             </div>
 
                             <div className="exponential-growth-panel-body">
-                                <form className="exponential-growth-panel-form" onSubmit={(event) => event.preventDefault()}>
+                                <form className="exponential-growth-panel-form" onSubmit={handleContinuousSubmit}>
                                     <div className="form-group">
-                                        <input type="text" name="time" placeholder="Time values (e.g., (0,1,2,3))" />
+                                        <input type="text" name="time" placeholder="Time values (e.g., (0,1,2,3))" value={continuousForm.time} onChange={handleContinuousChange} />
                                     </div>
                                     <div className="form-group">
                                         <select name="time-format" className="continuous-select">
                                             <option value="">Select time format</option>
-                                            <option value="years">Years</option>
-                                            <option value="months">Months</option>
-                                            <option value="days">Days</option>
+                                            <option value="s">Seconds</option>
+                                            <option value="m">Minutes</option>
+                                            <option value="h">Hours</option>
+                                            <option value="d">Days</option>
+                                            <option value="w">Weeks</option>
+                                            <option value="mo">Months</option>
+                                            <option value="y">Years</option>
                                         </select>
                                     </div>
                                     <div className="form-group">
-                                        <input type="number" name="initialPopulation" placeholder="Initial Population" />
+                                        <input type="number" name="initialPopulation" placeholder="Initial Population" value={continuousForm.initialPopulation} onChange={handleContinuousChange} />
                                     </div>
                                     <div className="form-group">
-                                        <input type="text" name="growth-rate" placeholder="Growth rate" />
+                                        <input type="text" name="growthRate" placeholder="Growth rate" value={continuousForm.growthRate} onChange={handleContinuousChange} />
                                     </div>
+                                    <button type="submit" className="save-model-btn save-btn" disabled={continuousLoading}>{continuousLoading ? "Calculating..." : "Calculate"}</button>
                                 </form>
+                                {continuousError && (
+                                    <p className="graph-error">{continuousError}</p>
+                                )}
                                 {!chartSeries.isValid && (
                                     <p className="graph-error">
                                         Use two positive values or two negative values. Exponential curvees cannot cross zero.
