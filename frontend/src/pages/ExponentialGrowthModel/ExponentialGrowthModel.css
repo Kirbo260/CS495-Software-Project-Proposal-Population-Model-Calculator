@@ -15,6 +15,11 @@
     position: absolute;
     inset: 0;
     z-index: 2;
+    pointer-events: none;
+}
+
+.exponential-growth-model-content > * {
+    pointer-events: auto;
 }
 
 .exponential-growth-model img {
@@ -91,6 +96,10 @@
 .continuous-growth-modal .exponential-growth-panel-header {
     background-color: var(--color-gold);
     color: var(--color-black);
+}
+
+.continuous-growth-modal .save-btn {
+    width: 100%;
 }
 
 .exponential-growth-panel-2 .exponential-growth-panel-header {
