@@ -21,6 +21,7 @@ import GetStarted from '../pages/GetStarted/GetStarted'
 import ResetPassword from '../pages/ForgetPassword/ResetPassword'
 import ModelsRestore from '../pages/ModelsPage/ModelsRestore'
 import SharingData from '../pages/SharingData/SharingData'
+import About from '../pages/About/About'
 
 
 // Page routing paths for site
@@ -28,6 +29,7 @@ export default function AppRoutes() {
   return (
     <Routes>
       <Route path="/" element={<HomePage />} />
+      <Route path="/about-us" element={<About />} />
       <Route path="/forget-password" element={<ForgetPassword />} />
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />

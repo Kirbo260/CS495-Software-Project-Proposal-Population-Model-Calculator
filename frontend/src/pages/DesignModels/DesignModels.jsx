@@ -41,7 +41,7 @@ export default function DesignModels() {
                 </div>
                 <div className="design-models-main">
                     <div className="container">
-                        <button className="add-model" onClick={() => setIsModalOpen(true)}>
+                        <button className="add-model" onClick={() => navigate("/design-models/exponential-growth-model")}>
                             <FaPlus size={250} color="#C47384" />
                         </button>
                         <p>Get started and create your own model</p>
@@ -53,7 +53,7 @@ export default function DesignModels() {
                 </div>
             </div>
 
-            {isModalOpen && (
+            {/* {isModalOpen && (
                 <div className="design-modal-overlay" onClick={() => setIsModalOpen(false)}>
                     <div className="design-modal-wrapper">
                         <div className="design-model-modal" onClick={(e) => e.stopPropagation()}>
@@ -72,7 +72,7 @@ export default function DesignModels() {
                         </div>
                     </div>
                 </div>
-            )}
+            )} */}
         </>
     )
 }

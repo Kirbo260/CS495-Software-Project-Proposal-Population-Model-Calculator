@@ -31,7 +31,7 @@ const HelpGrid = () => {
                 <div className="help-box">
                     <FiBook />
                     <h3>About PMC</h3>
-                    <FaArrowRight />
+                    <Link to="/about-us"><FaArrowRight /></Link>
                 </div>
                 <div className="help-box">
                     <CiPen />
