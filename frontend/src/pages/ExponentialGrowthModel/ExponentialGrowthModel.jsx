@@ -20,6 +20,7 @@ export default function ExponentialGrowthModel() {
     const [isCurveModal, setIsCurveModal] = useState(false);
     const [isExponentialModal, setIsExponetialModal] = useState(false);
     const [isContinuousModal, setIsContinuousModal] = useState(false);
+    const [isDiscreteModal, setIsDiscreteModal] = useState(false);
 
     const [form, setForm] = useState({
         initialPopulation: "100",
@@ -46,6 +47,16 @@ export default function ExponentialGrowthModel() {
     const [continuousData, setContinuousData] = useState(null);
     const [continuousError, setContinuousError] = useState("");
     const [continuousLoading, setContinuousLoading] = useState(false);
+
+    const [discreteForm, setDiscreteForm] = useState({
+        time: "",
+        timeFormat: "none",
+        initialPopulation: "",
+        growthRate: ""
+    });
+    const [discreteData, setDiscreteData] = useState(null);
+    const [discreteError, setDiscreteError] = useState("");
+    const [discreteLoading, setDiscreteLoading] = useState(false);
 
     const [zoomLevel, setZoomLevel] = useState(1);
     const [xPan, setXPan] = useState(50);
@@ -143,7 +154,13 @@ export default function ExponentialGrowthModel() {
 
         const continuousXs = continuousData?.graph?.rows?.map((r) => Number(r.time)) ?? [];
         const continuousYs = continuousData?.graph?.rows?.map((r) => Number(r.population)) ?? [];
+
+        const discreteXs = discreteData?.graph?.rows?.map((r) => Number(r.time)) ?? [];
+        const discreteYs = discreteData?.graph?.rows?.map((r) => Number(r.population)) ?? [];
+
         const hasContinuous = continuousXs.length > 0;
+        const hasDiscrete = discreteXs.length > 0;
+        const hasOverlay = hasContinuous || hasDiscrete;
 
         const visibleSeries = [
             chartSeries,
@@ -160,13 +177,14 @@ export default function ExponentialGrowthModel() {
         const ySources = [
             ...visibleSeries.map((series) => series.minY),
             ...visibleSeries.map((series) => series.maxY),
-            ...continuousYs
+            ...continuousYs,
+            ...discreteYs
         ]
 
         const minY = Math.min(...ySources);
         const maxY = Math.max(...ySources);
 
-        const xMax = hasContinuous ? Math.max(GRAPH_DURATION, ...continuousXs) : GRAPH_DURATION;
+        const xMax = hasOverlay ? Math.max(GRAPH_DURATION, ...continuousXs, ...discreteXs) : GRAPH_DURATION;
         const span = Math.max(10, maxY - minY);
         const padding = span * 0.15;
 
@@ -174,7 +192,7 @@ export default function ExponentialGrowthModel() {
             x: [0, xMax],
             y: [minY - padding, maxY + padding]
         };
-    }, [chartSeries, chartSeries2, continuousData]);
+    }, [chartSeries, chartSeries2, continuousData, discreteData]);
 
     const plotRange = useMemo(() => {
         // const [xMin, xMax] = basePlotRange.x;
@@ -234,6 +252,8 @@ export default function ExponentialGrowthModel() {
 
         if (has("initialPopulation") && has("finalPopulation") && !has("growthRate") && !has("time")) return "exponential";
 
+        if (has("modelType") && has("time") && has("initialPopulation")) return "discrete";
+
         if (has("growthRate") && has("time") && has("initialPopulation")) return "continuous";
         return "unknown";
 
@@ -262,23 +282,41 @@ export default function ExponentialGrowthModel() {
 
     useEffect(() => {
         if (!selectedModel) { setSelectedModel(null); setSelectedModelError(""); return; }
-        if (selectedModelKind !== "continuous") { setSelectedModelData(null); setSelectedModelError(""); return; }
+        if (selectedModelKind !== "continuous" && selectedModelKind !== "discrete") { setSelectedModelData(null); setSelectedModelError(""); return; }
 
         const i = selectedModelInputs;
-        const params = new URLSearchParams({
-            time: i.time || "",
-            timeFormat: i.timeFormat || "none",
-            initialPopulation: i.initialPopulation || "",
-            finalPopulation: i.finalPopulation || "",
-            growthRate: i.growthRate || "",
-            birthRate: i.birthRate || "",
-            deathRate: i.deathRate || ""
-        })
+        let endpoint = "";
+        let params;
+
+        if (selectedModelKind === "continuous") {
+            endpoint = "/api/continuousgrowth";
+            const params = new URLSearchParams({
+                time: i.time || "",
+                timeFormat: i.timeFormat || "none",
+                initialPopulation: i.initialPopulation || "",
+                finalPopulation: i.finalPopulation || "",
+                growthRate: i.growthRate || "",
+                birthRate: i.birthRate || "",
+                deathRate: i.deathRate || ""
+            })
+        } else if (selectedModelKind === "discrete") {
+            endpoint = "/api/discretegrowth";
+            const params = new URLSearchParams({
+                time: i.time || "",
+                timeFormat: i.timeFormat || "none",
+                initialPopulation: i.initialPopulation || "",
+                finalPopulation: i.finalPopulation || "",
+                growthRate: i.growthRate || "",
+                modelType: i.modelType || "growth",
+                birthRate: i.birthRate || "",
+                deathRate: i.deathRate || ""
+            })
+        }
 
         let cancelled = false;
         setSelectedModelLoading(true);
         setSelectedModelError("");
-        fetch(`/api/continuousgrowth?${params.toString()}`)
+        fetch(`${endpoint}?${params.toString()}`)
             .then(response => response.json())
             .then(data => {
                 if (cancelled) return;
@@ -404,6 +442,69 @@ export default function ExponentialGrowthModel() {
         setContinuousError("");
     }
 
+    const handleDiscreteChange = (event) => {
+        const { name, value } = event.target;
+        setDiscreteForm((previous) => ({
+            ...previous,
+            [name]: value
+        }))
+    }
+
+    const handleDiscreteSubmit = async (event) => {
+        event.preventDefault();
+        setDiscreteError("");
+        setDiscreteLoading(true);
+
+        const params = new URLSearchParams({
+            time: discreteForm.time || "",
+            timeFormat: discreteForm.timeFormat || "none",
+            initialPopulation: discreteForm.initialPopulation || "",
+            finalPopulation: "",
+            growthRate: discreteForm.growthRate || "",
+            modelType: "growth",
+            birthRate: "",
+            deathRate: ""
+        })
+
+        try {
+            const response = await fetch(`/api/discretegrowth?${params.toString()}`);
+            if (!response.ok) {
+                throw new Error(`Request failed (${response.status})`);
+            }
+            const result = await response.json();
+
+            if (!result?.graph?.rows?.length) {
+                setDiscreteError("No data returned, Check your inputs and try again.");
+                setDiscreteData(null);
+            } else {
+                setDiscreteData(result);
+                setZoomLevel(1);
+                setXPan(50);
+                setYPan(50);
+            }
+
+        } catch (error) {
+            console.error("Discrete growth request failed:", error);
+            setDiscreteError("Could not calculate. Please try again");
+            setContinuousData(null);
+        } finally {
+            setDiscreteLoading(false);
+        }
+    }
+
+    const handleDiscreteModalOpen = () => {
+        setIsDiscreteModal(true);
+        setIsCurveModal(false);
+        setIsPanelOpen(false);
+    }
+
+    const handleDiscreteModalClose = () => {
+        setIsDiscreteModal(false);
+        setIsPanelOpen(true);
+        setDiscreteData(null);
+        setDiscreteError("");
+    }
+
     const handleExponentialModalOpen = (event) => {
         setIsExponetialModal(true);
         setIsContinuousModal(false);
@@ -459,6 +560,8 @@ export default function ExponentialGrowthModel() {
     }
 
     const hasContinuous = !!continuousData?.graph?.rows?.length;
+    const hasDiscrete = !!discreteData?.graph?.rows?.length;
+    const hasOverlay = hasContinuous || hasDiscrete;
 
     return (
         <div className={`exponential-growth-model${selectedModel ? ' split-view' : ''}`}>
@@ -483,7 +586,7 @@ export default function ExponentialGrowthModel() {
                                         "Baseline<br>Step: %{x:.2f}<br>Population: %{y:.2f}<extra></extra>"
                                 }
                             ] : [],
-                        ...(!hasContinuous && chartSeries2.isValid
+                        ...(!hasOverlay && chartSeries2.isValid
                             ? [
                                 {
                                     x: chartSeries2.x,
@@ -535,6 +638,33 @@ export default function ExponentialGrowthModel() {
                                 hovertemplate: "Point<br>Time: %{x}<br>Population: %{y:.2f}<extra></extra>"
                             }
                         ] : []),
+
+                        ...(hasDiscrete ? [{
+                            x: discreteData.graph.rows.map((r) => r.time),
+                            y: discreteData.graph.rows.map((r) => r.population),
+                            type: "scatter",
+                            mode: "lines",
+                            name: "Discrete Growth",
+                            line: { width: 3, color: "#3ded3a", shape: "spline", smoothing: 1.2 },
+                            hovertemplate: "Discrete<br>Time: %{x}<br>Population: %{y:.2f}<extra></extra>"
+                        }] : []),
+
+                        ...(discreteData?.table?.rows?.length ? [
+                            {
+                                x: discreteData.table.rows.map((r) => r.time),
+                                y: discreteData.table.rows.map((r) => r.population),
+                                type: "scatter",
+                                mode: "markers",
+                                name: "Discrete Points",
+                                marker: {
+                                    color: "#FFD700",
+                                    size: 10,
+                                    line: { color: "#3ded3a", width: 1 }
+                                },
+                                hovertemplate: "Point<br>Time: %{x}<br>Population: %{y:.2f}<extra></extra>"
+                            }
+                        ] : []),
+
                     ]}
                     layout={{
                         autosize: true,
@@ -649,7 +779,7 @@ export default function ExponentialGrowthModel() {
                                 useResizeHandler
                                 style={{ width: "100%", height: "100%" }}
                             />
-                        ) : selectedModelKind === "continuous" ? (
+                        ) : selectedModelKind === "continuous" || selectedModelKind === "discrete" ? (
                             selectedModelLoading ? (
                                 <div className="compare-graph-placeholder">
                                     Loading model data...
@@ -740,7 +870,8 @@ export default function ExponentialGrowthModel() {
 
                     <button className="btn btn-circle btn-collapse" onClick={() => {
                         setSelectedModel(null);
-                        setIsCompareOpen(true);}
+                        setIsCompareOpen(true);
+                    }
                     } >
                         <BiCollapseHorizontal />
                     </button>
@@ -790,7 +921,7 @@ export default function ExponentialGrowthModel() {
                 }
 
                 <div className={`compare-side-panel ${isCompareOpen && !selectedModel ? "open" : ""}`}
-                    style={selectedModel ? {display: "none"} : undefined}>
+                    style={selectedModel ? { display: "none" } : undefined}>
                     <div className="compare-panel-header">
                         <button onClick={() => setIsCompareOpen(false)} className="compare-back-btn">
                             <IoChevronBack size={30} />
@@ -806,8 +937,8 @@ export default function ExponentialGrowthModel() {
 
                         {!modelIsLoading && savedModels.map(model => (
                             <div key={model.id}
-                            className="compare-model-box compare-saved-model-box"
-                            onClick={() => {setSelectedModel(model); setIsCompareOpen(false)}}>
+                                className="compare-model-box compare-saved-model-box"
+                                onClick={() => { setSelectedModel(model); setIsCompareOpen(false) }}>
                                 <div className="compare-saved-model-name">{model.name}</div>
                                 {model.description && <p className="compare-saved-model-desc">{model.description}</p>}
                                 {model.type && <span className="compare-saved-model-type">{model.type}</span>}
@@ -872,7 +1003,7 @@ export default function ExponentialGrowthModel() {
                                     <button type="button" className="save-model-btn save-btn">
                                         Logistic Growth
                                     </button>
-                                    <button type="button" className="save-model-btn save-btn">
+                                    <button type="button" className="save-model-btn save-btn" onClick={handleDiscreteModalOpen}>
                                         Discrete Growth
                                     </button>
                                 </div>
@@ -925,6 +1056,51 @@ export default function ExponentialGrowthModel() {
                                     <p className="graph-error">
                                         Use two positive values or two negative values. Exponential curvees cannot cross zero.
                                     </p>
+                                )}
+                            </div>
+
+                        </div>
+                    )
+                }
+
+                {
+                    isDiscreteModal && (
+                        <div className="continuous-growth-modal exponential-growth-panel">
+                            <div className="exponential-growth-panel-header">
+                                <span onClick={handleDiscreteModalClose}>
+                                    <IoRemove size={25} />
+                                </span>
+                                <h2>Discrete Growth Model</h2>
+                                <button className="btn-minimize" onClick={handleDiscreteModalClose}><IoChevronDown size={25} /></button>
+                            </div>
+
+                            <div className="exponential-growth-panel-body">
+                                <form className="exponential-growth-panel-form" onSubmit={handleDiscreteSubmit}>
+                                    <div className="form-group">
+                                        <input type="text" name="time" placeholder="Time values (e.g., (0,1,2,3))" value={discreteForm.time} onChange={handleDiscreteChange} />
+                                    </div>
+                                    <div className="form-group">
+                                        <select name="time-format" className="continuous-select">
+                                            <option value="">Select time format</option>
+                                            <option value="s">Seconds</option>
+                                            <option value="m">Minutes</option>
+                                            <option value="h">Hours</option>
+                                            <option value="d">Days</option>
+                                            <option value="w">Weeks</option>
+                                            <option value="mo">Months</option>
+                                            <option value="y">Years</option>
+                                        </select>
+                                    </div>
+                                    <div className="form-group">
+                                        <input type="number" name="initialPopulation" placeholder="Initial Population" value={discreteForm.initialPopulation} onChange={handleDiscreteChange} />
+                                    </div>
+                                    <div className="form-group">
+                                        <input type="text" name="growthRate" placeholder="Growth rate" value={discreteForm.growthRate} onChange={handleDiscreteChange} />
+                                    </div>
+                                    <button type="submit" className="save-model-btn save-btn" disabled={discreteLoading}>{discreteLoading ? "Calculating..." : "Calculate"}</button>
+                                </form>
+                                {discreteError && (
+                                    <p className="graph-error">{discreteError}</p>
                                 )}
                             </div>
 
