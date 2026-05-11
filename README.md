@@ -113,3 +113,45 @@ npm run dev (nodemon)
 
 ### 🔹To run our test
 npm test [this will fail for now since we don't have test ]
+
+### 🔹All the installs:
+Bcyrpt for hashing password
+npm install bcrypt
+
+Papaparse for parsing files
+npm install papaparse
+
+Tokens for authentication
+npm install jsonwebtoken
+
+Jest for testing
+npm install --save-dev jest
+
+Node.js for backend:
+winget install OpenJS.NodeJS
+
+Verify installation of Node.js
+node -v
+npm -v
+
+Postgres: Install version 17 (version used for this project)
+winget install PostgreSQL.PostgreSQL.17
+
+verify
+psql --version
+
+Add postgres to path if it fails:
+setx PATH "%PATH%;C:\Program Files\PostgreSQL\<version>\bin"
+Restart postgres and run version code again
+
+Start postgres service
+net start postgresql-x64-*
+
+To create a db
+createdb mydb
+
+Plotty.js for graphs 
+npm install react-plotly.js plotly.js
+
+Installing React: 
+npm create vite@latest

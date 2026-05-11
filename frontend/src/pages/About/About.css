@@ -1,0 +1,37 @@
+.about {
+    font-family: "Roboto", sans-serif;
+}
+
+.about h1, .about h2, .about h3, .about h4 {
+    font-family: "Paytone One", serif;
+}
+
+.about-header {
+    background-color: var(--color-gold);
+    padding: 40px 0;
+    text-align: center;
+}
+
+.about-body {
+    padding: 40px 0;
+    text-align: center;
+}
+
+.about-grid {
+    display: grid;
+    grid-template-columns: 1.5fr 0.5fr;
+    gap: 60px;
+    padding: 30px 0;
+}
+
+.about-grid.about-grid-2 {
+    grid-template-columns: 0.5fr 1.5fr;
+}
+
+.about-grid h2 {
+    font-size: 40px;
+    text-align: center;
+    border-bottom: 4px solid var(--color-burgundy);
+    padding-bottom: 20px;
+    margin-bottom: 40px;
+}
