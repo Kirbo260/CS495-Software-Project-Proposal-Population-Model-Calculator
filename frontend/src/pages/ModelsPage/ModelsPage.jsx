@@ -105,6 +105,16 @@ export default function ModelsPage() {
               Delete
             </button>
 
+            {/*Share Button */}
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                navigate("/sharing-data", { state: { model } });
+              }}
+              className="dr-button"
+            >
+              Share
+            </button>
           </div>
         ))
       )}
