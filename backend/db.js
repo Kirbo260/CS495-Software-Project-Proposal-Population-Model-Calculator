@@ -1,6 +1,6 @@
 // db.js
-import pkg from 'pg';
-import dotenv from 'dotenv';
+import pkg from 'pg'; // Import the 'pg' package for PostgreSQL
+import dotenv from 'dotenv'; // Import dotenv to load environment variables from a .env file
 
 dotenv.config();
 const { Client } = pkg;

@@ -3,6 +3,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken"
 import { generateToken } from "../utils.js/TokenGenerator.js"
 import crypto from 'crypto';
+import { sendEmail } from "../mailService/tokenService.js";
 
 export async function createUser(req, res) {
     const { firstName, lastName, age, email, password } = req.body;
